@@ -8,6 +8,8 @@ var size;
 
 var direction;
 
+var gameBoard = [];
+
 var placedCarrier = false;
 var placedBattleship = false;
 var placedCruiser = false;
@@ -79,51 +81,56 @@ var resetColor = function() {
 };
 
 var setColor = function() {
-  for (i = 0; i < cols; i++) {
-    for (j = 0; j < rows; j++) {
-      if (document.getElementById("s" + i + j).style.background == "black") {
-        document.getElementById("s" + i + j).classList.add("ship");
-        document
-          .getElementById("s" + i + j)
-          .removeEventListener("mouseover", highlight);
+  if (gameBoard[this.id[1]][this.id[2]] == 1) {
+    alert("cant place ship here");
+  } else {
+    for (i = 0; i < cols; i++) {
+      for (j = 0; j < rows; j++) {
+        if (document.getElementById("s" + i + j).style.background == "black") {
+          document.getElementById("s" + i + j).classList.add("ship");
+          document
+            .getElementById("s" + i + j)
+            .removeEventListener("mouseover", highlight);
+          gameBoard[i][j] = 1;
+        }
       }
     }
-  }
-  if (size == 5) {
-    placedCarrier = true;
-    shipsPlaced++;
-    if (shipsPlaced == 5) {
-      alert("all ships placed");
-    }
-  } else if (size == 4) {
-    placedBattleship = true;
-    shipsPlaced++;
-    if (shipsPlaced == 5) {
-      alert("all ships placed");
-    }
-  } else if (size == 3) {
-    if (placed == "cruiser") {
-      placedCruiser = true;
-      shipsPlaced++;
-      if (shipsPlaced == 5) {
-        alert("all ships placed");
-      }
-    } else if (placed == "submarine") {
-      placedSubmarine = true;
-      shipsPlaced++;
-      if (shipsPlaced == 5) {
-        alert("all ships placed");
-      }
-    }
-  } else if (size == 2) {
-    placedDetroyer = true;
-    shipsPlaced++;
-    if (shipsPlaced == 5) {
-      alert("all ships placed");
-    }
-  }
 
-  size = 0;
+    if (size == 5) {
+      placedCarrier = true;
+      shipsPlaced++;
+      if (shipsPlaced == 5) {
+        alert("all ships placed");
+      }
+    } else if (size == 4) {
+      placedBattleship = true;
+      shipsPlaced++;
+      if (shipsPlaced == 5) {
+        alert("all ships placed");
+      }
+    } else if (size == 3) {
+      if (placed == "cruiser") {
+        placedCruiser = true;
+        shipsPlaced++;
+        if (shipsPlaced == 5) {
+          alert("all ships placed");
+        }
+      } else if (placed == "submarine") {
+        placedSubmarine = true;
+        shipsPlaced++;
+        if (shipsPlaced == 5) {
+          alert("all ships placed");
+        }
+      }
+    } else if (size == 2) {
+      placedDetroyer = true;
+      shipsPlaced++;
+      if (shipsPlaced == 5) {
+        alert("all ships placed");
+      }
+    }
+    size = 0;
+  }
 };
 
 var placeShip = function() {
@@ -134,21 +141,18 @@ var placeShip = function() {
   } else if (this.id == "cruiser" && !placedCruiser) {
     size = 3;
     placed = "cruiser";
-    placedCruiser = true;
   } else if (this.id == "submarine" && !placedSubmarine) {
     size = 3;
     placed = "submarine";
-    placedSubmarine = true;
   } else if (this.id == "destroyer" && !placedDetroyer) {
     size = 2;
-    placedDetroyer = true;
   }
 };
 
 for (i = 0; i < cols; i++) {
-  // gameBoard.push([]);
+  gameBoard.push([]);
   for (j = 0; j < rows; j++) {
-    //   gameBoard[i].push(0);
+    gameBoard[i].push(0);
     var square = document.createElement("div");
     gameBoardContainer.appendChild(square);
     square.id = "s" + j + i;
@@ -178,3 +182,5 @@ for (ship of ships) {
 }
 
 document.getElementById("rotate").addEventListener("click", rotateShip);
+
+console.log(gameBoard);
