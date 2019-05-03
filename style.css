@@ -4,7 +4,12 @@ body {
     max-width: 950px;
 }
 
+p{
+	margin: 0;
+}
+
 h1 {
+	margin: 0;
     font-size: 3em;
     font-family:'Helvetica', 'Arial', 'Sans-Serif';
 }
@@ -13,7 +18,6 @@ p, button, input {
     font-size: 1.5em;
     line-height: 1.4em;
     color: #333;
-	margin-bottom:1em;
 }
 
 #gameboard {
@@ -23,7 +27,8 @@ p, button, input {
 	height:500px;
 }
 
-#gameboard div {
+#carrier div, #battleship div, #cruiser div, #submarine div, #destroyer div,  #gameboard div {
+	/* cursor: crosshair; */
 	position:absolute;
 	-webkit-box-sizing: border-box; 
 	-moz-box-sizing: border-box;    
@@ -33,3 +38,16 @@ p, button, input {
 	width:50px;
 	height:50px;
 }
+
+#ships{
+	display: flex;
+	cursor: pointer;
+}
+
+#ships div{
+	padding: 2px;
+	border-style: solid;
+	margin: 6px;
+}
+
+

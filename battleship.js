@@ -31,7 +31,7 @@ function fireTorpedo(e) {
       e.target.style.background = "#4d88ff";
       gameBoard[row][col] = 3;
     } else if (gameBoard[row][col] == 1) {
-      e.target.style.background = "red";l
+      e.target.style.background = "red";
       gameBoard[row][col] = 2;
 
       hitCount++;
