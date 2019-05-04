@@ -126,35 +126,23 @@ var setColor = function() {
     if (size == 5) {
       placedCarrier = true;
       shipsPlaced++;
-      if (shipsPlaced == 5) {
-        alert("all ships placed");
-      }
     } else if (size == 4) {
       placedBattleship = true;
       shipsPlaced++;
-      if (shipsPlaced == 5) {
-        alert("all ships placed");
-      }
     } else if (size == 3) {
       if (placed == "cruiser") {
         placedCruiser = true;
         shipsPlaced++;
-        if (shipsPlaced == 5) {
-          alert("all ships placed");
-        }
       } else if (placed == "submarine") {
         placedSubmarine = true;
         shipsPlaced++;
-        if (shipsPlaced == 5) {
-          alert("all ships placed");
-        }
       }
     } else if (size == 2) {
       placedDetroyer = true;
       shipsPlaced++;
-      if (shipsPlaced == 5) {
-        alert("all ships placed");
-      }
+    }
+    if (shipsPlaced == 5) {
+      alert("all ships placed");
     }
     size = 0;
     placedShips.push(ship);
@@ -211,7 +199,7 @@ for (ship of ships) {
 
 document.getElementById("rotate").addEventListener("click", rotateShip);
 
-document.getElementById("strovr").addEventListener("click", function(){
+document.getElementById("strovr").addEventListener("click", function() {
   location.reload();
-})
+});
 // console.log(gameBoard);
