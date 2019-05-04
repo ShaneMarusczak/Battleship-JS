@@ -58,18 +58,22 @@
   };
 
   var rotatedHighlight = function() {
-    for (i = 0; i < size; i++) {
-      document.getElementById(
-        this.id[0] + (Number(this.id[1]) + i) + this.id[2]
-      ).style.background = "black";
+    if (Number(this.id[1]) < 11 - size) {
+      for (i = 0; i < size; i++) {
+        document.getElementById(
+          this.id[0] + (Number(this.id[1]) + i) + this.id[2]
+        ).style.background = "black";
+      }
     }
   };
 
   var highlight = function() {
-    for (i = 0; i < size; i++) {
-      document.getElementById(
-        this.id[0] + this.id[1] + (Number(this.id[2]) + i)
-      ).style.background = "black";
+    if (Number(this.id[2]) < 11 - size) {
+      for (i = 0; i < size; i++) {
+        document.getElementById(
+          this.id[0] + this.id[1] + (Number(this.id[2]) + i)
+        ).style.background = "black";
+      }
     }
   };
 
@@ -207,5 +211,3 @@
   });
   console.log(gameBoard);
 })();
-
-
