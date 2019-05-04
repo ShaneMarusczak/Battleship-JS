@@ -2,6 +2,13 @@
   const rows = 10;
   const cols = 10;
   const squareSize = 50;
+  const totalShots = 100;
+
+  var values = [1, -1];
+
+  var lastShotHit = false;
+
+  var tester = 0;
 
   var shipsPlaced = 0;
 
@@ -10,6 +17,8 @@
   var direction;
 
   var gameBoard = [];
+
+  var allShipsPlaced = false;
 
   var placedCarrier = false;
   var placedBattleship = false;
@@ -28,7 +37,18 @@
 
   var placedShips = [];
 
+  var hits = 0;
+  var shotsFired = 0;
+
+  var lastShotX;
+  var lastShotY;
+
   var ships = [carrier, battleship, cruiser, submarine, destroyer];
+
+  function randomIntFromInterval(min, max) {
+    //inclusive
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
 
   var rotateShip = function() {
     for (i = 0; i < cols; i++) {
@@ -154,7 +174,7 @@
             document
               .getElementById("s" + i + j)
               .removeEventListener("mouseover", highlight);
-            gameBoard[i][j] = 1;
+            gameBoard[i][j][0] = 1;
             ship.push([i, j]);
           }
         }
@@ -180,6 +200,7 @@
       }
       if (shipsPlaced == 5) {
         alert("all ships placed");
+        allShipsPlaced = true;
       }
       size = 0;
       placedShips.push(ship);
@@ -205,7 +226,7 @@
   for (i = 0; i < cols; i++) {
     gameBoard.push([]);
     for (j = 0; j < rows; j++) {
-      gameBoard[i].push(0);
+      gameBoard[i].push([0, 1]);
       var square = document.createElement("div");
       gameBoardContainer.appendChild(square);
       square.id = "s" + j + i;
@@ -239,4 +260,81 @@
     location.reload();
   });
   console.log(gameBoard);
+
+  function gaveOverChecker() {
+    if (hits == 17 && tester == 0) {
+      alert("the computer wins!");
+      document.getElementById("compfr").removeEventListener("click", compMove);
+      tester++;
+    } else if (shotsFired == totalShots && tester == 0) {
+      alert("the computer is out of moves! You win!");
+      document.getElementById("compfr").removeEventListener("click", compMove);
+      tester++;
+    }
+  }
+
+  var compMove = function() {
+    if (allShipsPlaced) {
+      // if (lastShotHit) {
+      //   console.log(lastShotX + 1);
+      //   if (lastShotX + 1 < 10) {
+      //     if (gameBoard[lastShotX + 1][lastShotY][0] == 0) {
+      //       document.getElementById(
+      //         "s" + (lastShotX + 1) + lastShotY
+      //       ).style.background = "#4d88ff";
+      //       document
+      //         .getElementById("s" + (lastShotX + 1) + lastShotY)
+      //         .classList.add("miss");
+      //       gameBoard[lastShotX + 1][lastShotY][0] = 3;
+      //       shotsFired++;
+      //       lastShotHit = false;
+      //     } else if (gameBoard[lastShotX + 1][lastShotY] == 1) {
+      //       document.getElementById(
+      //         "s" + (lastShotX + 1) + lastShotY
+      //       ).style.background = "red";
+      //       gameBoard[lastShotX + 1][lastShotY][0] = 2;
+      //       hits++;
+      //       shotsFired++;
+      //       lastShotHit = true;
+      //     } else if (gameBoard[lastShotX + 1][lastShotY][0] == 2) {
+      //       lastShotHit = false;
+      //       compMove();
+      //     } else if (gameBoard[lastShotX + 1][lastShotY][0] == 3) {
+      //       lastShotHit = false;
+      //       compMove();
+      //     }
+      //     lastShotX++;
+      //   } else {
+      //     lastShotHit = false;
+      //     compMove();
+      //   }
+      // } else {
+      var x = randomIntFromInterval(0, 9);
+      var y = randomIntFromInterval(0, 9);
+      lastShotX = x;
+      lastShotY = y;
+      if (gameBoard[x][y][0] == 0) {
+        document.getElementById("s" + x + y).style.background = "#4d88ff";
+        document.getElementById("s" + x + y).classList.add("miss");
+        gameBoard[x][y][0] = 3;
+        shotsFired++;
+        lastShotHit = false;
+      } else if (gameBoard[x][y][0] == 1) {
+        document.getElementById("s" + x + y).style.background = "red";
+        gameBoard[x][y][0] = 2;
+        hits++;
+        shotsFired++;
+        lastShotHit = true;
+      } else if (gameBoard[x][y][0] == 2) {
+        compMove();
+      } else if (gameBoard[x][y][0] == 3) {
+        compMove();
+      }
+      // }
+    } else {
+      alert("Not all ships are placed.");
+    }
+    gaveOverChecker();
+  };
+  document.getElementById("compfr").addEventListener("click", compMove);
 })();
