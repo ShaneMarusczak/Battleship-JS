@@ -149,7 +149,7 @@ var setColor = function() {
   }
 };
 
-var placeShip = function() {
+var placeShipSetup = function() {
   if (this.id == "carrier" && !placedCarrier) {
     size = 5;
   } else if (this.id == "battleship" && !placedBattleship) {
@@ -194,7 +194,7 @@ for (i = 0; i < cols; i++) {
 }
 
 for (ship of ships) {
-  ship.addEventListener("click", placeShip);
+  ship.addEventListener("click", placeShipSetup);
 }
 
 document.getElementById("rotate").addEventListener("click", rotateShip);
@@ -202,4 +202,4 @@ document.getElementById("rotate").addEventListener("click", rotateShip);
 document.getElementById("strovr").addEventListener("click", function() {
   location.reload();
 });
-// console.log(gameBoard);
+console.log(gameBoard);
