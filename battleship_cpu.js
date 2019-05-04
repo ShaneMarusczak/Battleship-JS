@@ -256,7 +256,7 @@
 
   document.getElementById("rotate").addEventListener("click", rotateShip);
 
-  document.getElementById("strovr").addEventListener("click", function() {
+  document.getElementById("strtOvrBtn").addEventListener("click", function() {
     location.reload();
   });
   console.log(gameBoard);
