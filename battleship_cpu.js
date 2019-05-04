@@ -211,4 +211,7 @@ for (ship of ships) {
 
 document.getElementById("rotate").addEventListener("click", rotateShip);
 
+document.getElementById("strovr").addEventListener("click", function(){
+  location.reload();
+})
 // console.log(gameBoard);
