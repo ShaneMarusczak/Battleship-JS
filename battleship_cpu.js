@@ -59,20 +59,50 @@
 
   var rotatedHighlight = function() {
     if (Number(this.id[1]) < 11 - size) {
+      for (i = 0; i < cols; i++) {
+        for (j = 0; j < rows; j++) {
+          document
+            .getElementById("s" + i + j)
+            .addEventListener("click", setColor);
+        }
+      }
       for (i = 0; i < size; i++) {
         document.getElementById(
           this.id[0] + (Number(this.id[1]) + i) + this.id[2]
         ).style.background = "black";
+      }
+    } else {
+      for (i = 0; i < cols; i++) {
+        for (j = 0; j < rows; j++) {
+          document
+            .getElementById("s" + i + j)
+            .removeEventListener("click", setColor);
+        }
       }
     }
   };
 
   var highlight = function() {
     if (Number(this.id[2]) < 11 - size) {
+      for (i = 0; i < cols; i++) {
+        for (j = 0; j < rows; j++) {
+          document
+            .getElementById("s" + i + j)
+            .addEventListener("click", setColor);
+        }
+      }
       for (i = 0; i < size; i++) {
         document.getElementById(
           this.id[0] + this.id[1] + (Number(this.id[2]) + i)
         ).style.background = "black";
+      }
+    } else {
+      for (i = 0; i < cols; i++) {
+        for (j = 0; j < rows; j++) {
+          document
+            .getElementById("s" + i + j)
+            .removeEventListener("click", setColor);
+        }
       }
     }
   };
@@ -195,7 +225,7 @@
       document
         .getElementById("s" + i + j)
         .addEventListener("mouseleave", resetColor);
-      document.getElementById("s" + i + j).addEventListener("click", setColor);
+      // document.getElementById("s" + i + j).addEventListener("click", setColor);
       var direction = "hor";
     }
   }
