@@ -225,7 +225,6 @@
       document
         .getElementById("s" + i + j)
         .addEventListener("mouseleave", resetColor);
-      // document.getElementById("s" + i + j).addEventListener("click", setColor);
       var direction = "hor";
     }
   }
