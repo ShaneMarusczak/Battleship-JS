@@ -25,6 +25,8 @@ var destroyer = document.getElementById("destroyer");
 
 var placed;
 
+var placedShips = [];
+
 var ships = [carrier, battleship, cruiser, submarine, destroyer];
 
 var rotateShip = function() {
@@ -81,9 +83,33 @@ var resetColor = function() {
 };
 
 var setColor = function() {
-  if (gameBoard[this.id[1]][this.id[2]] == 1) {
-    alert("cant place ship here");
-  } else {
+  var ship = [];
+  var canPlace = true;
+  var x = Number(this.id[1]);
+  var y = Number(this.id[2]);
+
+  for (val of placedShips) {
+    for (coor of val) {
+      if (direction == "hor") {
+        for (i = 0; i < size; i++) {
+          if (x == coor[0] && y + i == coor[1]) {
+            canPlace = false;
+          }
+        }
+      } else {
+        for (i = 0; i < size; i++) {
+          if (x + i == coor[0] && y == coor[1]) {
+            canPlace = false;
+          }
+        }
+      }
+    }
+  }
+  if (!canPlace) {
+    alert("cant place here");
+  }
+
+  if (canPlace) {
     for (i = 0; i < cols; i++) {
       for (j = 0; j < rows; j++) {
         if (document.getElementById("s" + i + j).style.background == "black") {
@@ -92,6 +118,7 @@ var setColor = function() {
             .getElementById("s" + i + j)
             .removeEventListener("mouseover", highlight);
           gameBoard[i][j] = 1;
+          ship.push([i, j]);
         }
       }
     }
@@ -130,6 +157,7 @@ var setColor = function() {
       }
     }
     size = 0;
+    placedShips.push(ship);
   }
 };
 
@@ -183,4 +211,4 @@ for (ship of ships) {
 
 document.getElementById("rotate").addEventListener("click", rotateShip);
 
-console.log(gameBoard);
+// console.log(gameBoard);
