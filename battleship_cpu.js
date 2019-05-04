@@ -63,7 +63,7 @@
         for (j = 0; j < rows; j++) {
           document
             .getElementById("s" + i + j)
-            .addEventListener("click", setColor);
+            .addEventListener("click", placeShip);
         }
       }
       for (i = 0; i < size; i++) {
@@ -76,7 +76,7 @@
         for (j = 0; j < rows; j++) {
           document
             .getElementById("s" + i + j)
-            .removeEventListener("click", setColor);
+            .removeEventListener("click", placeShip);
         }
       }
     }
@@ -88,7 +88,7 @@
         for (j = 0; j < rows; j++) {
           document
             .getElementById("s" + i + j)
-            .addEventListener("click", setColor);
+            .addEventListener("click", placeShip);
         }
       }
       for (i = 0; i < size; i++) {
@@ -101,7 +101,7 @@
         for (j = 0; j < rows; j++) {
           document
             .getElementById("s" + i + j)
-            .removeEventListener("click", setColor);
+            .removeEventListener("click", placeShip);
         }
       }
     }
@@ -117,7 +117,7 @@
     }
   };
 
-  var setColor = function() {
+  var placeShip = function() {
     var ship = [];
     var canPlace = true;
     var x = Number(this.id[1]);
