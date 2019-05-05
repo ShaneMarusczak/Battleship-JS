@@ -156,15 +156,32 @@
           if (
             document.getElementById("s" + i + j).style.background == "black"
           ) {
-            if (size == 5) {
+            if (
+              size == 5 &&
+              document.getElementById("s" + i + j).classList == ""
+            ) {
               document.getElementById("s" + i + j).classList.add("carrier");
-            }else if(size == 4){
+            } else if (
+              size == 4 &&
+              document.getElementById("s" + i + j).classList == ""
+            ) {
               document.getElementById("s" + i + j).classList.add("battleship");
-            }else if(size == 3 && placed == "cruiser" && !document.getElementById("s" + i + j).classList.contains("submarine")){
+            } else if (
+              size == 3 &&
+              placed == "cruiser" &&
+              document.getElementById("s" + i + j).classList == ""
+            ) {
               document.getElementById("s" + i + j).classList.add("cruiser");
-            }else if(size == 3 && placed =="submarine"&& !document.getElementById("s" + i + j).classList.contains("cruiser")){
+            } else if (
+              size == 3 &&
+              placed == "submarine" &&
+              document.getElementById("s" + i + j).classList == ""
+            ) {
               document.getElementById("s" + i + j).classList.add("submarine");
-            }else if(size == 2){
+            } else if (
+              size == 2 &&
+              document.getElementById("s" + i + j).classList == ""
+            ) {
               document.getElementById("s" + i + j).classList.add("destroyer");
             }
             document
@@ -270,24 +287,7 @@
   }
 
   var calculatedShot = function() {
-    var counter = 0;
-    loop1: for (i = 0; i < cols; i++) {
-      loop2: for (j = 0; j < rows; j++) {
-        if (document.getElementById("s" + i + j).style.background == "red") {
-          console.log("found a red");
-          counter++;
-          if (
-            document.getElementById("s" + (i + 1) + j).style.background == "red"
-          ) {
-            document.getElementById("s" + (i - 1) + j).style.background = "red";
-          }
-          break loop1;
-        }
-      }
-    }
-    if (counter == 0) {
-      randomShot();
-    }
+    //WHAT DO I DO HERE! THIS IS REALLY HARD!
   };
 
   var randomShot = function() {
@@ -317,7 +317,6 @@
   var compMove = function() {
     if (allShipsPlaced) {
       randomShot();
-      // calculatedShot();
     } else {
       alert("Not all ships are placed.");
     }
