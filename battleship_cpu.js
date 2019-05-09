@@ -224,6 +224,9 @@ var placeShip = function() {
             .removeEventListener("mouseleave", resetColor);
         }
       }
+      for (info of ships) {
+        info.removeEventListener("click", placeShipSetup);
+      }
     }
     size = 0;
     placedShips.push(ship);
