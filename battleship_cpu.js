@@ -5,7 +5,6 @@ const squareSize = 50;
 const totalShots = 100;
 var values = [1, -1];
 var lastShotHit = false;
-var tester = 0;
 var shipsPlaced = 0;
 var size;
 var direction;
@@ -16,6 +15,11 @@ var placedBattleship = false;
 var placedCruiser = false;
 var placedSubmarine = false;
 var placedDetroyer = false;
+var carrierSunk = false;
+var battleshipSunk = false;
+var cruiserSunk = false;
+var submarineSunk = false;
+var destroyerSunk = false;
 var gameBoardContainer = document.getElementById("gameboard");
 var carrier = document.getElementById("carrier");
 var battleship = document.getElementById("battleship");
@@ -213,9 +217,83 @@ var placeShip = function() {
     if (shipsPlaced == 5) {
       alert("all ships placed");
       allShipsPlaced = true;
+      for (i = 0; i < cols; i++) {
+        for (j = 0; j < rows; j++) {
+          document
+            .getElementById("s" + i + j)
+            .removeEventListener("mouseleave", resetColor);
+        }
+      }
     }
     size = 0;
     placedShips.push(ship);
+  }
+};
+
+var shipSunkChecker = function() {
+  var carrierCounter = 0;
+  var battleshipCounter = 0;
+  var cruiserCounter = 0;
+  var submarineCounter = 0;
+  var destroyerCounter = 0;
+  for (i = 0; i < cols; i++) {
+    for (j = 0; j < rows; j++) {
+      if (
+        document.getElementById("s" + i + j).classList.contains("carrier") &&
+        document.getElementById("s" + i + j).classList.contains("hit") &&
+        !carrierSunk
+      ) {
+        carrierCounter++;
+      }
+      if (
+        document.getElementById("s" + i + j).classList.contains("battleship") &&
+        document.getElementById("s" + i + j).classList.contains("hit") &&
+        !battleshipSunk
+      ) {
+        battleshipCounter++;
+      }
+      if (
+        document.getElementById("s" + i + j).classList.contains("cruiser") &&
+        document.getElementById("s" + i + j).classList.contains("hit") &&
+        !cruiserSunk
+      ) {
+        cruiserCounter++;
+      }
+      if (
+        document.getElementById("s" + i + j).classList.contains("submarine") &&
+        document.getElementById("s" + i + j).classList.contains("hit") &&
+        !submarineSunk
+      ) {
+        submarineCounter++;
+      }
+      if (
+        document.getElementById("s" + i + j).classList.contains("destroyer") &&
+        document.getElementById("s" + i + j).classList.contains("hit") &&
+        !destroyerSunk
+      ) {
+        destroyerCounter++;
+      }
+    }
+  }
+  if (carrierCounter == 5) {
+    alert("Carrier Sunk");
+    carrierSunk = true;
+  }
+  if (battleshipCounter == 4) {
+    alert("Battleship Sunk");
+    battleshipSunk = true;
+  }
+  if (cruiserCounter == 3) {
+    alert("Cruiser Sunk");
+    cruiserSunk = true;
+  }
+  if (submarineCounter == 3) {
+    alert("Submraine Sunk");
+    submarineSunk = true;
+  }
+  if (destroyerCounter == 2) {
+    alert("Destroyer Sunk");
+    destroyerSunk = true;
   }
 };
 
@@ -274,14 +352,12 @@ document.getElementById("strtOvrBtn").addEventListener("click", function() {
 console.log(gameBoard);
 
 function gaveOverChecker() {
-  if (hits == 17 && tester == 0) {
+  if (hits == 17) {
     alert("the computer wins!");
     document.getElementById("compfr").removeEventListener("click", compMove);
-    tester++;
-  } else if (shotsFired == totalShots && tester == 0) {
+  } else if (shotsFired == totalShots) {
     alert("the computer is out of moves! You win!");
     document.getElementById("compfr").removeEventListener("click", compMove);
-    tester++;
   }
 }
 
@@ -443,6 +519,7 @@ var randomShot = function() {
     lastShotSunkShip = false;
   } else if (gameBoard[x][y] == 1) {
     document.getElementById("s" + x + y).style.background = "red";
+    document.getElementById("s" + x + y).classList.add("hit");
     gameBoard[x][y] = 2;
     hits++;
     shotsFired++;
@@ -456,26 +533,26 @@ var randomShot = function() {
 };
 
 var compMove = function() {
-  if (allShipsPlaced) {
-    if (lastShotSunkShip) {
-      randomShot();
-    } else {
-      if (lastShotHit) {
-        calculatedShot();
-      } else {
-        randomShot();
-      }
-    }
-  } else {
-    alert("Not all ships are placed.");
-  }
-
   // if (allShipsPlaced) {
-  //   randomShot();
+  //   if (lastShotSunkShip) {
+  //     randomShot();
+  //   } else {
+  //     if (lastShotHit) {
+  //       calculatedShot();
+  //     } else {
+  //       randomShot();
+  //     }
+  //   }
   // } else {
   //   alert("Not all ships are placed.");
   // }
 
+  if (allShipsPlaced) {
+    randomShot();
+  } else {
+    alert("Not all ships are placed.");
+  }
+  shipSunkChecker();
   gaveOverChecker();
 };
 document.getElementById("compfr").addEventListener("click", compMove);
