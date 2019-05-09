@@ -355,7 +355,13 @@ document.getElementById("strtOvrBtn").addEventListener("click", function() {
 console.log(gameBoard);
 
 function gaveOverChecker() {
-  if (hits == 17) {
+  if (
+    carrierSunk &&
+    battleshipSunk &&
+    cruiserSunk &&
+    submarineSunk &&
+    destroyerSunk
+  ) {
     alert("the computer wins!");
     document.getElementById("compfr").removeEventListener("click", compMove);
   } else if (shotsFired == totalShots) {
