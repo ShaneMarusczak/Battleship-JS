@@ -69,7 +69,7 @@
   };
 
   var rotatedHighlight = function() {
-    if (Number(this.id[1]) < 11 - size) {
+    if (Number(this.id[1]) < rows + 1 - size) {
       for (i = 0; i < cols; i++) {
         for (j = 0; j < rows; j++) {
           document
@@ -94,7 +94,7 @@
   };
 
   var highlight = function() {
-    if (Number(this.id[2]) < 11 - size) {
+    if (Number(this.id[2]) < cols + 1 - size) {
       for (i = 0; i < cols; i++) {
         for (j = 0; j < rows; j++) {
           document
