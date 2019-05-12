@@ -1,24 +1,36 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Battleship</title>
-		<link rel="stylesheet" type="text/css" href="style.css">
-	</head>
-	<body>
-	
-	<h1>Battleship</h1>	
+  <head>
+    <title>Battleship</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+    <h1>Battleship</h1>
 
-	<p>Click the board to fire at a ship. Try to sink every battleship!</p>
-	<p>Shots Taken: <span id="shots"></span></p>
-	<p>Shots Left: <span id="shotsleft"></span></p>
-
-
-	<!-- CHEATER!! -->
-
-	<div id="gameboard">
+    <p>Click the board to fire at a ship. Try to sink every battleship!</p>
+    <br />
+    <div id="sunkships">
+      <div id="info">
+        <p id="shotsleftblock">Shots Left: <span id="shotsleft"></span></p>
+        <p id="shotsblock">Shots Taken: <span id="shots"></span></p>
+        <br />
+      </div>
+      <ul id="shiplist">
+        Ships Sunk:
+        <li id="CarrierSunk"></li>
+        <li id="BattleshipSunk"></li>
+        <li id="CruiserSunk"></li>
+        <li id="SubmarineSunk"></li>
+        <li id="DestroyerSunk"></li>
+      </ul>
     </div>
-    <button id="strtOvrBtn">Start Over</button>
-	
-	<script type="text/javascript" src="battleship.js"></script>
-	</body>
+
+    <!-- CHEATER!! -->
+
+    <div id="gameboard"></div>
+	<p id="wintext">You Win! Click Start over to play again!</p>
+	<button id="strtOvrBtn">Start Over</button>
+
+    <script type="text/javascript" src="battleship.js"></script>
+  </body>
 </html>

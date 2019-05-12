@@ -57,10 +57,12 @@
                       "s" + coor[0] + coor[1]
                     ).style.background = "black";
                   }
-                  alert(
+                  document.getElementById(
                     document.getElementById("s" + coor[0] + coor[1]).className +
-                      " Sunk"
-                  );
+                      "Sunk"
+                  ).innerHTML = document.getElementById(
+                    "s" + coor[0] + coor[1]
+                  ).className;
                 }
               }
             }
@@ -68,7 +70,7 @@
         }
 
         if (hitCount == winningHitCount) {
-          alert("All enemy battleships have been defeated! You win!");
+          document.getElementById("wintext").style.display = "block";
           gameBoardContainer.removeEventListener("click", fireTorpedo);
         }
       } else if (gameBoard[row][col] > 1) {
@@ -204,7 +206,7 @@
       document.getElementById("s" + i + j).style.background = "#80aaff";
       if (gameBoard[i][j] == 1) {
         checker++;
-        // document.getElementById("s" + i + j).style.background = "white";
+        document.getElementById("s" + i + j).style.background = "white";
       }
     }
   }
