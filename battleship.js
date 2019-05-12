@@ -22,10 +22,13 @@
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
   document.getElementById("shots").innerHTML = shotsTaken;
+  document.getElementById("shotsleft").innerHTML = totalShots - shotsTaken;
 
   function fireTorpedo(e) {
     shotsTaken++;
     document.getElementById("shots").innerHTML = shotsTaken;
+    document.getElementById("shotsleft").innerHTML = totalShots - shotsTaken;
+
     var test = 0;
 
     if (e.target !== e.currentTarget) {
