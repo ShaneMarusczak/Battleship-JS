@@ -17,6 +17,14 @@
     location.reload();
   });
 
+  function wait(ms) {
+    var d = new Date();
+    var d2 = null;
+    do {
+      d2 = new Date();
+    } while (d2 - d < ms);
+  }
+
   function randomIntFromInterval(min, max) {
     //inclusive
     return Math.floor(Math.random() * (max - min + 1) + min);
