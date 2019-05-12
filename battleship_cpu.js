@@ -201,20 +201,25 @@
       if (size == 5) {
         placedCarrier = true;
         shipsPlaced++;
+        document.getElementById("carrier").style.display = "none";
       } else if (size == 4) {
         placedBattleship = true;
         shipsPlaced++;
+        document.getElementById("battleship").style.display = "none";
       } else if (size == 3) {
         if (placed == "cruiser") {
           placedCruiser = true;
           shipsPlaced++;
+          document.getElementById("cruiser").style.display = "none";
         } else if (placed == "submarine") {
           placedSubmarine = true;
           shipsPlaced++;
+          document.getElementById("submarine").style.display = "none";
         }
       } else if (size == 2) {
         placedDetroyer = true;
         shipsPlaced++;
+        document.getElementById("destroyer").style.display = "none";
       }
       if (shipsPlaced == 5) {
         alert("all ships placed");

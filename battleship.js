@@ -3,7 +3,7 @@
   const cols = 10;
   const squareSize = 50;
   const winningHitCount = 17;
-  const totalShots = 35;
+  const totalShots = 50;
   var counter = 0;
   var gameBoard = [];
   var gameBoardContainer = document.getElementById("gameboard");
