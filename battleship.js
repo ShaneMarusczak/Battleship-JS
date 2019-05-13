@@ -3,7 +3,7 @@
   const cols = 10;
   const squareSize = 50;
   const winningHitCount = 17;
-  const totalShots = 50;
+  const totalShots = 40;
   var counter = 0;
   var gameBoard = [];
   var gameBoardContainer = document.getElementById("gameboard");
@@ -90,7 +90,8 @@
 
     counter++;
     if (counter == totalShots && hitCount != winningHitCount) {
-      alert("You are out of shots, the enemy fleet wins!");
+      // alert("You are out of shots, the enemy fleet wins!");
+      document.getElementById("losstext").style.display = "block";
       gameBoardContainer.removeEventListener("click", fireTorpedo);
       for (i = 0; i < cols; i++) {
         for (j = 0; j < rows; j++) {
