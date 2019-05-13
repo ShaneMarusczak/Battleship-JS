@@ -216,7 +216,7 @@
       document.getElementById("s" + i + j).style.background = "#80aaff";
       if (gameBoard[i][j] == 1) {
         checker++;
-        document.getElementById("s" + i + j).style.background = "white";
+        // document.getElementById("s" + i + j).style.background = "white";
       }
     }
   }

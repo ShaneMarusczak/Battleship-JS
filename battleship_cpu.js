@@ -3,7 +3,6 @@
   const cols = 10;
   const squareSize = 50;
   const totalShots = 100;
-  var values = [1, -1];
   var lastShotHit = false;
   var shipsPlaced = 0;
   var size;
@@ -28,12 +27,10 @@
   var destroyer = document.getElementById("destroyer");
   var placed;
   var placedShips = [];
-  var hits = 0;
   var shotsFired = 0;
   var lastShotX;
   var lastShotY;
   var lastShotSunkShip = false;
-
   var ships = [carrier, battleship, cruiser, submarine, destroyer];
 
   function randomIntFromInterval(min, max) {
@@ -385,6 +382,10 @@
 
   var shipDirection;
   var calculatedShot = function() {
+    //This function is complete garbage, if you are reading this please help!
+    //Like for real, it is garbage.
+    //The computer player cheats, and even then it still cant win.
+
     if (gameBoard[lastShotX + 1][lastShotY] == 1) {
       document.getElementById(
         "s" + (lastShotX + 1) + lastShotY
@@ -528,6 +529,7 @@
   };
 
   var randomShot = function() {
+    //This code actually works quite well.
     var x = randomIntFromInterval(0, 9);
     var y = randomIntFromInterval(0, 9);
     lastShotX = x;
