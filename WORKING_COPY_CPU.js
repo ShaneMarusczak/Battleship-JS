@@ -1,11 +1,10 @@
-// (function() {
+(function() {
   const rows = 10;
   const cols = 10;
   const squareSize = 50;
   const totalShots = 100;
   var values = [1, -1];
   var lastShotHit = false;
-  var tester = 0;
   var shipsPlaced = 0;
   var size;
   var direction;
@@ -16,6 +15,11 @@
   var placedCruiser = false;
   var placedSubmarine = false;
   var placedDetroyer = false;
+  var carrierSunk = false;
+  var battleshipSunk = false;
+  var cruiserSunk = false;
+  var submarineSunk = false;
+  var destroyerSunk = false;
   var gameBoardContainer = document.getElementById("gameboard");
   var carrier = document.getElementById("carrier");
   var battleship = document.getElementById("battleship");
@@ -29,14 +33,14 @@
   var lastShotX;
   var lastShotY;
   var lastShotSunkShip = false;
-  
+
   var ships = [carrier, battleship, cruiser, submarine, destroyer];
-  
+
   function randomIntFromInterval(min, max) {
     //inclusive
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
-  
+
   var rotateShip = function() {
     for (i = 0; i < cols; i++) {
       for (j = 0; j < rows; j++) {
@@ -63,9 +67,9 @@
       direction = "hor";
     }
   };
-  
+
   var rotatedHighlight = function() {
-    if (Number(this.id[1]) < 11 - size) {
+    if (Number(this.id[1]) < rows + 1 - size) {
       for (i = 0; i < cols; i++) {
         for (j = 0; j < rows; j++) {
           document
@@ -88,9 +92,9 @@
       }
     }
   };
-  
+
   var highlight = function() {
-    if (Number(this.id[2]) < 11 - size) {
+    if (Number(this.id[2]) < cols + 1 - size) {
       for (i = 0; i < cols; i++) {
         for (j = 0; j < rows; j++) {
           document
@@ -113,7 +117,7 @@
       }
     }
   };
-  
+
   var resetColor = function() {
     for (i = 0; i < cols; i++) {
       for (j = 0; j < rows; j++) {
@@ -123,13 +127,13 @@
       }
     }
   };
-  
+
   var placeShip = function() {
     var ship = [];
     var canPlace = true;
     var x = Number(this.id[1]);
     var y = Number(this.id[2]);
-  
+
     for (val of placedShips) {
       for (coor of val) {
         if (direction == "hor") {
@@ -150,11 +154,13 @@
     if (!canPlace) {
       alert("cant place here");
     }
-  
+
     if (canPlace) {
       for (i = 0; i < cols; i++) {
         for (j = 0; j < rows; j++) {
-          if (document.getElementById("s" + i + j).style.background == "black") {
+          if (
+            document.getElementById("s" + i + j).style.background == "black"
+          ) {
             if (
               size == 5 &&
               document.getElementById("s" + i + j).classList == ""
@@ -191,34 +197,122 @@
           }
         }
       }
-  
+
       if (size == 5) {
         placedCarrier = true;
         shipsPlaced++;
+        document.getElementById("carrier").style.display = "none";
       } else if (size == 4) {
         placedBattleship = true;
         shipsPlaced++;
+        document.getElementById("battleship").style.display = "none";
       } else if (size == 3) {
         if (placed == "cruiser") {
           placedCruiser = true;
           shipsPlaced++;
+          document.getElementById("cruiser").style.display = "none";
         } else if (placed == "submarine") {
           placedSubmarine = true;
           shipsPlaced++;
+          document.getElementById("submarine").style.display = "none";
         }
       } else if (size == 2) {
         placedDetroyer = true;
         shipsPlaced++;
+        document.getElementById("destroyer").style.display = "none";
       }
       if (shipsPlaced == 5) {
         alert("all ships placed");
         allShipsPlaced = true;
+        for (i = 0; i < cols; i++) {
+          for (j = 0; j < rows; j++) {
+            document
+              .getElementById("s" + i + j)
+              .removeEventListener("mouseleave", resetColor);
+          }
+        }
+        for (info of ships) {
+          info.removeEventListener("click", placeShipSetup);
+        }
       }
       size = 0;
       placedShips.push(ship);
     }
   };
-  
+
+  var shipSunkChecker = function() {
+    var carrierCounter = 0;
+    var battleshipCounter = 0;
+    var cruiserCounter = 0;
+    var submarineCounter = 0;
+    var destroyerCounter = 0;
+    for (i = 0; i < cols; i++) {
+      for (j = 0; j < rows; j++) {
+        if (
+          document.getElementById("s" + i + j).classList.contains("carrier") &&
+          document.getElementById("s" + i + j).classList.contains("hit") &&
+          !carrierSunk
+        ) {
+          carrierCounter++;
+        }
+        if (
+          document
+            .getElementById("s" + i + j)
+            .classList.contains("battleship") &&
+          document.getElementById("s" + i + j).classList.contains("hit") &&
+          !battleshipSunk
+        ) {
+          battleshipCounter++;
+        }
+        if (
+          document.getElementById("s" + i + j).classList.contains("cruiser") &&
+          document.getElementById("s" + i + j).classList.contains("hit") &&
+          !cruiserSunk
+        ) {
+          cruiserCounter++;
+        }
+        if (
+          document
+            .getElementById("s" + i + j)
+            .classList.contains("submarine") &&
+          document.getElementById("s" + i + j).classList.contains("hit") &&
+          !submarineSunk
+        ) {
+          submarineCounter++;
+        }
+        if (
+          document
+            .getElementById("s" + i + j)
+            .classList.contains("destroyer") &&
+          document.getElementById("s" + i + j).classList.contains("hit") &&
+          !destroyerSunk
+        ) {
+          destroyerCounter++;
+        }
+      }
+    }
+    if (carrierCounter == 5) {
+      document.getElementById("CarrierSunk").innerHTML = "Carrier";
+      carrierSunk = true;
+    }
+    if (battleshipCounter == 4) {
+      document.getElementById("BattleshipSunk").innerHTML = "Battleship";
+      battleshipSunk = true;
+    }
+    if (cruiserCounter == 3) {
+      document.getElementById("CruiserSunk").innerHTML = "Cruiser";
+      cruiserSunk = true;
+    }
+    if (submarineCounter == 3) {
+      document.getElementById("SubmarineSunk").innerHTML = "Submarine";
+      submarineSunk = true;
+    }
+    if (destroyerCounter == 2) {
+      document.getElementById("DestroyerSunk").innerHTML = "Destroyer";
+      destroyerSunk = true;
+    }
+  };
+
   var placeShipSetup = function() {
     if (this.id == "carrier" && !placedCarrier) {
       size = 5;
@@ -234,7 +328,7 @@
       size = 2;
     }
   };
-  
+
   for (i = 0; i < cols; i++) {
     gameBoard.push([]);
     for (j = 0; j < rows; j++) {
@@ -248,7 +342,7 @@
       square.style.left = leftPosition + "px";
     }
   }
-  
+
   for (i = 0; i < cols; i++) {
     for (j = 0; j < rows; j++) {
       document.getElementById("s" + i + j).style.background = "#80aaff";
@@ -261,30 +355,34 @@
       var direction = "hor";
     }
   }
-  
+
   for (ship of ships) {
     ship.addEventListener("click", placeShipSetup);
   }
-  
+
   document.getElementById("rotate").addEventListener("click", rotateShip);
-  
+
   document.getElementById("strtOvrBtn").addEventListener("click", function() {
     location.reload();
   });
   console.log(gameBoard);
-  
+
   function gaveOverChecker() {
-    if (hits == 17 && tester == 0) {
+    if (
+      carrierSunk &&
+      battleshipSunk &&
+      cruiserSunk &&
+      submarineSunk &&
+      destroyerSunk
+    ) {
       alert("the computer wins!");
       document.getElementById("compfr").removeEventListener("click", compMove);
-      tester++;
-    } else if (shotsFired == totalShots && tester == 0) {
+    } else if (shotsFired == totalShots) {
       alert("the computer is out of moves! You win!");
       document.getElementById("compfr").removeEventListener("click", compMove);
-      tester++;
     }
   }
-  
+
   var shipDirection;
   var calculatedShot = function() {
     if (gameBoard[lastShotX + 1][lastShotY] == 1) {
@@ -428,7 +526,7 @@
       }
     }
   };
-  
+
   var randomShot = function() {
     var x = randomIntFromInterval(0, 9);
     var y = randomIntFromInterval(0, 9);
@@ -443,6 +541,7 @@
       lastShotSunkShip = false;
     } else if (gameBoard[x][y] == 1) {
       document.getElementById("s" + x + y).style.background = "red";
+      document.getElementById("s" + x + y).classList.add("hit");
       gameBoard[x][y] = 2;
       hits++;
       shotsFired++;
@@ -454,30 +553,29 @@
       randomShot();
     }
   };
-  
+
   var compMove = function() {
-    if (allShipsPlaced) {
-      if (lastShotSunkShip) {
-        randomShot();
-      } else {
-        if (lastShotHit) {
-          calculatedShot();
-        } else {
-          randomShot();
-        }
-      }
-    } else {
-      alert("Not all ships are placed.");
-    }
-  
     // if (allShipsPlaced) {
-    //   randomShot();
+    //   if (lastShotSunkShip) {
+    //     randomShot();
+    //   } else {
+    //     if (lastShotHit) {
+    //       calculatedShot();
+    //     } else {
+    //       randomShot();
+    //     }
+    //   }
     // } else {
     //   alert("Not all ships are placed.");
     // }
-  
+
+    if (allShipsPlaced) {
+      randomShot();
+    } else {
+      alert("Not all ships are placed.");
+    }
+    shipSunkChecker();
     gaveOverChecker();
   };
   document.getElementById("compfr").addEventListener("click", compMove);
-  // })();
-  
+})();
