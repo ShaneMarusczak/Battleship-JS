@@ -292,23 +292,23 @@
       }
     }
     if (carrierCounter == 5) {
-      alert("Carrier Sunk");
+      document.getElementById("CarrierSunk").innerHTML = "Carrier";
       carrierSunk = true;
     }
     if (battleshipCounter == 4) {
-      alert("Battleship Sunk");
+      document.getElementById("BattleshipSunk").innerHTML = "Battleship";
       battleshipSunk = true;
     }
     if (cruiserCounter == 3) {
-      alert("Cruiser Sunk");
+      document.getElementById("CruiserSunk").innerHTML = "Cruiser";
       cruiserSunk = true;
     }
     if (submarineCounter == 3) {
-      alert("Submraine Sunk");
+      document.getElementById("SubmarineSunk").innerHTML = "Submarine";
       submarineSunk = true;
     }
     if (destroyerCounter == 2) {
-      alert("Destroyer Sunk");
+      document.getElementById("DestroyerSunk").innerHTML = "Destroyer";
       destroyerSunk = true;
     }
   };
