@@ -34,8 +34,6 @@
 
   function fireTorpedo(e) {
     shotsTaken++;
-    document.getElementById("shots").innerHTML = shotsTaken;
-    document.getElementById("shotsleft").innerHTML = totalShots - shotsTaken;
 
     var test = 0;
 
@@ -84,8 +82,11 @@
       } else if (gameBoard[row][col] > 1) {
         alert("Already Fired Here!");
         counter--;
+        shotsTaken--;
       }
     }
+    document.getElementById("shots").innerHTML = shotsTaken;
+    document.getElementById("shotsleft").innerHTML = totalShots - shotsTaken;
 
     counter++;
     if (counter == totalShots && hitCount != winningHitCount) {
