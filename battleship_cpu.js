@@ -54,10 +54,6 @@
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-  gameBoardContainer_2.addEventListener("click", function() {
-    compMove();
-  });
-
   var rotateShip = function() {
     for (i = 0; i < cols; i++) {
       for (j = 0; j < rows; j++) {
@@ -663,7 +659,6 @@
   };
 
   var compMove = function() {
-    console.log(shipFound);
     if (allShipsPlaced) {
       if (shipFound > 0) {
         shipFoundAttack();
@@ -677,4 +672,9 @@
     gaveOverChecker();
   };
   document.getElementById("compfr").addEventListener("click", compMove);
+  for (i = 0; i < cols; i++) {
+    for (j = 0; j < rows; j++) {
+      document.getElementById("s" + i + j).addEventListener("click", compMove);
+    }
+  }
 })();

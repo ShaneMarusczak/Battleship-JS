@@ -48,6 +48,10 @@ input {
   height: 50px;
 }
 
+#gameboard div {
+  cursor: crosshair;
+}
+
 #ships {
   display: flex;
   cursor: pointer;
