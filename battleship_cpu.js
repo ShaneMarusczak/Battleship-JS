@@ -564,6 +564,9 @@
 
   var value = 0;
   var testvalue = 0;
+
+  //I think this function is very close to being good.
+  //I am not completely satisfied, but very close.
   var shipFoundAttack = function() {
     // if (shipDirection == "") {
     var x = lastShotX;
