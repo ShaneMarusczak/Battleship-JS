@@ -1,7 +1,7 @@
 body {
   margin: 60px auto;
   width: 70%;
-  max-width: 950px;
+  /* max-width: 950px; */
 }
 
 p {
@@ -22,9 +22,10 @@ input {
   color: #333;
 }
 
-#gameboard {
+#gameboard,
+#gameboard_cpu {
   position: relative;
-  margin: 0 auto 2em auto;
+  margin: 25px;
   width: 500px;
   height: 500px;
 }
@@ -34,7 +35,8 @@ input {
 #cruiser div,
 #submarine div,
 #destroyer div,
-#gameboard div {
+#gameboard div,
+#gameboard_cpu div {
   /* cursor: crosshair; */
   position: absolute;
   -webkit-box-sizing: border-box;
@@ -64,7 +66,8 @@ input {
   padding: 0px;
 }
 
-#shiplist {
+#shiplist,
+#shiplist_2 {
   margin-top: 0;
 }
 
@@ -87,4 +90,17 @@ input {
 
 #btns {
   margin-right: 75px;
+}
+
+#boards {
+  display: flex;
+  width: auto;
+}
+
+#shiplist {
+  margin-left: 25vw;
+}
+
+#ready {
+  display: none;
 }

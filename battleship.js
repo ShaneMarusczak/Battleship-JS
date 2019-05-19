@@ -29,10 +29,11 @@
     //inclusive
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
-  document.getElementById("shots").innerHTML = shotsTaken;
-  document.getElementById("shotsleft").innerHTML = totalShots - shotsTaken;
 
   function fireTorpedo(e) {
+    if (document.getElementById("ready").style.display != "block") {
+      return;
+    }
     shotsTaken++;
 
     var test = 0;
@@ -85,8 +86,6 @@
         shotsTaken--;
       }
     }
-    document.getElementById("shots").innerHTML = shotsTaken;
-    document.getElementById("shotsleft").innerHTML = totalShots - shotsTaken;
 
     counter++;
     if (counter == totalShots && hitCount != winningHitCount) {
