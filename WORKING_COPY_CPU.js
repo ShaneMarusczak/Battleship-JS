@@ -1,10 +1,15 @@
+/*
+ * This code is under a lot of development.
+ * There is a lot of refactoring and clean up that needs to be done.
+ * When I am satisfied it is working correctly I will perform a major cleanup.
+ */
+
 (function() {
   const rows = 10;
   const cols = 10;
   const squareSize = 50;
   const totalShots = 100;
-  var values = [1, -1];
-  var lastShotHit = false;
+  var shipFound = 0;
   var shipsPlaced = 0;
   var size;
   var direction;
@@ -28,13 +33,12 @@
   var destroyer = document.getElementById("destroyer");
   var placed;
   var placedShips = [];
-  var hits = 0;
   var shotsFired = 0;
   var lastShotX;
   var lastShotY;
-  var lastShotSunkShip = false;
-
   var ships = [carrier, battleship, cruiser, submarine, destroyer];
+  var shipDirection = "";
+  var firstTimeIn = true;
 
   function randomIntFromInterval(min, max) {
     //inclusive
@@ -154,7 +158,6 @@
     if (!canPlace) {
       alert("cant place here");
     }
-
     if (canPlace) {
       for (i = 0; i < cols; i++) {
         for (j = 0; j < rows; j++) {
@@ -197,7 +200,6 @@
           }
         }
       }
-
       if (size == 5) {
         placedCarrier = true;
         shipsPlaced++;
@@ -294,22 +296,42 @@
     if (carrierCounter == 5) {
       document.getElementById("CarrierSunk").innerHTML = "Carrier";
       carrierSunk = true;
+      shipFound = shipFound - 5;
+      shipDirection = "";
+      firstTimeIn = true;
+      testvalue = 0;
     }
     if (battleshipCounter == 4) {
       document.getElementById("BattleshipSunk").innerHTML = "Battleship";
       battleshipSunk = true;
+      shipFound = shipFound - 4;
+      shipDirection = "";
+      firstTimeIn = true;
+      testvalue = 0;
     }
     if (cruiserCounter == 3) {
       document.getElementById("CruiserSunk").innerHTML = "Cruiser";
       cruiserSunk = true;
+      shipFound = shipFound - 3;
+      shipDirection = "";
+      firstTimeIn = true;
+      testvalue = 0;
     }
     if (submarineCounter == 3) {
       document.getElementById("SubmarineSunk").innerHTML = "Submarine";
       submarineSunk = true;
+      shipFound = shipFound - 3;
+      shipDirection = "";
+      firstTimeIn = true;
+      testvalue = 0;
     }
     if (destroyerCounter == 2) {
       document.getElementById("DestroyerSunk").innerHTML = "Destroyer";
       destroyerSunk = true;
+      shipFound = shipFound - 2;
+      shipDirection = "";
+      firstTimeIn = true;
+      testvalue = 0;
     }
   };
 
@@ -383,151 +405,214 @@
     }
   }
 
-  var shipDirection;
-  var calculatedShot = function() {
-    if (gameBoard[lastShotX + 1][lastShotY] == 1) {
-      document.getElementById(
-        "s" + (lastShotX + 1) + lastShotY
-      ).style.background = "red";
-      gameBoard[lastShotX + 1][lastShotY] = 2;
-      hits++;
-      shotsFired++;
-      lastShotHit = true;
-      lastShotX++;
-      shipDirection = "hor-right";
-      // lastShotSunkShip = false;
-    } else if (gameBoard[lastShotX - 1][lastShotY] == 1) {
-      document.getElementById(
-        "s" + (lastShotX - 1) + lastShotY
-      ).style.background = "red";
-      gameBoard[lastShotX - 1][lastShotY] = 2;
-      hits++;
-      shotsFired++;
-      lastShotHit = true;
-      lastShotX--;
-      shipDirection = "hor-left";
-      // lastShotSunkShip = false;
-    } else if (gameBoard[lastShotX][lastShotY - 1] == 1) {
-      document.getElementById(
-        "s" + lastShotX + (lastShotY - 1)
-      ).style.background = "red";
-      gameBoard[lastShotX][lastShotY - 1] = 2;
-      hits++;
-      shotsFired++;
-      lastShotHit = true;
-      lastShotY--;
-      shipDirection = "ver-down";
-      // lastShotSunkShip = false;
-    } else if (gameBoard[lastShotX][lastShotY + 1] == 1) {
-      document.getElementById(
-        "s" + lastShotX + (lastShotY + 1)
-      ).style.background = "red";
-      gameBoard[lastShotX][lastShotY + 1] = 2;
-      hits++;
-      shotsFired++;
-      lastShotHit = true;
-      lastShotY++;
-      shipDirection = "ver-up";
-      // lastShotSunkShip = false;
-    } else {
-      if (shipDirection == "hor-right") {
-        for (i = 1; i < 11; i++) {
-          if (gameBoard[lastShotX - i][lastShotY] == 1) {
-            document.getElementById(
-              "s" + (lastShotX - i) + lastShotY
-            ).style.background = "red";
-            gameBoard[lastShotX - i][lastShotY] = 2;
-            hits++;
-            shotsFired++;
-            lastShotHit = true;
-            // lastShotX--;
-            shipDirection = "hor-right";
-            break;
-          } else {
-            shipDirection = "";
-          }
-          // shipDirection = "";
-          // lastShotSunkShip = true;
-          // else {
-          //   lastShotSunkShip = true;
-          //   randomShot();
-          // }
+  var value = 0;
+  var testvalue = 0;
+
+  //I think this function is very close to being good.
+  //I am not completely satisfied, but very close.
+  var shipFoundAttack = function() {
+    var x = lastShotX;
+    var y = lastShotY;
+    if (value == 0 && shipDirection == "") {
+      if (gameBoard[x + 1][y] == 0) {
+        document.getElementById("s" + (x + 1) + y).style.background = "#4d88ff";
+        document.getElementById("s" + (x + 1) + y).classList.add("miss");
+        gameBoard[x + 1][y] = 3;
+        shotsFired++;
+        value++;
+        return;
+      } else if (gameBoard[x + 1][y] == 1) {
+        document.getElementById("s" + (x + 1) + y).style.background = "red";
+        document.getElementById("s" + (x + 1) + y).classList.add("hit");
+        gameBoard[x + 1][y] = 2;
+        shotsFired++;
+        shipFound++;
+        shipDirection = "ver";
+        value = 0;
+        lastShotX++;
+        return;
+      } else if (gameBoard[x + 1][y] == 2) {
+        value++;
+      } else if (gameBoard[x + 1][y] == 3) {
+        value++;
+      }
+    }
+    if (value == 1 && shipDirection == "") {
+      if (gameBoard[x - 1][y] == 0) {
+        document.getElementById("s" + (x - 1) + y).style.background = "#4d88ff";
+        document.getElementById("s" + (x - 1) + y).classList.add("miss");
+        gameBoard[x - 1][y] = 3;
+        shotsFired++;
+        value++;
+        return;
+      } else if (gameBoard[x - 1][y] == 1) {
+        document.getElementById("s" + (x - 1) + y).style.background = "red";
+        document.getElementById("s" + (x - 1) + y).classList.add("hit");
+        gameBoard[x - 1][y] = 2;
+        shotsFired++;
+        shipFound++;
+        shipDirection = "ver";
+        value = 0;
+        lastShotX--;
+        testvalue = -1;
+        return;
+      } else if (gameBoard[x - 1][y] == 2) {
+        value++;
+      } else if (gameBoard[x - 1][y] == 3) {
+        value++;
+      }
+    }
+    if (value == 2 && shipDirection == "") {
+      if (gameBoard[x][y + 1] == 0) {
+        document.getElementById("s" + x + (y + 1)).style.background = "#4d88ff";
+        document.getElementById("s" + x + (y + 1)).classList.add("miss");
+        gameBoard[x][y + 1] = 3;
+        shotsFired++;
+        value++;
+        return;
+      } else if (gameBoard[x][y + 1] == 1) {
+        document.getElementById("s" + x + (y + 1)).style.background = "red";
+        document.getElementById("s" + x + (y + 1)).classList.add("hit");
+        gameBoard[x][y + 1] = 2;
+        shotsFired++;
+        shipFound++;
+        shipDirection = "hor";
+        value = 0;
+        lastShotY++;
+        return;
+      } else if (gameBoard[x][y + 1] == 2) {
+        value++;
+      } else if (gameBoard[x][y + 1] == 3) {
+        value++;
+      }
+    }
+    if (value == 3 && shipDirection == "") {
+      if (gameBoard[x][y - 1] == 0) {
+        document.getElementById("s" + x + (y - 1)).style.background = "#4d88ff";
+        document.getElementById("s" + x + (y - 1)).classList.add("miss");
+        gameBoard[x][y - 1] = 3;
+        shotsFired++;
+        value++;
+        return;
+      } else if (gameBoard[x][y - 1] == 1) {
+        document.getElementById("s" + x + (y - 1)).style.background = "red";
+        document.getElementById("s" + x + (y - 1)).classList.add("hit");
+        gameBoard[x][y - 1] = 2;
+        shotsFired++;
+        shipFound++;
+        shipDirection = "hor";
+        value = 0;
+        lastShotY--;
+        testvalue = -1;
+        return;
+      } else if (gameBoard[x][y - 1] == 2) {
+        value++;
+      } else if (gameBoard[x][y - 1] == 3) {
+        value++;
+      }
+    }
+    if (shipDirection == "ver") {
+      if (gameBoard[x + 1][y] == 0) {
+        document.getElementById("s" + (x + 1) + y).style.background = "#4d88ff";
+        document.getElementById("s" + (x + 1) + y).classList.add("miss");
+        gameBoard[x + 1][y] = 3;
+        shotsFired++;
+        value++;
+        return;
+      } else if (gameBoard[x + 1][y] == 1) {
+        document.getElementById("s" + (x + 1) + y).style.background = "red";
+        document.getElementById("s" + (x + 1) + y).classList.add("hit");
+        gameBoard[x + 1][y] = 2;
+        shotsFired++;
+        shipFound++;
+        shipDirection = "ver";
+        value = 0;
+        lastShotX++;
+        return;
+      } else if (gameBoard[x + 1][y] == 2 || gameBoard[x + 1][y] == 3) {
+        if (firstTimeIn) {
+          testvalue = shipFound + testvalue;
+          firstTimeIn = false;
         }
-      } else if (shipDirection == "hor-left") {
-        for (i = 1; i < 11; i++) {
-          if (gameBoard[lastShotX + i][lastShotY] == 1) {
-            document.getElementById(
-              "s" + (lastShotX + i) + lastShotY
-            ).style.background = "red";
-            gameBoard[lastShotX + i][lastShotY] = 2;
-            hits++;
-            shotsFired++;
-            lastShotHit = true;
-            shipDirection = "hor-left";
-            // lastShotX++;
-            // lastShotSunkShip = true;
-            break;
-          } else {
-            shipDirection = "";
-          }
-          // lastShotSunkShip = true;
-          // else {
-          //   lastShotSunkShip = true;
-          //   randomShot();
-          // }
-        }
-      } else if (shipDirection == "ver-down") {
-        for (i = 1; i < 11; i++) {
-          if (gameBoard[lastShotX][lastShotY + i] == 1) {
-            document.getElementById(
-              "s" + lastShotX + (lastShotY + i)
-            ).style.background = "red";
-            gameBoard[lastShotX][lastShotY + i] = 2;
-            hits++;
-            shotsFired++;
-            lastShotHit = true;
-            // lastShotY++;
-            // lastShotSunkShip = true;
-            shipDirection = "ver-down";
-            break;
-          } else {
-            shipDirection = "";
-          }
-          // shipDirection = "";
-          // lastShotSunkShip = true;
-          // else {
-          //   lastShotSunkShip = true;
-          //   randomShot();
-          // }
-        }
-      } else if (shipDirection == "ver-up") {
-        for (i = 1; i < 11; i++) {
-          if (gameBoard[lastShotX][lastShotY - i] == 1) {
-            document.getElementById(
-              "s" + lastShotX + (lastShotY - i)
-            ).style.background = "red";
-            gameBoard[lastShotX][lastShotY - i] = 2;
-            hits++;
-            shotsFired++;
-            lastShotHit = true;
-            shipDirection = "ver-up";
-            // lastShotY--;
-            // lastShotSunkShip = true;
-            break;
-          } else {
-            shipDirection = "";
-          }
-          // shipDirection = "";
-          // lastShotSunkShip = true;
+        if (gameBoard[x - testvalue][y] == 0) {
+          document.getElementById("s" + (x - testvalue) + y).style.background =
+            "#4d88ff";
+          document
+            .getElementById("s" + (x - testvalue) + y)
+            .classList.add("miss");
+          gameBoard[x - testvalue][y] = 3;
+          shotsFired++;
+          value++;
+          return;
+        } else if (gameBoard[x - testvalue][y] == 1) {
+          document.getElementById("s" + (x - testvalue) + y).style.background =
+            "red";
+          document
+            .getElementById("s" + (x - testvalue) + y)
+            .classList.add("hit");
+          gameBoard[x - testvalue][y] = 2;
+          shotsFired++;
+          shipFound++;
+          shipDirection = "ver";
+          value = 0;
+          lastShotX--;
+          return;
         }
       }
-      if (shipDirection == "") {
-        randomShot();
+    }
+    if (shipDirection == "hor") {
+      if (gameBoard[x][y + 1] == 0) {
+        document.getElementById("s" + x + (y + 1)).style.background = "#4d88ff";
+        document.getElementById("s" + x + (y + 1)).classList.add("miss");
+        gameBoard[x][y + 1] = 3;
+        shotsFired++;
+        value++;
+        return;
+      } else if (gameBoard[x][y + 1] == 1) {
+        document.getElementById("s" + x + (y + 1)).style.background = "red";
+        document.getElementById("s" + x + (y + 1)).classList.add("hit");
+        gameBoard[x][y + 1] = 2;
+        shotsFired++;
+        shipFound++;
+        shipDirection = "hor";
+        value = 0;
+        lastShotY++;
+        return;
+      } else if (gameBoard[x][y + 1] == 2 || gameBoard[x][y + 1] == 3) {
+        if (firstTimeIn) {
+          testvalue = shipFound + testvalue;
+          firstTimeIn = false;
+        }
+        if (gameBoard[x][y - testvalue] == 0) {
+          document.getElementById("s" + x + (y - testvalue)).style.background =
+            "#4d88ff";
+          document
+            .getElementById("s" + x + (y - testvalue))
+            .classList.add("miss");
+          gameBoard[x][y - testvalue] = 3;
+          shotsFired++;
+          value++;
+          return;
+        } else if (gameBoard[x][y - testvalue] == 1) {
+          document.getElementById("s" + x + (y - testvalue)).style.background =
+            "red";
+          document
+            .getElementById("s" + x + (y - testvalue))
+            .classList.add("hit");
+          gameBoard[x][y - testvalue] = 2;
+          shotsFired++;
+          shipFound++;
+          shipDirection = "hor";
+          value = 0;
+          lastShotY--;
+          return;
+        }
       }
     }
   };
 
   var randomShot = function() {
+    //This code actually works quite well.
     var x = randomIntFromInterval(0, 9);
     var y = randomIntFromInterval(0, 9);
     lastShotX = x;
@@ -537,16 +622,12 @@
       document.getElementById("s" + x + y).classList.add("miss");
       gameBoard[x][y] = 3;
       shotsFired++;
-      lastShotHit = false;
-      lastShotSunkShip = false;
     } else if (gameBoard[x][y] == 1) {
       document.getElementById("s" + x + y).style.background = "red";
       document.getElementById("s" + x + y).classList.add("hit");
       gameBoard[x][y] = 2;
-      hits++;
       shotsFired++;
-      lastShotHit = true;
-      lastShotSunkShip = false;
+      shipFound++;
     } else if (gameBoard[x][y] == 2) {
       randomShot();
     } else if (gameBoard[x][y] == 3) {
@@ -555,22 +636,13 @@
   };
 
   var compMove = function() {
-    // if (allShipsPlaced) {
-    //   if (lastShotSunkShip) {
-    //     randomShot();
-    //   } else {
-    //     if (lastShotHit) {
-    //       calculatedShot();
-    //     } else {
-    //       randomShot();
-    //     }
-    //   }
-    // } else {
-    //   alert("Not all ships are placed.");
-    // }
-
+    console.log(shipFound);
     if (allShipsPlaced) {
-      randomShot();
+      if (shipFound > 0) {
+        shipFoundAttack();
+      } else {
+        randomShot();
+      }
     } else {
       alert("Not all ships are placed.");
     }

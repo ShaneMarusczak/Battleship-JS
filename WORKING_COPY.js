@@ -3,7 +3,7 @@
   const cols = 10;
   const squareSize = 50;
   const winningHitCount = 17;
-  const totalShots = 50;
+  const totalShots = 40;
   var counter = 0;
   var gameBoard = [];
   var gameBoardContainer = document.getElementById("gameboard");
@@ -34,8 +34,6 @@
 
   function fireTorpedo(e) {
     shotsTaken++;
-    document.getElementById("shots").innerHTML = shotsTaken;
-    document.getElementById("shotsleft").innerHTML = totalShots - shotsTaken;
 
     var test = 0;
 
@@ -84,12 +82,16 @@
       } else if (gameBoard[row][col] > 1) {
         alert("Already Fired Here!");
         counter--;
+        shotsTaken--;
       }
     }
+    document.getElementById("shots").innerHTML = shotsTaken;
+    document.getElementById("shotsleft").innerHTML = totalShots - shotsTaken;
 
     counter++;
     if (counter == totalShots && hitCount != winningHitCount) {
-      alert("You are out of shots, the enemy fleet wins!");
+      // alert("You are out of shots, the enemy fleet wins!");
+      document.getElementById("losstext").style.display = "block";
       gameBoardContainer.removeEventListener("click", fireTorpedo);
       for (i = 0; i < cols; i++) {
         for (j = 0; j < rows; j++) {
@@ -214,7 +216,7 @@
       document.getElementById("s" + i + j).style.background = "#80aaff";
       if (gameBoard[i][j] == 1) {
         checker++;
-        document.getElementById("s" + i + j).style.background = "white";
+        // document.getElementById("s" + i + j).style.background = "white";
       }
     }
   }
