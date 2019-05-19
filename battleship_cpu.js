@@ -299,6 +299,7 @@
       shipFound = shipFound - 5;
       shipDirection = "";
       firstTimeIn = true;
+      testvalue = 0;
     }
     if (battleshipCounter == 4) {
       document.getElementById("BattleshipSunk").innerHTML = "Battleship";
@@ -306,6 +307,7 @@
       shipFound = shipFound - 4;
       shipDirection = "";
       firstTimeIn = true;
+      testvalue = 0;
     }
     if (cruiserCounter == 3) {
       document.getElementById("CruiserSunk").innerHTML = "Cruiser";
@@ -313,6 +315,7 @@
       shipFound = shipFound - 3;
       shipDirection = "";
       firstTimeIn = true;
+      testvalue = 0;
     }
     if (submarineCounter == 3) {
       document.getElementById("SubmarineSunk").innerHTML = "Submarine";
@@ -320,6 +323,7 @@
       shipFound = shipFound - 3;
       shipDirection = "";
       firstTimeIn = true;
+      testvalue = 0;
     }
     if (destroyerCounter == 2) {
       document.getElementById("DestroyerSunk").innerHTML = "Destroyer";
@@ -327,6 +331,7 @@
       shipFound = shipFound - 2;
       shipDirection = "";
       firstTimeIn = true;
+      testvalue = 0;
     }
   };
 
@@ -658,11 +663,6 @@
       }
     }
     if (shipDirection == "ver") {
-      if (firstTimeIn) {
-        testvalue = shipFound - 1;
-        console.log(testvalue);
-        firstTimeIn = false;
-      }
       console.log(x - testvalue);
       if (gameBoard[x + 1][y] == 0) {
         document.getElementById("s" + (x + 1) + y).style.background = "#4d88ff";
@@ -683,8 +683,14 @@
         shipDirection = "ver";
         value = 0;
         lastShotX++;
+        // testvalue++;
         return;
       } else if (gameBoard[x + 1][y] == 2 || gameBoard[x + 1][y] == 3) {
+        if (firstTimeIn) {
+          testvalue = shipFound;
+          console.log(testvalue);
+          firstTimeIn = false;
+        }
         if (gameBoard[x - testvalue][y] == 0) {
           document.getElementById("s" + (x - testvalue) + y).style.background =
             "#4d88ff";
@@ -714,8 +720,71 @@
           // testvalue++;
           return;
         }
-        console.log(x - shipFound + 1);
-        console.log(y);
+        // console.log(x - shipFound + 1);
+        // console.log(y);
+      }
+    }
+
+    if (shipDirection == "hor") {
+      console.log(x - testvalue);
+      if (gameBoard[x][y + 1] == 0) {
+        document.getElementById("s" + x + (y + 1)).style.background = "#4d88ff";
+        document.getElementById("s" + x + (y + 1)).classList.add("miss");
+        gameBoard[x][y + 1] = 3;
+        shotsFired++;
+        value++;
+
+        // lastShotX++;
+        return;
+      } else if (gameBoard[x][y + 1] == 1) {
+        document.getElementById("s" + x + (y + 1)).style.background = "red";
+        document.getElementById("s" + x + (y + 1)).classList.add("hit");
+        gameBoard[x][y + 1] = 2;
+        hits++;
+        shotsFired++;
+        shipFound++;
+        shipDirection = "hor";
+        value = 0;
+        lastShotY++;
+        // testvalue++;
+        return;
+      } else if (gameBoard[x][y + 1] == 2 || gameBoard[x][y + 1] == 3) {
+        if (firstTimeIn) {
+          testvalue = shipFound;
+          console.log(testvalue);
+          firstTimeIn = false;
+        }
+        if (gameBoard[x][y - testvalue] == 0) {
+          document.getElementById("s" + x + (y - testvalue)).style.background =
+            "#4d88ff";
+          document
+            .getElementById("s" + x + (y - testvalue))
+            .classList.add("miss");
+          gameBoard[x][y - testvalue] = 3;
+          shotsFired++;
+          value++;
+
+          // lastShotX++;
+          return;
+        } else if (gameBoard[x][y - testvalue] == 1) {
+          document.getElementById("s" + x + (y - testvalue)).style.background =
+            "red";
+          document
+            .getElementById("s" + x + (y - testvalue))
+            .classList.add("hit");
+          gameBoard[x][y - testvalue] = 2;
+          hits++;
+          shotsFired++;
+          shipFound++;
+          shipDirection = "hor";
+          value = 0;
+          lastShotY--;
+          // lastShotX = lastShotX-testvalue;
+          // testvalue++;
+          return;
+        }
+        // console.log(x - shipFound + 1);
+        // console.log(y);
       }
     }
     // }
