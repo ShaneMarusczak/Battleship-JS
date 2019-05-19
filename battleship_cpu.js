@@ -410,6 +410,10 @@
     //Like for real, it is garbage.
     //The computer player cheats, and even then it still cant win.
 
+    //This function is depracated. It has been replaced with the foundShipAttack function.
+    //The code is left in here temporarily for reference purposes.
+    //I will remove it eventually.
+
     if (gameBoard[lastShotX + 1][lastShotY] == 1) {
       document.getElementById(
         "s" + (lastShotX + 1) + lastShotY
