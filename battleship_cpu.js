@@ -1,3 +1,9 @@
+/*
+ * This code is under a lot of development.
+ * There is a lot of refactoring and clean up that needs to be done.
+ * When I am satisfied it is working correctly I will perform a major cleanup.
+ */
+
 (function() {
   const rows = 10;
   const cols = 10;
