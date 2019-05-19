@@ -616,6 +616,7 @@
         shipDirection = "ver";
         value = 0;
         lastShotX--;
+        testvalue = -1;
         return;
       } else if (gameBoard[x - 1][y] == 2) {
         value++;
@@ -668,6 +669,7 @@
         shipDirection = "hor";
         value = 0;
         lastShotY--;
+        testvalue = -1;
         return;
       } else if (gameBoard[x][y - 1] == 2) {
         value++;
@@ -700,7 +702,8 @@
         return;
       } else if (gameBoard[x + 1][y] == 2 || gameBoard[x + 1][y] == 3) {
         if (firstTimeIn) {
-          testvalue = shipFound;
+          testvalue = shipFound + testvalue;
+          // testvalue--;
           console.log(testvalue);
           firstTimeIn = false;
         }
@@ -763,7 +766,8 @@
         return;
       } else if (gameBoard[x][y + 1] == 2 || gameBoard[x][y + 1] == 3) {
         if (firstTimeIn) {
-          testvalue = shipFound;
+          testvalue = shipFound + testvalue;
+          // testvalue--;
           console.log(testvalue);
           firstTimeIn = false;
         }
