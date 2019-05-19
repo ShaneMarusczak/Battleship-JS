@@ -416,7 +416,12 @@
       document.getElementById("compfr").removeEventListener("click", compMove);
       for (i = 0; i < cols; i++) {
         for (j = 0; j < rows; j++) {
-          if (gameBoard[i][j] == 1) {
+          if (
+            document.getElementById("s" + i + j).classList != "" &&
+            !document.getElementById("s" + i + j).classList.contains("hit") &&
+            !document.getElementById("s" + i + j).classList.contains("miss") &&
+            !document.getElementById("s" + i + j).classList.contains("sunk")
+          ) {
             document.getElementById("s" + i + j).style.background = "darkred";
           }
         }
