@@ -1,19 +1,75 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Battleship</title>
-		<link rel="stylesheet" type="text/css" href="style.css">
-	</head>
-	<body>
-	
-	<h1>Battleship</h1>	
+  <head>
+    <title>Battleship</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+    <h1>Battleship</h1>
+    <h2 id="ready">Ready to Play!</h2>
 
-	<p>Click the board to fire at a ship. Try to sink every battleship!</p>
+    <p>Place your ships on the board below.</p>
 
-	<div id="gameboard">
+    <div id="ships">
+      <div id="carrier">
+        <p>Carrier</p>
+      </div>
+
+      <div id="battleship">
+        <p>Battleship</p>
+      </div>
+
+      <div id="cruiser">
+        <p>Cruiser</p>
+      </div>
+
+      <div id="submarine">
+        <p>Submarine</p>
+      </div>
+
+      <div id="destroyer">
+        <p>Destroyer</p>
+      </div>
     </div>
+
+    <div id="boards">
+    <div id="gameboard_cpu"></div>
+    <div id="gameboard"></div>
+  </div>
+    <div id="info_2">
+      <div id="btns">
+    <button id="rotate">Rotate Ship</button></br></br>
+    
+    <button id="compfr">Computer Fire</button></br></br>
+    
     <button id="strtOvrBtn">Start Over</button>
-	
-	<script type="text/javascript" src="battleship.js"></script>
-	</body>
+  </div>
+    <ul id="shiplist_2">
+      Ships Sunk:
+      <li id="CarrierSunk_cpu"></li>
+      <li id="BattleshipSunk_cpu"></li>
+      <li id="CruiserSunk_cpu"></li>
+      <li id="SubmarineSunk_cpu"></li>
+      <li id="DestroyerSunk_cpu"></li>
+    </ul>
+
+
+    <div id="sunkships">
+      <ul id="shiplist">
+        Ships Sunk:
+        <li id="CarrierSunk"></li>
+        <li id="BattleshipSunk"></li>
+        <li id="CruiserSunk"></li>
+        <li id="SubmarineSunk"></li>
+        <li id="DestroyerSunk"></li>
+      </ul>
+    </div>
+  </div>
+
+    <p id="wintext">You Win! Click Start over to play again!</p>
+    <p id="losstext">The computer won this time! Click Start over to play again!</p>
+    <script type="text/javascript" src="battleship_cpu.js"></script>
+    <script type="text/javascript" src="battleship.js"></script>
+
+  </body>
 </html>

@@ -1,35 +1,106 @@
 body {
-    margin: 60px auto;
-    width: 70%;
-    max-width: 950px;
+  margin: 60px auto;
+  width: 70%;
+  /* max-width: 950px; */
+}
+
+p {
+  margin: 0;
 }
 
 h1 {
-    font-size: 3em;
-    font-family:'Helvetica', 'Arial', 'Sans-Serif';
+  margin: 0;
+  font-size: 3em;
+  font-family: "Helvetica", "Arial", "Sans-Serif";
 }
 
-p, button, input {
-    font-size: 1.5em;
-    line-height: 1.4em;
-    color: #333;
-	margin-bottom:1em;
+p,
+button,
+input {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: #333;
 }
 
-#gameboard {
-	position:relative;
-	margin:0 auto 2em auto;
-	width:500px;
-	height:500px;
+#gameboard,
+#gameboard_cpu {
+  position: relative;
+  margin: 25px;
+  width: 500px;
+  height: 500px;
 }
 
-#gameboard div {
-	position:absolute;
-	-webkit-box-sizing: border-box; 
-	-moz-box-sizing: border-box;    
-	box-sizing: border-box;         
-	background: #f6f8f9; 
-	border: 1px solid #ddd;
-	width:50px;
-	height:50px;
+#carrier div,
+#battleship div,
+#cruiser div,
+#submarine div,
+#destroyer div,
+#gameboard div,
+#gameboard_cpu div {
+  /* cursor: crosshair; */
+  position: absolute;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  background: #f6f8f9;
+  border: 1px solid #ddd;
+  width: 50px;
+  height: 50px;
+}
+
+#ships {
+  display: flex;
+  cursor: pointer;
+}
+
+#ships div {
+  padding: 2px;
+  border-style: solid;
+  margin: 6px;
+}
+
+#shotsblock,
+#shotsleftblock {
+  width: 250px;
+  margin: 0px;
+  padding: 0px;
+}
+
+#shiplist,
+#shiplist_2 {
+  margin-top: 0;
+}
+
+#wintext,
+#losstext {
+  margin-bottom: 10px;
+  display: none;
+}
+
+#sunkships {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 5px;
+}
+
+#info_2 {
+  display: flex;
+  /* flex-direction: column; */
+}
+
+#btns {
+  margin-right: 75px;
+}
+
+#boards {
+  display: flex;
+  width: auto;
+}
+
+#shiplist {
+  margin-left: 25vw;
+}
+
+#ready {
+  display: none;
 }
