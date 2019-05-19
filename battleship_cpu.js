@@ -237,6 +237,8 @@
         document.getElementById("destroyer").style.display = "none";
       }
       if (shipsPlaced == 5) {
+        document.getElementById("test1").style.display = "none";
+        alert("All ships Placed!");
         document.getElementById("ready").style.display = "block";
         allShipsPlaced = true;
         for (i = 0; i < cols; i++) {
@@ -412,6 +414,13 @@
     ) {
       alert("the computer wins!");
       document.getElementById("compfr").removeEventListener("click", compMove);
+      for (i = 0; i < cols; i++) {
+        for (j = 0; j < rows; j++) {
+          if (gameBoard[i][j] == 1) {
+            document.getElementById("s" + i + j).style.background = "darkred";
+          }
+        }
+      }
     } else if (shotsFired == totalShots) {
       alert("the computer is out of moves! You win!");
       document.getElementById("compfr").removeEventListener("click", compMove);
