@@ -690,6 +690,9 @@
   };
 
   var compMove = function() {
+    if (document.getElementById("wintext").style.display == "block") {
+      return;
+    }
     if (allShipsPlaced) {
       if (shipFound > 0) {
         shipFoundAttack();
