@@ -1,7 +1,10 @@
+@import url("https://fonts.googleapis.com/css?family=Orbitron&display=swap");
+
 body {
   margin: 60px auto;
   width: 70%;
-  /* max-width: 950px; */
+  background-color: cornsilk;
+  font-family: "Orbitron", sans-serif;
 }
 
 p {
@@ -11,7 +14,7 @@ p {
 h1 {
   margin: 0;
   font-size: 3em;
-  font-family: "Helvetica", "Arial", "Sans-Serif";
+  font-weight: bolder;
 }
 
 p,
@@ -37,7 +40,6 @@ input {
 #destroyer div,
 #gameboard div,
 #gameboard_cpu div {
-  /* cursor: crosshair; */
   position: absolute;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -92,8 +94,14 @@ input {
   /* flex-direction: column; */
 }
 
+#rotate,
+#strtOvrBtn {
+  font-family: "Orbitron", sans-serif;
+}
+
 #btns {
   margin-right: 75px;
+  font-family: "Orbitron", sans-serif;
 }
 
 #boards {
@@ -102,9 +110,15 @@ input {
 }
 
 #shiplist {
-  margin-left: 25vw;
+  margin-left: 15vw;
 }
 
 #ready {
   display: none;
+}
+
+@media screen and (max-width: 1500px) {
+  #boards {
+    flex-direction: column;
+  }
 }
