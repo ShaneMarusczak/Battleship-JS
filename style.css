@@ -33,11 +33,10 @@ input {
   height: 500px;
 }
 
-#carrier div,
-#battleship div,
-#cruiser div,
-#submarine div,
-#destroyer div,
+#ships div:hover {
+  background-color: gray;
+}
+
 #gameboard div,
 #gameboard_cpu div {
   position: absolute;
