@@ -33,11 +33,10 @@ input {
   height: 500px;
 }
 
-#carrier div,
-#battleship div,
-#cruiser div,
-#submarine div,
-#destroyer div,
+#ships div:hover {
+  background-color: gray;
+}
+
 #gameboard div,
 #gameboard_cpu div {
   position: absolute;
@@ -56,13 +55,13 @@ input {
 
 #ships {
   display: flex;
-  cursor: pointer;
 }
 
 #ships div {
   padding: 2px;
   border-style: solid;
   margin: 6px;
+  cursor: pointer;
 }
 
 #shotsblock,
