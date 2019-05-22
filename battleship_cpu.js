@@ -408,10 +408,13 @@
       submarineSunk &&
       destroyerSunk
     ) {
-      alert("the computer wins!");
+      document.getElementById("losstext").style.display = "block";
       document.getElementById("compfr").removeEventListener("click", compMove);
       for (i = 0; i < cols; i++) {
         for (j = 0; j < rows; j++) {
+          document
+            .getElementById("s" + i + j)
+            .removeEventListener("click", compMove);
           if (
             document.getElementById("s" + i + j).classList != "" &&
             !document.getElementById("s" + i + j).classList.contains("hit") &&
@@ -671,7 +674,7 @@
     shipSunkChecker();
     gaveOverChecker();
   };
-  document.getElementById("compfr").addEventListener("click", compMove);
+  // document.getElementById("compfr").addEventListener("click", compMove);
   for (i = 0; i < cols; i++) {
     for (j = 0; j < rows; j++) {
       document.getElementById("s" + i + j).addEventListener("click", compMove);
