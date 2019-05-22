@@ -31,7 +31,10 @@
   }
 
   function fireTorpedo(e) {
-    if (document.getElementById("ready").style.display != "block") {
+    if (
+      document.getElementById("ready").style.display != "block" ||
+      document.getElementById("losstext").style.display == "block"
+    ) {
       return;
     }
     shotsTaken++;

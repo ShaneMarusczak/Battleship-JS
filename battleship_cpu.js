@@ -690,7 +690,10 @@
   };
 
   var compMove = function() {
-    if (document.getElementById("wintext").style.display == "block") {
+    if (
+      document.getElementById("wintext").style.display == "block" ||
+      document.getElementById("losstext").style.display == "block"
+    ) {
       return;
     }
     if (allShipsPlaced) {
