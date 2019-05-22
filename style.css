@@ -55,13 +55,13 @@ input {
 
 #ships {
   display: flex;
-  cursor: pointer;
 }
 
 #ships div {
   padding: 2px;
   border-style: solid;
   margin: 6px;
+  cursor: pointer;
 }
 
 #shotsblock,
