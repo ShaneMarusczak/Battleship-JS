@@ -346,24 +346,30 @@
     }
   };
 
+  var allShips = ["carrier", "battleship", "cruiser", "submarine", "destroyer"];
   var placeShipSetup = function() {
+    for (ship of allShips) {
+      if (this.id != ship) {
+        document.getElementById(ship).classList.remove("clicked");
+      }
+    }
     if (this.id == "carrier" && !placedCarrier) {
       size = 5;
-      this.style.background = "gray";
+      this.classList.add("clicked");
     } else if (this.id == "battleship" && !placedBattleship) {
       size = 4;
-      this.style.background = "gray";
+      this.classList.add("clicked");
     } else if (this.id == "cruiser" && !placedCruiser) {
       size = 3;
-      this.style.background = "gray";
+      this.classList.add("clicked");
       placed = "cruiser";
     } else if (this.id == "submarine" && !placedSubmarine) {
       size = 3;
-      this.style.background = "gray";
+      this.classList.add("clicked");
       placed = "submarine";
     } else if (this.id == "destroyer" && !placedDetroyer) {
       size = 2;
-      this.style.background = "gray";
+      this.classList.add("clicked");
     }
   };
 
@@ -667,8 +673,12 @@
 
   var randomShot = function() {
     //This code actually works quite well.
-    var x = randomIntFromInterval(0, 9);
-    var y = randomIntFromInterval(0, 9);
+    var x;
+    var y;
+    do {
+      x = randomIntFromInterval(0, 9);
+      y = randomIntFromInterval(0, 9);
+    } while ((x % 2 != 0 && y % 2 == 0) || (x % 2 == 0 && y % 2 != 0));
     lastShotX = x;
     lastShotY = y;
     if (gameBoard[x][y] == 0) {

@@ -121,3 +121,7 @@ input {
     flex-direction: column;
   }
 }
+
+.clicked {
+  background-color: gray;
+}
