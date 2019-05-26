@@ -67,12 +67,16 @@
                       "s" + coor[0] + coor[1]
                     ).style.background = "black";
                   }
+                  // document.getElementById(
+                  //   document.getElementById("s" + coor[0] + coor[1]).className +
+                  //     "Sunk"
+                  // ).innerHTML = document.getElementById(
+                  //   "s" + coor[0] + coor[1]
+                  // ).className;
                   document.getElementById(
                     document.getElementById("s" + coor[0] + coor[1]).className +
                       "Sunk"
-                  ).innerHTML = document.getElementById(
-                    "s" + coor[0] + coor[1]
-                  ).className;
+                  ).innerHTML += ' <span class="sunkText"> Sunk!</span>';
                 }
               }
             }

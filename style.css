@@ -111,6 +111,9 @@ input {
 #shiplist {
   margin-left: 15vw;
 }
+#shiplist_2 {
+  width: 190px;
+}
 
 #ready {
   display: none;
@@ -124,4 +127,12 @@ input {
 
 .clicked {
   background-color: gray;
+}
+
+.sunk {
+  text-decoration: line-through;
+}
+
+.sunkText {
+  color: red;
 }
