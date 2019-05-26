@@ -700,9 +700,11 @@
   };
 
   var compMove = function() {
+    console.log(this.id);
     if (
       document.getElementById("wintext").style.display == "block" ||
-      document.getElementById("losstext").style.display == "block"
+      document.getElementById("losstext").style.display == "block" ||
+      this.style.background == "rgb(77, 136, 255)"
     ) {
       return;
     }
