@@ -305,7 +305,8 @@
       }
     }
     if (carrierCounter == 5) {
-      document.getElementById("CarrierSunk_cpu").innerHTML = "Carrier";
+      document.getElementById("CarrierSunk_cpu").innerHTML +=
+        ' <span class="sunkText"> Sunk!</span>';
       carrierSunk = true;
       shipFound = shipFound - 5;
       shipDirection = "";
@@ -313,7 +314,8 @@
       testvalue = 0;
     }
     if (battleshipCounter == 4) {
-      document.getElementById("BattleshipSunk_cpu").innerHTML = "Battleship";
+      document.getElementById("BattleshipSunk_cpu").innerHTML +=
+        ' <span class="sunkText"> Sunk!</span>';
       battleshipSunk = true;
       shipFound = shipFound - 4;
       shipDirection = "";
@@ -321,7 +323,8 @@
       testvalue = 0;
     }
     if (cruiserCounter == 3) {
-      document.getElementById("CruiserSunk_cpu").innerHTML = "Cruiser";
+      document.getElementById("CruiserSunk_cpu").innerHTML +=
+        ' <span class="sunkText"> Sunk!</span>';
       cruiserSunk = true;
       shipFound = shipFound - 3;
       shipDirection = "";
@@ -329,7 +332,8 @@
       testvalue = 0;
     }
     if (submarineCounter == 3) {
-      document.getElementById("SubmarineSunk_cpu").innerHTML = "Submarine";
+      document.getElementById("SubmarineSunk_cpu").innerHTML +=
+        ' <span class="sunkText"> Sunk!</span>';
       submarineSunk = true;
       shipFound = shipFound - 3;
       shipDirection = "";
@@ -337,7 +341,8 @@
       testvalue = 0;
     }
     if (destroyerCounter == 2) {
-      document.getElementById("DestroyerSunk_cpu").innerHTML = "Destroyer";
+      document.getElementById("DestroyerSunk_cpu").innerHTML +=
+        ' <span class="sunkText"> Sunk!</span>';
       destroyerSunk = true;
       shipFound = shipFound - 2;
       shipDirection = "";
@@ -420,7 +425,7 @@
       destroyerSunk
     ) {
       document.getElementById("losstext").style.display = "block";
-      document.getElementById("compfr").removeEventListener("click", compMove);
+      // document.getElementById("compfr").removeEventListener("click", compMove);
       for (i = 0; i < cols; i++) {
         for (j = 0; j < rows; j++) {
           document
