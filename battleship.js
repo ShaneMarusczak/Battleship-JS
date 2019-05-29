@@ -44,11 +44,9 @@
       if (gameBoard[row][col] == 0) {
         e.target.style.background = "#4d88ff";
         gameBoard[row][col] = 3;
-        document.getElementById("s" + row + col).classList.add("miss");
       } else if (gameBoard[row][col] == 1) {
         e.target.style.background = "red";
         gameBoard[row][col] = 2;
-        document.getElementById("s" + row + col).classList.add("hit");
         hitCount++;
 
         for (ship of ships) {
