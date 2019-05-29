@@ -3,14 +3,11 @@
   const cols = 10;
   const squareSize = 50;
   const winningHitCount = 17;
-  const totalShots = 100;
-  var counter = 0;
   var gameBoard = [];
   var gameBoardContainer = document.getElementById("gameboard");
   var strtOvrBtn = document.getElementById("strtOvrBtn");
   var hitCount = 0;
   var ships = [];
-  var shotsTaken = 0;
 
   gameBoardContainer.addEventListener("click", fireTorpedo, false);
   strtOvrBtn.addEventListener("click", function() {
@@ -37,9 +34,8 @@
     ) {
       return;
     }
-    shotsTaken++;
 
-    var test = 0;
+    var shipSunkCounter = 0;
 
     if (e.target !== e.currentTarget) {
       var row = e.target.id.substring(1, 2);
@@ -48,10 +44,11 @@
       if (gameBoard[row][col] == 0) {
         e.target.style.background = "#4d88ff";
         gameBoard[row][col] = 3;
+        document.getElementById("s" + row + col).classList.add("miss");
       } else if (gameBoard[row][col] == 1) {
         e.target.style.background = "red";
         gameBoard[row][col] = 2;
-
+        document.getElementById("s" + row + col).classList.add("hit");
         hitCount++;
 
         for (ship of ships) {
@@ -59,20 +56,14 @@
             if (coor[0] == row && coor[1] == col) {
               for (coor of ship) {
                 if (gameBoard[coor[0]][coor[1]] == 2) {
-                  test++;
+                  shipSunkCounter++;
                 }
-                if (test == ship.length) {
+                if (shipSunkCounter == ship.length) {
                   for (coor of ship) {
                     document.getElementById(
                       "s" + coor[0] + coor[1]
                     ).style.background = "black";
                   }
-                  // document.getElementById(
-                  //   document.getElementById("s" + coor[0] + coor[1]).className +
-                  //     "Sunk"
-                  // ).innerHTML = document.getElementById(
-                  //   "s" + coor[0] + coor[1]
-                  // ).className;
                   document.getElementById(
                     document.getElementById("s" + coor[0] + coor[1]).className +
                       "Sunk"
@@ -89,54 +80,32 @@
         }
       } else if (gameBoard[row][col] > 1) {
         alert("Already Fired Here!");
-        counter--;
-        shotsTaken--;
-      }
-    }
-
-    counter++;
-    if (counter == totalShots && hitCount != winningHitCount) {
-      // alert("You are out of shots, the enemy fleet wins!");
-      document.getElementById("losstext").style.display = "block";
-      gameBoardContainer.removeEventListener("click", fireTorpedo);
-      for (i = 0; i < cols; i++) {
-        for (j = 0; j < rows; j++) {
-          if (gameBoard[i][j] == 1) {
-            document.getElementById("s" + i + j).style.background = "darkred";
-          }
-        }
       }
     }
     e.stopPropagation();
   }
 
-  function setTag(i, j, k) {
-    var element = document.getElementById("s" + i + j);
-    element.classList.add(k);
-  }
-
-  var num = 0;
-  var nams = ["Carrier", "Battleship", "Cruiser", "Submarine", "Destroyer"];
+  var nameIndex = 0;
+  var names = ["Carrier", "Battleship", "Cruiser", "Submarine", "Destroyer"];
 
   function placeShip(len) {
     var ship = [];
-    var nam = nams[num];
+    var name = names[nameIndex];
     var dir = randomIntFromInterval(1, 2);
     var row = randomIntFromInterval(0, 9);
     var col = randomIntFromInterval(0, 9);
-    var counter_2 = 0;
+    var shipPlaceCounter = 0;
     if (dir == 1) {
       if (col >= len - 1) {
         for (i = 0; i < len; i++) {
           if (gameBoard[row][col - i] == 0) {
-            counter_2++;
+            shipPlaceCounter++;
           }
         }
-
-        if (counter_2 == len) {
+        if (shipPlaceCounter == len) {
           for (i = 0; i < len; i++) {
             gameBoard[row][col - i] = 1;
-            setTag(row, col - i, nam);
+            document.getElementById("s" + row + (col - i)).classList.add(name);
             ship.push([row, col - i]);
           }
         } else {
@@ -145,13 +114,13 @@
       } else {
         for (i = 0; i < len; i++) {
           if (gameBoard[row][col + i] == 0) {
-            counter_2++;
+            shipPlaceCounter++;
           }
         }
-        if (counter_2 == len) {
+        if (shipPlaceCounter == len) {
           for (i = 0; i < len; i++) {
             gameBoard[row][col + i] = 1;
-            setTag(row, col + i, nam);
+            document.getElementById("s" + row + (col + i)).classList.add(name);
             ship.push([row, col + i]);
           }
         } else {
@@ -162,13 +131,13 @@
       if (row >= len - 1) {
         for (i = 0; i < len; i++) {
           if (gameBoard[row - i][col] == 0) {
-            counter_2++;
+            shipPlaceCounter++;
           }
         }
-        if (counter_2 == len) {
+        if (shipPlaceCounter == len) {
           for (i = 0; i < len; i++) {
             gameBoard[row - i][col] = 1;
-            setTag(row - i, col, nam);
+            document.getElementById("s" + (row - i) + col).classList.add(name);
             ship.push([row - i, col]);
           }
         } else {
@@ -177,13 +146,13 @@
       } else {
         for (i = 0; i < len; i++) {
           if (gameBoard[row + i][col] == 0) {
-            counter_2++;
+            shipPlaceCounter++;
           }
         }
-        if (counter_2 == len) {
+        if (shipPlaceCounter == len) {
           for (i = 0; i < len; i++) {
             gameBoard[row + i][col] = 1;
-            setTag(row + i, col, nam);
+            document.getElementById("s" + (row + i) + col).classList.add(name);
             ship.push([row + i, col]);
           }
         } else {
@@ -193,7 +162,7 @@
     }
     if (ship.length != 0) {
       ships.push(ship);
-      num++;
+      nameIndex++;
     }
   }
 
@@ -216,18 +185,13 @@
   placeShip(3);
   placeShip(3);
   placeShip(2);
-  var checker = 0;
+
   for (i = 0; i < cols; i++) {
     for (j = 0; j < rows; j++) {
       document.getElementById("s" + i + j).style.background = "#80aaff";
       if (gameBoard[i][j] == 1) {
-        checker++;
         // document.getElementById("s" + i + j).style.background = "white";
       }
     }
   }
-  // console.log(ships);
-  // console.log(checker);
-
-  // console.log(gameBoard);
 })();
