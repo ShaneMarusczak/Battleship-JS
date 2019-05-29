@@ -432,9 +432,8 @@
             .removeEventListener("click", compMove);
           if (
             document.getElementById("s" + i + j).classList != "" &&
-            !document.getElementById("s" + i + j).classList.contains("hit") &&
-            !document.getElementById("s" + i + j).classList.contains("miss") &&
-            !document.getElementById("s" + i + j).classList.contains("sunk")
+            document.getElementById("s" + i + j).style.background != "red" &&
+            document.getElementById("s" + i + j).style.background != "black"
           ) {
             document.getElementById("s" + i + j).style.background = "darkred";
           }
