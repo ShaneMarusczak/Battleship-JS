@@ -11,7 +11,6 @@
   var shipFound = 0;
   var shipsPlaced = 0;
   var size;
-  var direction;
   var gameBoard = [];
   var allShipsPlaced = false;
   var placedCarrier = false;
@@ -40,6 +39,7 @@
   var firstTimeIn = true;
   var scanCounter = 0;
   var tempShipFound = 0;
+  var direction = "hor";
 
   function wait(ms) {
     var d = new Date();
@@ -401,7 +401,6 @@
       document
         .getElementById("c" + i + j)
         .addEventListener("mouseleave", resetColor);
-      var direction = "hor";
     }
   }
 
