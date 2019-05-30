@@ -726,12 +726,13 @@
   };
 
   var shipHitButNotSunkReassign = function() {
-    loop1: for (i = 0; i < cols; i++) {
+    for (i = 0; i < cols; i++) {
       for (j = 0; j < rows; j++) {
         if (document.getElementById("c" + i + j).style.background == "red") {
           lastShotX = i;
           lastShotY = j;
-          break loop1;
+          tempShipFound = 0;
+          return;
         }
       }
     }
