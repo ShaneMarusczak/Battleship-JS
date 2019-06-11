@@ -23,6 +23,7 @@
   var cruiserSunk = false;
   var submarineSunk = false;
   var destroyerSunk = false;
+  var hittingShipFound = false;
   var gameBoardContainer = document.getElementById("gameboard_cpu");
   var carrier = document.getElementById("carrier");
   var battleship = document.getElementById("battleship");
@@ -313,6 +314,7 @@
       shipDirection = "";
       firstTimeIn = true;
       tempShipFound = 0;
+      hittingShipFound = false;
       shipHitButNotSunkReassign();
     }
     if (battleshipCounter == 4) {
@@ -324,6 +326,7 @@
       shipDirection = "";
       firstTimeIn = true;
       tempShipFound = 0;
+      hittingShipFound = false;
       shipHitButNotSunkReassign();
     }
     if (cruiserCounter == 3) {
@@ -335,6 +338,7 @@
       shipDirection = "";
       firstTimeIn = true;
       tempShipFound = 0;
+      hittingShipFound = false;
       shipHitButNotSunkReassign();
     }
     if (submarineCounter == 3) {
@@ -346,6 +350,7 @@
       shipDirection = "";
       firstTimeIn = true;
       tempShipFound = 0;
+      hittingShipFound = false;
       shipHitButNotSunkReassign();
     }
     if (destroyerCounter == 2) {
@@ -357,6 +362,7 @@
       shipDirection = "";
       firstTimeIn = true;
       tempShipFound = 0;
+      hittingShipFound = false;
       shipHitButNotSunkReassign();
     }
   };
@@ -704,6 +710,68 @@
     }
   };
 
+  var scanShipFound = 1;
+
+  var scanShipFoundAttack = function() {
+    var x = lastShotX;
+    var y = lastShotY;
+
+    if (!(y + 1 > 9)) {
+      if (gameBoard[x][y + 1] == 0) {
+        document.getElementById("c" + x + (y + 1)).style.background = "#4d88ff";
+        document.getElementById("c" + x + (y + 1)).classList.add("miss");
+        gameBoard[x][y + 1] = 3;
+        shotsFired++;
+        return;
+      } else if (gameBoard[x][y + 1] == 1) {
+        document.getElementById("c" + x + (y + 1)).style.background = "red";
+        document.getElementById("c" + x + (y + 1)).classList.add("hit");
+        gameBoard[x][y + 1] = 2;
+        shotsFired++;
+        shipFound++;
+        scanShipFound++;
+        return;
+      }
+    }
+    if (y + 1 > 9 || gameBoard[x][y + 1] == 2 || gameBoard[x][y + 1] == 3) {
+      if (gameBoard[x][y - scanShipFound] == 0) {
+        document.getElementById(
+          "c" + x + (y - scanShipFound)
+        ).style.background = "#4d88ff";
+        document
+          .getElementById("c" + x + (y - scanShipFound))
+          .classList.add("miss");
+        gameBoard[x][y - scanShipFound] = 3;
+        shotsFired++;
+        return;
+      } else if (gameBoard[x][y - scanShipFound] == 1) {
+        document.getElementById(
+          "c" + x + (y - scanShipFound)
+        ).style.background = "red";
+        document
+          .getElementById("c" + x + (y - scanShipFound))
+          .classList.add("hit");
+        gameBoard[x][y - scanShipFound] = 2;
+        shotsFired++;
+        scanShipFound++;
+        return;
+      } else if (
+        gameBoard[x][y - scanShipFound] == 2 &&
+        gameBoard[x][y - scanShipFound - 1] == 1
+      ) {
+        document.getElementById(
+          "c" + x + (y - scanShipFound - 1)
+        ).style.background = "red";
+        document
+          .getElementById("c" + x + (y - scanShipFound - 1))
+          .classList.add("hit");
+        gameBoard[x][y - scanShipFound - 1] = 2;
+        shotsFired++;
+        return;
+      }
+    }
+  };
+
   var compMove = function() {
     if (
       document.getElementById("wintext").style.display == "block" ||
@@ -714,10 +782,14 @@
       return;
     }
     if (allShipsPlaced) {
-      if (shipFound > 0) {
-        shipFoundAttack();
+      if (hittingShipFound) {
+        scanShipFoundAttack();
       } else {
-        searchingShot();
+        if (shipFound > 0) {
+          shipFoundAttack();
+        } else {
+          searchingShot();
+        }
       }
     } else {
       alert("Not all ships are placed.");
@@ -732,7 +804,8 @@
         if (document.getElementById("c" + i + j).style.background == "red") {
           lastShotX = i;
           lastShotY = j;
-          tempShipFound = 0;
+          hittingShipFound = true;
+          scanShipFound = 1;
           return;
         }
       }
