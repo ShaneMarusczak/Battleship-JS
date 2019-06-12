@@ -55,6 +55,16 @@
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
+  var shipSunkHelper = function(i, sunkShipName) {
+    sunkColorChange(sunkShipName);
+    shipFound = shipFound - i;
+    shipDirection = "";
+    firstTimeIn = true;
+    tempShipFound = 0;
+    hittingShipFound = false;
+    shipHitButNotSunkReassign();
+  };
+
   var rotateShip = function() {
     for (i = 0; i < cols; i++) {
       for (j = 0; j < rows; j++) {
@@ -306,64 +316,34 @@
       }
     }
     if (carrierCounter == 5) {
-      sunkColorChange("carrier");
       document.getElementById("CarrierSunk_cpu").innerHTML +=
         ' <span class="sunkText"> Sunk!</span>';
       carrierSunk = true;
-      shipFound = shipFound - 5;
-      shipDirection = "";
-      firstTimeIn = true;
-      tempShipFound = 0;
-      hittingShipFound = false;
-      shipHitButNotSunkReassign();
+      shipSunkHelper(5, "carrier");
     }
     if (battleshipCounter == 4) {
-      sunkColorChange("battleship");
       document.getElementById("BattleshipSunk_cpu").innerHTML +=
         ' <span class="sunkText"> Sunk!</span>';
       battleshipSunk = true;
-      shipFound = shipFound - 4;
-      shipDirection = "";
-      firstTimeIn = true;
-      tempShipFound = 0;
-      hittingShipFound = false;
-      shipHitButNotSunkReassign();
+      shipSunkHelper(4, "battleship");
     }
     if (cruiserCounter == 3) {
-      sunkColorChange("cruiser");
       document.getElementById("CruiserSunk_cpu").innerHTML +=
         ' <span class="sunkText"> Sunk!</span>';
       cruiserSunk = true;
-      shipFound = shipFound - 3;
-      shipDirection = "";
-      firstTimeIn = true;
-      tempShipFound = 0;
-      hittingShipFound = false;
-      shipHitButNotSunkReassign();
+      shipSunkHelper(3, "cruiser");
     }
     if (submarineCounter == 3) {
-      sunkColorChange("submarine");
       document.getElementById("SubmarineSunk_cpu").innerHTML +=
         ' <span class="sunkText"> Sunk!</span>';
       submarineSunk = true;
-      shipFound = shipFound - 3;
-      shipDirection = "";
-      firstTimeIn = true;
-      tempShipFound = 0;
-      hittingShipFound = false;
-      shipHitButNotSunkReassign();
+      shipSunkHelper(3, "submarine");
     }
     if (destroyerCounter == 2) {
-      sunkColorChange("destroyer");
       document.getElementById("DestroyerSunk_cpu").innerHTML +=
         ' <span class="sunkText"> Sunk!</span>';
       destroyerSunk = true;
-      shipFound = shipFound - 2;
-      shipDirection = "";
-      firstTimeIn = true;
-      tempShipFound = 0;
-      hittingShipFound = false;
-      shipHitButNotSunkReassign();
+      shipSunkHelper(2, "destroyer");
     }
   };
 
