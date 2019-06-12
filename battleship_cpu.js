@@ -538,7 +538,6 @@
         }
       }
       if (y + 1 > 9 || gameBoard[x][y + 1] == 2 || gameBoard[x][y + 1] == 3) {
-        y++;
         if (firstTimeIn) {
           tempShipFound = shipFound + tempShipFound;
           firstTimeIn = false;
@@ -553,61 +552,22 @@
           gameBoard[x][y - tempShipFound] = 3;
           shotsFired++;
           return;
-        } else if (gameBoard[x][y - tempShipFound] == 1) {
-          document.getElementById(
-            "c" + x + (y - tempShipFound)
-          ).style.background = "red";
-          document
-            .getElementById("c" + x + (y - tempShipFound))
-            .classList.add("hit");
-          gameBoard[x][y - tempShipFound] = 2;
-          shotsFired++;
-          shipFound++;
-          lastShotY--;
-          return;
-        } else if (
-          gameBoard[x][y - tempShipFound] == 2 &&
-          gameBoard[x][y - tempShipFound - 1] == 1
-        ) {
-          document.getElementById(
-            "c" + x + (y - tempShipFound - 1)
-          ).style.background = "red";
-          document
-            .getElementById("c" + x + (y - tempShipFound - 1))
-            .classList.add("hit");
-          gameBoard[x][y - tempShipFound - 1] = 2;
-          shotsFired++;
-          shipFound++;
-          return;
-        } else if (
-          gameBoard[x][y - tempShipFound] == 2 &&
-          gameBoard[x][y - tempShipFound - 2] == 1
-        ) {
-          document.getElementById(
-            "c" + x + (y - tempShipFound - 2)
-          ).style.background = "red";
-          document
-            .getElementById("c" + x + (y - tempShipFound - 2))
-            .classList.add("hit");
-          gameBoard[x][y - tempShipFound - 2] = 2;
-          shotsFired++;
-          shipFound++;
-          return;
-        } else if (
-          gameBoard[x][y - tempShipFound] == 2 &&
-          gameBoard[x][y - tempShipFound - 3] == 1
-        ) {
-          document.getElementById(
-            "c" + x + (y - tempShipFound - 3)
-          ).style.background = "red";
-          document
-            .getElementById("c" + x + (y - tempShipFound - 3))
-            .classList.add("hit");
-          gameBoard[x][y - tempShipFound - 3] = 2;
-          shotsFired++;
-          shipFound++;
-          return;
-        } else {
+        }
+        var loopFinished = false;
+        for (i = 1; i < 5; i++) {
+          if (y - i < 0) {
+            loopFinished = true;
+          } else if (gameBoard[x][y - i] == 1) {
+            document.getElementById("c" + x + (y - i)).style.background = "red";
+            document.getElementById("c" + x + (y - i)).classList.add("hit");
+            gameBoard[x][y - i] = 2;
+            shotsFired++;
+            shipFound++;
+            return;
+          }
+          loopFinished = true;
+        }
+        if (loopFinished) {
           scanCounter = 0;
           shipDirection = "";
           firstTimeIn = true;
@@ -717,8 +677,6 @@
         lastShotY--;
         tempShipFound--;
         return;
-      } else {
-        scanCounter++;
       }
     }
   };
@@ -791,60 +749,17 @@
         gameBoard[x][y - scanShipFound] = 3;
         shotsFired++;
         return;
-      } else if (gameBoard[x][y - scanShipFound] == 1) {
-        document.getElementById(
-          "c" + x + (y - scanShipFound)
-        ).style.background = "red";
-        document
-          .getElementById("c" + x + (y - scanShipFound))
-          .classList.add("hit");
-        gameBoard[x][y - scanShipFound] = 2;
-        shotsFired++;
-        scanShipFound++;
-        shipFound++;
-        return;
-      } else if (
-        gameBoard[x][y - scanShipFound] == 2 &&
-        gameBoard[x][y - scanShipFound - 1] == 1
-      ) {
-        document.getElementById(
-          "c" + x + (y - scanShipFound - 1)
-        ).style.background = "red";
-        document
-          .getElementById("c" + x + (y - scanShipFound - 1))
-          .classList.add("hit");
-        gameBoard[x][y - scanShipFound - 1] = 2;
-        shotsFired++;
-        shipFound++;
-        return;
-      } else if (
-        gameBoard[x][y - scanShipFound] == 2 &&
-        gameBoard[x][y - scanShipFound - 2] == 1
-      ) {
-        document.getElementById(
-          "c" + x + (y - scanShipFound - 2)
-        ).style.background = "red";
-        document
-          .getElementById("c" + x + (y - scanShipFound - 2))
-          .classList.add("hit");
-        gameBoard[x][y - scanShipFound - 2] = 2;
-        shotsFired++;
-        shipFound++;
-        return;
-      } else if (
-        gameBoard[x][y - scanShipFound] == 2 &&
-        gameBoard[x][y - scanShipFound - 3] == 1
-      ) {
-        document.getElementById(
-          "c" + x + (y - scanShipFound - 3)
-        ).style.background = "red";
-        document
-          .getElementById("c" + x + (y - scanShipFound - 3))
-          .classList.add("hit");
-        gameBoard[x][y - scanShipFound - 3] = 2;
-        shotsFired++;
-        shipFound++;
-        return;
+      } else {
+        for (i = 1; i < 5; i++) {
+          if (gameBoard[x][y - i] == 1) {
+            document.getElementById("c" + x + (y - i)).style.background = "red";
+            document.getElementById("c" + x + (y - i)).classList.add("hit");
+            gameBoard[x][y - i] = 2;
+            shotsFired++;
+            shipFound++;
+            return;
+          }
+        }
       }
     }
   };
@@ -902,7 +817,7 @@
     }
   };
 
-  // document.getElementById("compfr").addEventListener("click", compMove);
+  document.getElementById("compfr").addEventListener("click", compMove);
   for (i = 0; i < cols; i++) {
     for (j = 0; j < rows; j++) {
       document.getElementById("s" + i + j).addEventListener("click", compMove);
