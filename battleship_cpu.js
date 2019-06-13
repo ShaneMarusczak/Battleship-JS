@@ -153,13 +153,16 @@
   };
 
   var placeShip = function() {
+    if (allShipsPlaced) {
+      return;
+    }
     var ship = [];
     var canPlace = true;
     var x = Number(this.id[1]);
     var y = Number(this.id[2]);
 
-    for (var val of placedShips) {
-      for (var coor of val) {
+    for (var placedShip of placedShips) {
+      for (var coor of placedShip) {
         if (direction == "hor") {
           for (var i = 0; i < size; i++) {
             if (x == coor[0] && y + i == coor[1]) {
