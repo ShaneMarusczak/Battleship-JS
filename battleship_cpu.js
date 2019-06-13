@@ -533,10 +533,9 @@
           shotsFired++;
           return;
         }
-        var loopFinished = false;
         for (i = 1; i < 5; i++) {
           if (y - i < 0) {
-            loopFinished = true;
+            break;
           } else if (gameBoard[x][y - i] == 1) {
             document.getElementById("c" + x + (y - i)).style.background = "red";
             document.getElementById("c" + x + (y - i)).classList.add("hit");
@@ -545,15 +544,12 @@
             shipFound++;
             return;
           }
-          loopFinished = true;
         }
-        if (loopFinished) {
-          scanCounter = 0;
-          shipDirection = "";
-          firstTimeIn = true;
-          tempShipFound--;
-          tempShipFound--;
-        }
+        scanCounter = 0;
+        shipDirection = "";
+        firstTimeIn = true;
+        tempShipFound--;
+        tempShipFound--;
       }
     }
     if (scanCounter == 0 && shipDirection == "") {
@@ -797,7 +793,7 @@
     }
   };
 
-  // document.getElementById("compfr").addEventListener("click", compMove);
+  document.getElementById("compfr").addEventListener("click", compMove);
   for (i = 0; i < cols; i++) {
     for (j = 0; j < rows; j++) {
       document.getElementById("s" + i + j).addEventListener("click", compMove);
