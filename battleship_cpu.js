@@ -3,7 +3,7 @@
  * There is a lot of refactoring and clean up that needs to be done.
  * When I am satisfied it is working correctly I will perform a major cleanup.
  */
-
+"use strict";
 (function() {
   const rows = 10;
   const cols = 10;
@@ -66,8 +66,8 @@
   };
 
   var rotateShip = function() {
-    for (i = 0; i < cols; i++) {
-      for (j = 0; j < rows; j++) {
+    for (var i = 0; i < cols; i++) {
+      for (var j = 0; j < rows; j++) {
         if (direction == "hor") {
           document
             .getElementById("c" + i + j)
@@ -94,21 +94,21 @@
 
   var rotatedHighlight = function() {
     if (Number(this.id[1]) < rows + 1 - size) {
-      for (i = 0; i < cols; i++) {
-        for (j = 0; j < rows; j++) {
+      for (var i = 0; i < cols; i++) {
+        for (var j = 0; j < rows; j++) {
           document
             .getElementById("c" + i + j)
             .addEventListener("click", placeShip);
         }
       }
-      for (i = 0; i < size; i++) {
+      for (var i = 0; i < size; i++) {
         document.getElementById(
           this.id[0] + (Number(this.id[1]) + i) + this.id[2]
         ).style.background = "black";
       }
     } else {
-      for (i = 0; i < cols; i++) {
-        for (j = 0; j < rows; j++) {
+      for (var i = 0; i < cols; i++) {
+        for (var j = 0; j < rows; j++) {
           document
             .getElementById("c" + i + j)
             .removeEventListener("click", placeShip);
@@ -119,21 +119,21 @@
 
   var highlight = function() {
     if (Number(this.id[2]) < cols + 1 - size) {
-      for (i = 0; i < cols; i++) {
-        for (j = 0; j < rows; j++) {
+      for (var i = 0; i < cols; i++) {
+        for (var j = 0; j < rows; j++) {
           document
             .getElementById("c" + i + j)
             .addEventListener("click", placeShip);
         }
       }
-      for (i = 0; i < size; i++) {
+      for (var i = 0; i < size; i++) {
         document.getElementById(
           this.id[0] + this.id[1] + (Number(this.id[2]) + i)
         ).style.background = "black";
       }
     } else {
-      for (i = 0; i < cols; i++) {
-        for (j = 0; j < rows; j++) {
+      for (var i = 0; i < cols; i++) {
+        for (var j = 0; j < rows; j++) {
           document
             .getElementById("c" + i + j)
             .removeEventListener("click", placeShip);
@@ -143,8 +143,8 @@
   };
 
   var resetColor = function() {
-    for (i = 0; i < cols; i++) {
-      for (j = 0; j < rows; j++) {
+    for (var i = 0; i < cols; i++) {
+      for (var j = 0; j < rows; j++) {
         if (document.getElementById("c" + i + j).className == "") {
           document.getElementById("c" + i + j).style.background = "#80aaff";
         }
@@ -158,16 +158,16 @@
     var x = Number(this.id[1]);
     var y = Number(this.id[2]);
 
-    for (val of placedShips) {
-      for (coor of val) {
+    for (var val of placedShips) {
+      for (var coor of val) {
         if (direction == "hor") {
-          for (i = 0; i < size; i++) {
+          for (var i = 0; i < size; i++) {
             if (x == coor[0] && y + i == coor[1]) {
               canPlace = false;
             }
           }
         } else {
-          for (i = 0; i < size; i++) {
+          for (var i = 0; i < size; i++) {
             if (x + i == coor[0] && y == coor[1]) {
               canPlace = false;
             }
@@ -179,8 +179,8 @@
       alert("Can not place ship here!");
     }
     if (canPlace) {
-      for (i = 0; i < cols; i++) {
-        for (j = 0; j < rows; j++) {
+      for (var i = 0; i < cols; i++) {
+        for (var j = 0; j < rows; j++) {
           if (
             document.getElementById("c" + i + j).style.background == "black"
           ) {
@@ -248,14 +248,14 @@
         alert("All ships Placed!");
         document.getElementById("ready").style.display = "block";
         allShipsPlaced = true;
-        for (i = 0; i < cols; i++) {
-          for (j = 0; j < rows; j++) {
+        for (var i = 0; i < cols; i++) {
+          for (var j = 0; j < rows; j++) {
             document
               .getElementById("c" + i + j)
               .removeEventListener("mouseleave", resetColor);
           }
         }
-        for (info of ships) {
+        for (var info of ships) {
           info.removeEventListener("click", placeShipSetup);
         }
       }
@@ -270,8 +270,8 @@
     var cruiserCounter = 0;
     var submarineCounter = 0;
     var destroyerCounter = 0;
-    for (i = 0; i < cols; i++) {
-      for (j = 0; j < rows; j++) {
+    for (var i = 0; i < cols; i++) {
+      for (var j = 0; j < rows; j++) {
         if (
           document.getElementById("c" + i + j).classList.contains("carrier") &&
           document.getElementById("c" + i + j).classList.contains("hit") &&
@@ -349,7 +349,7 @@
 
   var allShips = ["carrier", "battleship", "cruiser", "submarine", "destroyer"];
   var placeShipSetup = function() {
-    for (ship of allShips) {
+    for (var ship of allShips) {
       if (this.id != ship) {
         document.getElementById(ship).classList.remove("clicked");
       }
@@ -374,9 +374,9 @@
     }
   };
 
-  for (i = 0; i < cols; i++) {
+  for (var i = 0; i < cols; i++) {
     gameBoard.push([]);
-    for (j = 0; j < rows; j++) {
+    for (var j = 0; j < rows; j++) {
       gameBoard[i].push(0);
       var cell = document.createElement("div");
       gameBoardContainer.appendChild(cell);
@@ -388,8 +388,8 @@
     }
   }
 
-  for (i = 0; i < cols; i++) {
-    for (j = 0; j < rows; j++) {
+  for (var i = 0; i < cols; i++) {
+    for (var j = 0; j < rows; j++) {
       document.getElementById("c" + i + j).style.background = "#80aaff";
       document
         .getElementById("c" + i + j)
@@ -400,7 +400,7 @@
     }
   }
 
-  for (ship of ships) {
+  for (var ship of ships) {
     ship.addEventListener("click", placeShipSetup);
   }
 
@@ -420,8 +420,8 @@
     ) {
       document.getElementById("losstext").style.display = "block";
       // document.getElementById("compfr").removeEventListener("click", compMove);
-      for (i = 0; i < cols; i++) {
-        for (j = 0; j < rows; j++) {
+      for (var i = 0; i < cols; i++) {
+        for (var j = 0; j < rows; j++) {
           document
             .getElementById("s" + i + j)
             .removeEventListener("click", compMove);
@@ -533,7 +533,7 @@
           shotsFired++;
           return;
         }
-        for (i = 1; i < 5; i++) {
+        for (var i = 1; i < 5; i++) {
           if (y - i < 0) {
             break;
           } else if (gameBoard[x][y - i] == 1) {
@@ -726,7 +726,7 @@
         shotsFired++;
         return;
       } else {
-        for (i = 1; i < 5; i++) {
+        for (var i = 1; i < 5; i++) {
           if (gameBoard[x][y - i] == 1) {
             document.getElementById("c" + x + (y - i)).style.background = "red";
             document.getElementById("c" + x + (y - i)).classList.add("hit");
@@ -767,8 +767,8 @@
   };
 
   var shipHitButNotSunkReassign = function() {
-    for (i = 0; i < cols; i++) {
-      for (j = 0; j < rows; j++) {
+    for (var i = 0; i < cols; i++) {
+      for (var j = 0; j < rows; j++) {
         if (document.getElementById("c" + i + j).style.background == "red") {
           lastShotX = i;
           lastShotY = j;
@@ -781,8 +781,8 @@
   };
 
   var sunkColorChange = function(shipName) {
-    for (i = 0; i < cols; i++) {
-      for (j = 0; j < rows; j++) {
+    for (var i = 0; i < cols; i++) {
+      for (var j = 0; j < rows; j++) {
         if (
           document.getElementById("c" + i + j).classList.contains(shipName) &&
           document.getElementById("c" + i + j).classList.contains("hit")
@@ -794,8 +794,8 @@
   };
 
   // document.getElementById("compfr").addEventListener("click", compMove);
-  for (i = 0; i < cols; i++) {
-    for (j = 0; j < rows; j++) {
+  for (var i = 0; i < cols; i++) {
+    for (var j = 0; j < rows; j++) {
       document.getElementById("s" + i + j).addEventListener("click", compMove);
     }
   }

@@ -1,3 +1,4 @@
+"use strict";
 (function() {
   const rows = 10;
   const cols = 10;
@@ -49,15 +50,15 @@
         gameBoard[row][col] = 2;
         hitCount++;
 
-        for (ship of ships) {
-          for (coor of ship) {
+        for (var ship of ships) {
+          for (var coor of ship) {
             if (coor[0] == row && coor[1] == col) {
-              for (coor of ship) {
+              for (var coor of ship) {
                 if (gameBoard[coor[0]][coor[1]] == 2) {
                   shipSunkCounter++;
                 }
                 if (shipSunkCounter == ship.length) {
-                  for (coor of ship) {
+                  for (var coor of ship) {
                     document.getElementById(
                       "s" + coor[0] + coor[1]
                     ).style.background = "black";
@@ -95,13 +96,13 @@
     var shipPlaceCounter = 0;
     if (dir == 1) {
       if (col >= len - 1) {
-        for (i = 0; i < len; i++) {
+        for (var i = 0; i < len; i++) {
           if (gameBoard[row][col - i] == 0) {
             shipPlaceCounter++;
           }
         }
         if (shipPlaceCounter == len) {
-          for (i = 0; i < len; i++) {
+          for (var i = 0; i < len; i++) {
             gameBoard[row][col - i] = 1;
             document.getElementById("s" + row + (col - i)).classList.add(name);
             ship.push([row, col - i]);
@@ -110,13 +111,13 @@
           placeShip(len);
         }
       } else {
-        for (i = 0; i < len; i++) {
+        for (var i = 0; i < len; i++) {
           if (gameBoard[row][col + i] == 0) {
             shipPlaceCounter++;
           }
         }
         if (shipPlaceCounter == len) {
-          for (i = 0; i < len; i++) {
+          for (var i = 0; i < len; i++) {
             gameBoard[row][col + i] = 1;
             document.getElementById("s" + row + (col + i)).classList.add(name);
             ship.push([row, col + i]);
@@ -127,13 +128,13 @@
       }
     } else {
       if (row >= len - 1) {
-        for (i = 0; i < len; i++) {
+        for (var i = 0; i < len; i++) {
           if (gameBoard[row - i][col] == 0) {
             shipPlaceCounter++;
           }
         }
         if (shipPlaceCounter == len) {
-          for (i = 0; i < len; i++) {
+          for (var i = 0; i < len; i++) {
             gameBoard[row - i][col] = 1;
             document.getElementById("s" + (row - i) + col).classList.add(name);
             ship.push([row - i, col]);
@@ -142,13 +143,13 @@
           placeShip(len);
         }
       } else {
-        for (i = 0; i < len; i++) {
+        for (var i = 0; i < len; i++) {
           if (gameBoard[row + i][col] == 0) {
             shipPlaceCounter++;
           }
         }
         if (shipPlaceCounter == len) {
-          for (i = 0; i < len; i++) {
+          for (var i = 0; i < len; i++) {
             gameBoard[row + i][col] = 1;
             document.getElementById("s" + (row + i) + col).classList.add(name);
             ship.push([row + i, col]);
@@ -164,9 +165,9 @@
     }
   }
 
-  for (i = 0; i < cols; i++) {
+  for (var i = 0; i < cols; i++) {
     gameBoard.push([]);
-    for (j = 0; j < rows; j++) {
+    for (var j = 0; j < rows; j++) {
       gameBoard[i].push(0);
       var square = document.createElement("div");
       gameBoardContainer.appendChild(square);
@@ -184,8 +185,8 @@
   placeShip(3);
   placeShip(2);
 
-  for (i = 0; i < cols; i++) {
-    for (j = 0; j < rows; j++) {
+  for (var i = 0; i < cols; i++) {
+    for (var j = 0; j < rows; j++) {
       document.getElementById("s" + i + j).style.background = "#80aaff";
       if (gameBoard[i][j] == 1) {
         // document.getElementById("s" + i + j).style.background = "white";
