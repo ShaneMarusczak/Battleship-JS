@@ -793,7 +793,7 @@
     }
   };
 
-  document.getElementById("compfr").addEventListener("click", compMove);
+  // document.getElementById("compfr").addEventListener("click", compMove);
   for (i = 0; i < cols; i++) {
     for (j = 0; j < rows; j++) {
       document.getElementById("s" + i + j).addEventListener("click", compMove);
