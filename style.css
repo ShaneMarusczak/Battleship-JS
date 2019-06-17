@@ -136,3 +136,12 @@ input {
   font-size: small;
   margin-top: 10px;
 }
+
+#analysisLink {
+  margin-top: 10px;
+}
+
+#links {
+  display: flex;
+  flex-direction: column;
+}
