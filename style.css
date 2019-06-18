@@ -97,9 +97,16 @@ input {
   font-family: "Orbitron", sans-serif;
 }
 
+#strtOvrBtn {
+  margin-top: 25px;
+}
+
 #btns {
+  width: 175px;
   margin-right: 75px;
   font-family: "Orbitron", sans-serif;
+  display: flex;
+  flex-direction: column;
 }
 
 #boards {
