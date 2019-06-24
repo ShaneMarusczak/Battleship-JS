@@ -50,7 +50,7 @@ input {
 }
 
 #gameboard div {
-  cursor: url(cross-hair-cursor.png) 16 16, auto;
+  cursor: url(cross-hair-cursor.png) 8 8, auto;
 }
 
 #ships {
