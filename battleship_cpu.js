@@ -693,56 +693,6 @@
     }
   };
 
-  var scanShipFound = 1;
-
-  var scanShipFoundAttack = function() {
-    var x = lastShotX;
-    var y = lastShotY;
-
-    if (!(y + 1 > 9)) {
-      if (gameBoard[x][y + 1] == 0) {
-        document.getElementById("c" + x + (y + 1)).style.background = "#4d88ff";
-        document.getElementById("c" + x + (y + 1)).classList.add("miss");
-        gameBoard[x][y + 1] = 3;
-        shotsFired++;
-        return;
-      } else if (gameBoard[x][y + 1] == 1) {
-        document.getElementById("c" + x + (y + 1)).style.background = "red";
-        document.getElementById("c" + x + (y + 1)).classList.add("hit");
-        gameBoard[x][y + 1] = 2;
-        shotsFired++;
-        shipFound++;
-        scanShipFound++;
-        lastShotY++;
-        return;
-      }
-    }
-    if (y + 1 > 9 || gameBoard[x][y + 1] == 2 || gameBoard[x][y + 1] == 3) {
-      if (gameBoard[x][y - scanShipFound] == 0) {
-        document.getElementById(
-          "c" + x + (y - scanShipFound)
-        ).style.background = "#4d88ff";
-        document
-          .getElementById("c" + x + (y - scanShipFound))
-          .classList.add("miss");
-        gameBoard[x][y - scanShipFound] = 3;
-        shotsFired++;
-        return;
-      } else {
-        for (var i = 1; i < 10; i++) {
-          if (gameBoard[x][y - i] == 1) {
-            document.getElementById("c" + x + (y - i)).style.background = "red";
-            document.getElementById("c" + x + (y - i)).classList.add("hit");
-            gameBoard[x][y - i] = 2;
-            shotsFired++;
-            shipFound++;
-            return;
-          }
-        }
-      }
-    }
-  };
-
   var compMove = function() {
     if (
       document.getElementById("wintext").style.display == "block" ||
@@ -753,14 +703,10 @@
       return;
     }
     if (allShipsPlaced) {
-      if (hittingShipFound) {
-        scanShipFoundAttack();
+      if (shipFound > 0) {
+        shipFoundAttack();
       } else {
-        if (shipFound > 0) {
-          shipFoundAttack();
-        } else {
-          searchingShot();
-        }
+        searchingShot();
       }
     } else {
       alert("Not all ships are placed.");
