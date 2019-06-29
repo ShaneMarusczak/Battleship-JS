@@ -23,7 +23,6 @@
   var cruiserSunk = false;
   var submarineSunk = false;
   var destroyerSunk = false;
-  var hittingShipFound = false;
   var gameBoardContainer = document.getElementById("gameboard_cpu");
   var carrier = document.getElementById("carrier");
   var battleship = document.getElementById("battleship");
@@ -721,8 +720,6 @@
         if (document.getElementById("c" + i + j).style.background == "red") {
           lastShotX = i;
           lastShotY = j;
-          hittingShipFound = true;
-          scanShipFound = 1;
           return;
         }
       }
