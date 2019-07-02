@@ -60,6 +60,15 @@
     shipDirection = "";
     firstTimeIn = true;
     tempShipFound = 0;
+    for (var i = 0; i < cols; i++) {
+      for (var j = 0; j < rows; j++) {
+        if (
+          document.getElementById("c" + i + j).classList.contains(sunkShipName)
+        ) {
+          gameBoard[i][j] = 5;
+        }
+      }
+    }
     shipHitButNotSunkReassign();
   };
 
@@ -692,6 +701,7 @@
   };
 
   var compMove = function() {
+    console.log(gameBoard);
     if (
       document.getElementById("wintext").style.display == "block" ||
       document.getElementById("losstext").style.display == "block" ||
@@ -716,7 +726,7 @@
   var shipHitButNotSunkReassign = function() {
     for (var i = 0; i < cols; i++) {
       for (var j = 0; j < rows; j++) {
-        if (document.getElementById("c" + i + j).style.background == "red") {
+        if (gameBoard[i][j] == 2) {
           lastShotX = i;
           lastShotY = j;
           return;
