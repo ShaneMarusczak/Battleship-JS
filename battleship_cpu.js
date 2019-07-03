@@ -677,7 +677,7 @@
       gameBoard[x][y] = 2;
       shotsFired++;
       shipFound++;
-    } else if (gameBoard[x][y] == 2 || gameBoard[x][y] == 3) {
+    } else if (gameBoard[x][y] == 2 || gameBoard[x][y] == 3 || gameBoard[x][y] == 5) {
       searchingShot();
     }
   };
