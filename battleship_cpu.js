@@ -65,7 +65,7 @@
         if (
           document.getElementById("c" + i + j).classList.contains(sunkShipName)
         ) {
-          gameBoard[i][j] = 5;
+          gameBoard[i][j] = 4;
         }
       }
     }
@@ -652,34 +652,38 @@
   };
 
   var searchingShot = function() {
-    var x;
-    var y;
     do {
-      if (shotsFired < 6) {
-        x = randomIntFromInterval(3, 7);
-        y = randomIntFromInterval(3, 7);
-      } else if (shotsFired < 12) {
-        x = randomIntFromInterval(2, 8);
-        y = randomIntFromInterval(2, 8);
-      } else {
-        x = randomIntFromInterval(0, 9);
-        y = randomIntFromInterval(0, 9);
+      var x;
+      var y;
+      do {
+        if (shotsFired < 6) {
+          x = randomIntFromInterval(3, 7);
+          y = randomIntFromInterval(3, 7);
+        } else if (shotsFired < 12) {
+          x = randomIntFromInterval(2, 8);
+          y = randomIntFromInterval(2, 8);
+        } else {
+          x = randomIntFromInterval(0, 9);
+          y = randomIntFromInterval(0, 9);
+        }
+      } while ((x % 2 != 0 && y % 2 == 0) || (x % 2 == 0 && y % 2 != 0));
+      lastShotX = x;
+      lastShotY = y;
+      if (gameBoard[x][y] == 0) {
+        document.getElementById("c" + x + y).style.background = "#4d88ff";
+        gameBoard[x][y] = 3;
+        shotsFired++;
+      } else if (gameBoard[x][y] == 1) {
+        document.getElementById("c" + x + y).style.background = "red";
+        gameBoard[x][y] = 2;
+        shotsFired++;
+        shipFound++;
       }
-    } while ((x % 2 != 0 && y % 2 == 0) || (x % 2 == 0 && y % 2 != 0));
-    lastShotX = x;
-    lastShotY = y;
-    if (gameBoard[x][y] == 0) {
-      document.getElementById("c" + x + y).style.background = "#4d88ff";
-      gameBoard[x][y] = 3;
-      shotsFired++;
-    } else if (gameBoard[x][y] == 1) {
-      document.getElementById("c" + x + y).style.background = "red";
-      gameBoard[x][y] = 2;
-      shotsFired++;
-      shipFound++;
-    } else if (gameBoard[x][y] == 2 || gameBoard[x][y] == 3 || gameBoard[x][y] == 5) {
-      searchingShot();
-    }
+    } while (
+      gameBoard[x][y] == 2 ||
+      gameBoard[x][y] == 3 ||
+      gameBoard[x][y] == 4
+    );
   };
 
   var compMove = function() {
