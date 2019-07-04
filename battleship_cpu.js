@@ -396,13 +396,6 @@
           document
             .getElementById("s" + i + j)
             .removeEventListener("click", compMove);
-          if (
-            document.getElementById("s" + i + j).classList != "" &&
-            document.getElementById("s" + i + j).style.background != "red" &&
-            document.getElementById("s" + i + j).style.background != "darkred"
-          ) {
-            document.getElementById("s" + i + j).style.background = "darkblue";
-          }
         }
       }
     }

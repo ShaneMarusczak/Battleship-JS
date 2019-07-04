@@ -49,7 +49,6 @@
         e.target.style.background = "red";
         gameBoard[row][col][0] = 2;
         hitCount++;
-
         for (var ship of ships) {
           for (var coor of ship) {
             if (coor[0] == row && coor[1] == col) {
