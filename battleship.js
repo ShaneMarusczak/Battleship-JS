@@ -42,19 +42,19 @@
       var row = e.target.id.substring(1, 2);
       var col = e.target.id.substring(2, 3);
 
-      if (gameBoard[row][col] == 0) {
+      if (gameBoard[row][col][0] == 0) {
         e.target.style.background = "#4d88ff";
-        gameBoard[row][col] = 3;
-      } else if (gameBoard[row][col] == 1) {
+        gameBoard[row][col][0] = 3;
+      } else if (gameBoard[row][col][0] == 1) {
         e.target.style.background = "red";
-        gameBoard[row][col] = 2;
+        gameBoard[row][col][0] = 2;
         hitCount++;
 
         for (var ship of ships) {
           for (var coor of ship) {
             if (coor[0] == row && coor[1] == col) {
               for (var coor of ship) {
-                if (gameBoard[coor[0]][coor[1]] == 2) {
+                if (gameBoard[coor[0]][coor[1]][0] == 2) {
                   shipSunkCounter++;
                 }
                 if (shipSunkCounter == ship.length) {
@@ -64,8 +64,7 @@
                     ).style.background = "darkred";
                   }
                   document.getElementById(
-                    document.getElementById("s" + coor[0] + coor[1]).className +
-                      "Sunk"
+                    gameBoard[coor[0]][coor[1]][1] + "Sunk"
                   ).style.display = "inline";
                 }
               }
@@ -77,7 +76,7 @@
           document.getElementById("wintext").style.display = "block";
           gameBoardContainer.removeEventListener("click", fireTorpedo);
         }
-      } else if (gameBoard[row][col] > 1) {
+      } else if (gameBoard[row][col][0] > 1) {
         alert("Already Fired Here!");
       }
     }
@@ -97,14 +96,14 @@
     if (dir == 1) {
       if (col >= len - 1) {
         for (var i = 0; i < len; i++) {
-          if (gameBoard[row][col - i] == 0) {
+          if (gameBoard[row][col - i][0] == 0) {
             shipPlaceCounter++;
           }
         }
         if (shipPlaceCounter == len) {
           for (var i = 0; i < len; i++) {
-            gameBoard[row][col - i] = 1;
-            document.getElementById("s" + row + (col - i)).classList.add(name);
+            gameBoard[row][col - i][0] = 1;
+            gameBoard[row][col - i][1] = name;
             ship.push([row, col - i]);
           }
         } else {
@@ -112,14 +111,14 @@
         }
       } else {
         for (var i = 0; i < len; i++) {
-          if (gameBoard[row][col + i] == 0) {
+          if (gameBoard[row][col + i][0] == 0) {
             shipPlaceCounter++;
           }
         }
         if (shipPlaceCounter == len) {
           for (var i = 0; i < len; i++) {
-            gameBoard[row][col + i] = 1;
-            document.getElementById("s" + row + (col + i)).classList.add(name);
+            gameBoard[row][col + i][0] = 1;
+            gameBoard[row][col + i][1] = name;
             ship.push([row, col + i]);
           }
         } else {
@@ -129,14 +128,14 @@
     } else {
       if (row >= len - 1) {
         for (var i = 0; i < len; i++) {
-          if (gameBoard[row - i][col] == 0) {
+          if (gameBoard[row - i][col][0] == 0) {
             shipPlaceCounter++;
           }
         }
         if (shipPlaceCounter == len) {
           for (var i = 0; i < len; i++) {
-            gameBoard[row - i][col] = 1;
-            document.getElementById("s" + (row - i) + col).classList.add(name);
+            gameBoard[row - i][col][0] = 1;
+            gameBoard[row - i][col][1] = name;
             ship.push([row - i, col]);
           }
         } else {
@@ -144,14 +143,14 @@
         }
       } else {
         for (var i = 0; i < len; i++) {
-          if (gameBoard[row + i][col] == 0) {
+          if (gameBoard[row + i][col][0] == 0) {
             shipPlaceCounter++;
           }
         }
         if (shipPlaceCounter == len) {
           for (var i = 0; i < len; i++) {
-            gameBoard[row + i][col] = 1;
-            document.getElementById("s" + (row + i) + col).classList.add(name);
+            gameBoard[row + i][col][0] = 1;
+            gameBoard[row + i][col][1] = name;
             ship.push([row + i, col]);
           }
         } else {
@@ -168,7 +167,7 @@
   for (var i = 0; i < cols; i++) {
     gameBoard.push([]);
     for (var j = 0; j < rows; j++) {
-      gameBoard[i].push(0);
+      gameBoard[i].push([0, ""]);
       var square = document.createElement("div");
       gameBoardContainer.appendChild(square);
       square.id = "s" + j + i;
@@ -188,7 +187,7 @@
   for (var i = 0; i < cols; i++) {
     for (var j = 0; j < rows; j++) {
       document.getElementById("s" + i + j).style.background = "#80aaff";
-      if (gameBoard[i][j] == 1) {
+      if (gameBoard[i][j][0] == 1) {
         // document.getElementById("s" + i + j).style.background = "white";
       }
     }
