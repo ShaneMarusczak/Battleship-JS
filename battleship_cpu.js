@@ -348,7 +348,7 @@
   for (var i = 0; i < cols; i++) {
     gameBoard.push([]);
     for (var j = 0; j < rows; j++) {
-      gameBoard[i].push([0,""]);
+      gameBoard[i].push([0, ""]);
       var cell = document.createElement("div");
       gameBoardContainer.appendChild(cell);
       cell.id = "c" + j + i;
@@ -681,4 +681,10 @@
       document.getElementById("s" + i + j).addEventListener("click", compMove);
     }
   }
+
+  document.addEventListener("keydown", function(event) {
+    if (event.keyCode == 192) {
+      console.log(gameBoard);
+    }
+  });
 })();
