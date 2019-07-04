@@ -54,6 +54,7 @@
   }
 
   var shipSunkHelper = function(num, sunkShipName) {
+    document.getElementById(sunkShipName + "Sunk_cpu").classList.add("inline");
     sunkColorChange(sunkShipName);
     shipFound = shipFound - num;
     shipDirection = "";
@@ -296,27 +297,22 @@
       }
     }
     if (carrierCounter == 5) {
-      document.getElementById("CarrierSunk_cpu").classList.add("inline");
       carrierSunk = true;
       shipSunkHelper(5, "carrier");
     }
     if (battleshipCounter == 4) {
-      document.getElementById("BattleshipSunk_cpu").classList.add("inline");
       battleshipSunk = true;
       shipSunkHelper(4, "battleship");
     }
     if (cruiserCounter == 3) {
-      document.getElementById("CruiserSunk_cpu").classList.add("inline");
       cruiserSunk = true;
       shipSunkHelper(3, "cruiser");
     }
     if (submarineCounter == 3) {
-      document.getElementById("SubmarineSunk_cpu").classList.add("inline");
       submarineSunk = true;
       shipSunkHelper(3, "submarine");
     }
     if (destroyerCounter == 2) {
-      document.getElementById("DestroyerSunk_cpu").classList.add("inline");
       destroyerSunk = true;
       shipSunkHelper(2, "destroyer");
     }
@@ -352,7 +348,7 @@
   for (var i = 0; i < cols; i++) {
     gameBoard.push([]);
     for (var j = 0; j < rows; j++) {
-      gameBoard[i].push([]);
+      gameBoard[i].push([0,""]);
       var cell = document.createElement("div");
       gameBoardContainer.appendChild(cell);
       cell.id = "c" + j + i;
@@ -365,8 +361,6 @@
 
   for (var i = 0; i < cols; i++) {
     for (var j = 0; j < rows; j++) {
-      gameBoard[i][j][0] = 0;
-      gameBoard[i][j][1] = "";
       document.getElementById("c" + i + j).style.background = "#80aaff";
       document
         .getElementById("c" + i + j)
