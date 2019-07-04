@@ -60,12 +60,10 @@
     shipDirection = "";
     firstTimeIn = true;
     tempShipFound = 0;
-    for (var i = 0; i < cols; i++) {
+    for (var k = 0; i < cols; i++) {
       for (var j = 0; j < rows; j++) {
-        if (
-          document.getElementById("c" + i + j).classList.contains(sunkShipName)
-        ) {
-          gameBoard[i][j] = 4;
+        if (gameBoard[k][j][1] == sunkShipName) {
+          gameBoard[k][j][0] = 4;
         }
       }
     }
@@ -152,7 +150,7 @@
   var resetColor = function() {
     for (var i = 0; i < cols; i++) {
       for (var j = 0; j < rows; j++) {
-        if (document.getElementById("c" + i + j).className == "") {
+        if (gameBoard[i][j][0] == 0) {
           document.getElementById("c" + i + j).style.background = "#80aaff";
         }
       }
@@ -192,40 +190,24 @@
       for (var i = 0; i < cols; i++) {
         for (var j = 0; j < rows; j++) {
           if (
-            document.getElementById("c" + i + j).style.background == "black"
+            document.getElementById("c" + i + j).style.background == "black" &&
+            gameBoard[i][j][1] == ""
           ) {
-            if (
-              size == 5 &&
-              document.getElementById("c" + i + j).classList == ""
-            ) {
-              document.getElementById("c" + i + j).classList.add("carrier");
-            } else if (
-              size == 4 &&
-              document.getElementById("c" + i + j).classList == ""
-            ) {
-              document.getElementById("c" + i + j).classList.add("battleship");
-            } else if (
-              size == 3 &&
-              placed == "cruiser" &&
-              document.getElementById("c" + i + j).classList == ""
-            ) {
-              document.getElementById("c" + i + j).classList.add("cruiser");
-            } else if (
-              size == 3 &&
-              placed == "submarine" &&
-              document.getElementById("c" + i + j).classList == ""
-            ) {
-              document.getElementById("c" + i + j).classList.add("submarine");
-            } else if (
-              size == 2 &&
-              document.getElementById("c" + i + j).classList == ""
-            ) {
-              document.getElementById("c" + i + j).classList.add("destroyer");
+            if (size == 5) {
+              gameBoard[i][j][1] = "carrier";
+            } else if (size == 4) {
+              gameBoard[i][j][1] = "battleship";
+            } else if (size == 3 && placed == "cruiser") {
+              gameBoard[i][j][1] = "cruiser";
+            } else if (size == 3 && placed == "submarine") {
+              gameBoard[i][j][1] = "submarine";
+            } else if (size == 2) {
+              gameBoard[i][j][1] = "destroyer";
             }
             document
               .getElementById("c" + i + j)
               .removeEventListener("mouseover", highlight);
-            gameBoard[i][j] = 1;
+            gameBoard[i][j][0] = 1;
             ship.push([i, j]);
           }
         }
@@ -283,42 +265,36 @@
     for (var i = 0; i < cols; i++) {
       for (var j = 0; j < rows; j++) {
         if (
-          document.getElementById("c" + i + j).classList.contains("carrier") &&
-          gameBoard[i][j] == 2 &&
+          gameBoard[i][j][1] == "carrier" &&
+          gameBoard[i][j][0] == 2 &&
           !carrierSunk
         ) {
           carrierCounter++;
         }
         if (
-          document
-            .getElementById("c" + i + j)
-            .classList.contains("battleship") &&
-          gameBoard[i][j] == 2 &&
+          gameBoard[i][j][1] == "battleship" &&
+          gameBoard[i][j][0] == 2 &&
           !battleshipSunk
         ) {
           battleshipCounter++;
         }
         if (
-          document.getElementById("c" + i + j).classList.contains("cruiser") &&
-          gameBoard[i][j] == 2 &&
+          gameBoard[i][j][1] == "cruiser" &&
+          gameBoard[i][j][0] == 2 &&
           !cruiserSunk
         ) {
           cruiserCounter++;
         }
         if (
-          document
-            .getElementById("c" + i + j)
-            .classList.contains("submarine") &&
-          gameBoard[i][j] == 2 &&
+          gameBoard[i][j][1] == "submarine" &&
+          gameBoard[i][j][0] == 2 &&
           !submarineSunk
         ) {
           submarineCounter++;
         }
         if (
-          document
-            .getElementById("c" + i + j)
-            .classList.contains("destroyer") &&
-          gameBoard[i][j] == 2 &&
+          gameBoard[i][j][1] == "destroyer" &&
+          gameBoard[i][j][0] == 2 &&
           !destroyerSunk
         ) {
           destroyerCounter++;
@@ -326,32 +302,27 @@
       }
     }
     if (carrierCounter == 5) {
-      document.getElementById("CarrierSunk_cpu").innerHTML +=
-        ' <span class="sunkText"> Sunk!</span>';
+      document.getElementById("CarrierSunk_cpu").style.display = "inline";
       carrierSunk = true;
       shipSunkHelper(5, "carrier");
     }
     if (battleshipCounter == 4) {
-      document.getElementById("BattleshipSunk_cpu").innerHTML +=
-        ' <span class="sunkText"> Sunk!</span>';
+      document.getElementById("BattleshipSunk_cpu").style.display = "inline";
       battleshipSunk = true;
       shipSunkHelper(4, "battleship");
     }
     if (cruiserCounter == 3) {
-      document.getElementById("CruiserSunk_cpu").innerHTML +=
-        ' <span class="sunkText"> Sunk!</span>';
+      document.getElementById("CruiserSunk_cpu").style.display = "inline";
       cruiserSunk = true;
       shipSunkHelper(3, "cruiser");
     }
     if (submarineCounter == 3) {
-      document.getElementById("SubmarineSunk_cpu").innerHTML +=
-        ' <span class="sunkText"> Sunk!</span>';
+      document.getElementById("SubmarineSunk_cpu").style.display = "inline";
       submarineSunk = true;
       shipSunkHelper(3, "submarine");
     }
     if (destroyerCounter == 2) {
-      document.getElementById("DestroyerSunk_cpu").innerHTML +=
-        ' <span class="sunkText"> Sunk!</span>';
+      document.getElementById("DestroyerSunk_cpu").style.display = "inline";
       destroyerSunk = true;
       shipSunkHelper(2, "destroyer");
     }
@@ -387,7 +358,7 @@
   for (var i = 0; i < cols; i++) {
     gameBoard.push([]);
     for (var j = 0; j < rows; j++) {
-      gameBoard[i].push(0);
+      gameBoard[i].push([]);
       var cell = document.createElement("div");
       gameBoardContainer.appendChild(cell);
       cell.id = "c" + j + i;
@@ -400,6 +371,8 @@
 
   for (var i = 0; i < cols; i++) {
     for (var j = 0; j < rows; j++) {
+      gameBoard[i][j][0] = 0;
+      gameBoard[i][j][1] = "";
       document.getElementById("c" + i + j).style.background = "#80aaff";
       document
         .getElementById("c" + i + j)
@@ -435,11 +408,7 @@
           document
             .getElementById("s" + i + j)
             .removeEventListener("click", compMove);
-          if (
-            document.getElementById("s" + i + j).classList != "" &&
-            document.getElementById("s" + i + j).style.background != "red" &&
-            document.getElementById("s" + i + j).style.background != "black"
-          ) {
+          if (gameBoard[i][j][0] == 1) {
             document.getElementById("s" + i + j).style.background = "darkred";
           }
         }
@@ -452,42 +421,47 @@
     var y = lastShotY;
     if (shipDirection == "ver") {
       if (!(x + 1 > 9)) {
-        if (gameBoard[x + 1][y] == 0) {
+        if (gameBoard[x + 1][y][0] == 0) {
           document.getElementById("c" + (x + 1) + y).style.background =
             "#4d88ff";
-          gameBoard[x + 1][y] = 3;
+          gameBoard[x + 1][y][0] = 3;
           shotsFired++;
           return;
-        } else if (gameBoard[x + 1][y] == 1) {
+        } else if (gameBoard[x + 1][y][0] == 1) {
           document.getElementById("c" + (x + 1) + y).style.background = "red";
-          gameBoard[x + 1][y] = 2;
+          gameBoard[x + 1][y][0] = 2;
           shotsFired++;
           shipFound++;
           lastShotX++;
           return;
         }
       }
-      if (x + 1 > 9 || gameBoard[x + 1][y] == 2 || gameBoard[x + 1][y] == 3) {
+      if (
+        x + 1 > 9 ||
+        gameBoard[x + 1][y][0] == 2 ||
+        gameBoard[x + 1][y][0] == 3 ||
+        gameBoard[x + 1][y][0] == 4
+      ) {
         if (firstTimeIn) {
           tempShipFound = shipFound + tempShipFound;
           firstTimeIn = false;
         }
-        if (x - tempShipFound > -1 && gameBoard[x - tempShipFound][y] == 0) {
+        if (x - tempShipFound > -1 && gameBoard[x - tempShipFound][y][0] == 0) {
           document.getElementById(
             "c" + (x - tempShipFound) + y
           ).style.background = "#4d88ff";
 
-          gameBoard[x - tempShipFound][y] = 3;
+          gameBoard[x - tempShipFound][y][0] = 3;
           shotsFired++;
           return;
         } else if (
           x - tempShipFound > -1 &&
-          gameBoard[x - tempShipFound][y] == 1
+          gameBoard[x - tempShipFound][y][0] == 1
         ) {
           document.getElementById(
             "c" + (x - tempShipFound) + y
           ).style.background = "red";
-          gameBoard[x - tempShipFound][y] = 2;
+          gameBoard[x - tempShipFound][y][0] = 2;
           shotsFired++;
           shipFound++;
           lastShotX--;
@@ -503,42 +477,47 @@
     }
     if (shipDirection == "hor") {
       if (!(y + 1 > 9)) {
-        if (gameBoard[x][y + 1] == 0) {
+        if (gameBoard[x][y + 1][0] == 0) {
           document.getElementById("c" + x + (y + 1)).style.background =
             "#4d88ff";
 
-          gameBoard[x][y + 1] = 3;
+          gameBoard[x][y + 1][0] = 3;
           shotsFired++;
           return;
-        } else if (gameBoard[x][y + 1] == 1) {
+        } else if (gameBoard[x][y + 1][0] == 1) {
           document.getElementById("c" + x + (y + 1)).style.background = "red";
-          gameBoard[x][y + 1] = 2;
+          gameBoard[x][y + 1][0] = 2;
           shotsFired++;
           shipFound++;
           lastShotY++;
           return;
         }
       }
-      if (y + 1 > 9 || gameBoard[x][y + 1] == 2 || gameBoard[x][y + 1] == 3) {
+      if (
+        y + 1 > 9 ||
+        gameBoard[x][y + 1][0] == 2 ||
+        gameBoard[x][y + 1][0] == 3 ||
+        gameBoard[x][y + 1][0] == 4
+      ) {
         if (firstTimeIn) {
           tempShipFound = shipFound + tempShipFound;
           firstTimeIn = false;
         }
-        if (gameBoard[x][y - tempShipFound] == 0) {
+        if (gameBoard[x][y - tempShipFound][0] == 0) {
           document.getElementById(
             "c" + x + (y - tempShipFound)
           ).style.background = "#4d88ff";
 
-          gameBoard[x][y - tempShipFound] = 3;
+          gameBoard[x][y - tempShipFound][0] = 3;
           shotsFired++;
           return;
         }
         for (var i = 1; i < 10; i++) {
           if (y - i < 0) {
             break;
-          } else if (gameBoard[x][y - i] == 1) {
+          } else if (gameBoard[x][y - i][0] == 1) {
             document.getElementById("c" + x + (y - i)).style.background = "red";
-            gameBoard[x][y - i] = 2;
+            gameBoard[x][y - i][0] = 2;
             shotsFired++;
             shipFound++;
             return;
@@ -555,17 +534,17 @@
       if (x + 1 > 9) {
         scanCounter++;
       } else {
-        if (gameBoard[x + 1][y] == 0) {
+        if (gameBoard[x + 1][y][0] == 0) {
           document.getElementById("c" + (x + 1) + y).style.background =
             "#4d88ff";
 
-          gameBoard[x + 1][y] = 3;
+          gameBoard[x + 1][y][0] = 3;
           shotsFired++;
           scanCounter++;
           return;
-        } else if (gameBoard[x + 1][y] == 1) {
+        } else if (gameBoard[x + 1][y][0] == 1) {
           document.getElementById("c" + (x + 1) + y).style.background = "red";
-          gameBoard[x + 1][y] = 2;
+          gameBoard[x + 1][y][0] = 2;
           shotsFired++;
           shipFound++;
           shipDirection = "ver";
@@ -581,17 +560,17 @@
       if (x - 1 < 0) {
         scanCounter++;
       } else {
-        if (gameBoard[x - 1][y] == 0) {
+        if (gameBoard[x - 1][y][0] == 0) {
           document.getElementById("c" + (x - 1) + y).style.background =
             "#4d88ff";
 
-          gameBoard[x - 1][y] = 3;
+          gameBoard[x - 1][y][0] = 3;
           shotsFired++;
           scanCounter++;
           return;
-        } else if (gameBoard[x - 1][y] == 1) {
+        } else if (gameBoard[x - 1][y][0] == 1) {
           document.getElementById("c" + (x - 1) + y).style.background = "red";
-          gameBoard[x - 1][y] = 2;
+          gameBoard[x - 1][y][0] = 2;
           shotsFired++;
           shipFound++;
           shipDirection = "ver";
@@ -608,17 +587,17 @@
       if (y + 1 > 9) {
         scanCounter++;
       } else {
-        if (gameBoard[x][y + 1] == 0) {
+        if (gameBoard[x][y + 1][0] == 0) {
           document.getElementById("c" + x + (y + 1)).style.background =
             "#4d88ff";
 
-          gameBoard[x][y + 1] = 3;
+          gameBoard[x][y + 1][0] = 3;
           shotsFired++;
           scanCounter++;
           return;
-        } else if (gameBoard[x][y + 1] == 1) {
+        } else if (gameBoard[x][y + 1][0] == 1) {
           document.getElementById("c" + x + (y + 1)).style.background = "red";
-          gameBoard[x][y + 1] = 2;
+          gameBoard[x][y + 1][0] = 2;
           shotsFired++;
           shipFound++;
           shipDirection = "hor";
@@ -631,15 +610,15 @@
       }
     }
     if (scanCounter == 3 && shipDirection == "") {
-      if (gameBoard[x][y - 1] == 0) {
+      if (gameBoard[x][y - 1][0] == 0) {
         document.getElementById("c" + x + (y - 1)).style.background = "#4d88ff";
-        gameBoard[x][y - 1] = 3;
+        gameBoard[x][y - 1][0] = 3;
         shotsFired++;
         scanCounter++;
         return;
-      } else if (gameBoard[x][y - 1] == 1) {
+      } else if (gameBoard[x][y - 1][0] == 1) {
         document.getElementById("c" + x + (y - 1)).style.background = "red";
-        gameBoard[x][y - 1] = 2;
+        gameBoard[x][y - 1][0] = 2;
         shotsFired++;
         shipFound++;
         shipDirection = "hor";
@@ -668,22 +647,25 @@
     } while ((x % 2 != 0 && y % 2 == 0) || (x % 2 == 0 && y % 2 != 0));
     lastShotX = x;
     lastShotY = y;
-    if (gameBoard[x][y] == 0) {
+    if (gameBoard[x][y][0] == 0) {
       document.getElementById("c" + x + y).style.background = "#4d88ff";
-      gameBoard[x][y] = 3;
+      gameBoard[x][y][0] = 3;
       shotsFired++;
-    } else if (gameBoard[x][y] == 1) {
+    } else if (gameBoard[x][y][0] == 1) {
       document.getElementById("c" + x + y).style.background = "red";
-      gameBoard[x][y] = 2;
+      gameBoard[x][y][0] = 2;
       shotsFired++;
       shipFound++;
-    } else if (gameBoard[x][y] == 2 || gameBoard[x][y] == 3 || gameBoard[x][y] == 4) {
+    } else if (
+      gameBoard[x][y][0] == 2 ||
+      gameBoard[x][y][0] == 3 ||
+      gameBoard[x][y][0] == 4
+    ) {
       searchingShot();
     }
   };
 
   var compMove = function() {
-    // console.log(gameBoard);
     if (
       document.getElementById("wintext").style.display == "block" ||
       document.getElementById("losstext").style.display == "block" ||
@@ -708,7 +690,7 @@
   var shipHitButNotSunkReassign = function() {
     for (var i = 0; i < cols; i++) {
       for (var j = 0; j < rows; j++) {
-        if (gameBoard[i][j] == 2) {
+        if (gameBoard[i][j][0] == 2) {
           lastShotX = i;
           lastShotY = j;
           return;
@@ -720,17 +702,13 @@
   var sunkColorChange = function(shipName) {
     for (var i = 0; i < cols; i++) {
       for (var j = 0; j < rows; j++) {
-        if (
-          document.getElementById("c" + i + j).classList.contains(shipName) &&
-          gameBoard[i][j] == 2
-        ) {
+        if (gameBoard[i][j][1] == shipName && gameBoard[i][j][0] == 2) {
           document.getElementById("c" + i + j).style.background = "darkred";
         }
       }
     }
   };
 
-  // document.getElementById("compfr").addEventListener("click", compMove);
   for (var i = 0; i < cols; i++) {
     for (var j = 0; j < rows; j++) {
       document.getElementById("s" + i + j).addEventListener("click", compMove);

@@ -66,7 +66,7 @@
                   document.getElementById(
                     document.getElementById("s" + coor[0] + coor[1]).className +
                       "Sunk"
-                  ).innerHTML += ' <span class="sunkText"> Sunk!</span>';
+                  ).style.display = "inline";
                 }
               }
             }
