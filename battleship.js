@@ -192,6 +192,7 @@
 
   document.addEventListener("keydown", function(event) {
     if (event.keyCode == 192) {
+      console.log(gameBoard);
       for (var i = 0; i < cols; i++) {
         for (var j = 0; j < rows; j++) {
           if (gameBoard[i][j][0] == 1) {
