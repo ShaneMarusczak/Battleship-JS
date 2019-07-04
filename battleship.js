@@ -61,7 +61,7 @@
                   for (var coor of ship) {
                     document.getElementById(
                       "s" + coor[0] + coor[1]
-                    ).style.background = "black";
+                    ).style.background = "darkred";
                   }
                   document.getElementById(
                     document.getElementById("s" + coor[0] + coor[1]).className +

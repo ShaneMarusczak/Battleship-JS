@@ -153,3 +153,11 @@ input {
   display: flex;
   flex-direction: column;
 }
+
+.notDisplayed {
+  display: none;
+}
+
+.inline {
+  display: inline;
+}
