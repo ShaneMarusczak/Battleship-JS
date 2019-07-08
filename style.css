@@ -64,13 +64,6 @@ input {
   cursor: pointer;
 }
 
-#shotsblock,
-#shotsleftblock {
-  width: 250px;
-  margin: 0px;
-  padding: 0px;
-}
-
 #shiplist,
 #shiplist_2 {
   margin-top: 0;
