@@ -45,9 +45,11 @@
       if (gameBoard[row][col][0] == 0) {
         e.target.style.background = "#4d88ff";
         gameBoard[row][col][0] = 3;
+        document.getElementById("s" + row + col).classList.add("miss");
       } else if (gameBoard[row][col][0] == 1) {
         e.target.style.background = "red";
         gameBoard[row][col][0] = 2;
+        document.getElementById("s" + row + col).classList.add("hit");
         hitCount++;
         for (var ship of ships) {
           for (var coor of ship) {
@@ -103,6 +105,9 @@
           for (var i = 0; i < len; i++) {
             gameBoard[row][col - i][0] = 1;
             gameBoard[row][col - i][1] = name;
+            document
+              .getElementById("s" + row + (col - i))
+              .classList.add("ship");
             ship.push([row, col - i]);
           }
         } else {
@@ -118,6 +123,9 @@
           for (var i = 0; i < len; i++) {
             gameBoard[row][col + i][0] = 1;
             gameBoard[row][col + i][1] = name;
+            document
+              .getElementById("s" + row + (col + i))
+              .classList.add("ship");
             ship.push([row, col + i]);
           }
         } else {
@@ -135,6 +143,9 @@
           for (var i = 0; i < len; i++) {
             gameBoard[row - i][col][0] = 1;
             gameBoard[row - i][col][1] = name;
+            document
+              .getElementById("s" + (row - i) + col)
+              .classList.add("ship");
             ship.push([row - i, col]);
           }
         } else {
@@ -150,6 +161,9 @@
           for (var i = 0; i < len; i++) {
             gameBoard[row + i][col][0] = 1;
             gameBoard[row + i][col][1] = name;
+            document
+              .getElementById("s" + (row + i) + col)
+              .classList.add("ship");
             ship.push([row + i, col]);
           }
         } else {

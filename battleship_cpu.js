@@ -396,6 +396,13 @@
           document
             .getElementById("s" + i + j)
             .removeEventListener("click", compMove);
+          if (
+            document.getElementById("s" + i + j).classList.contains("ship") &&
+            !document.getElementById("s" + i + j).classList.contains("hit") &&
+            !document.getElementById("s" + i + j).classList.contains("miss")
+          ) {
+            document.getElementById("s" + i + j).style.background = "black";
+          }
         }
       }
     }
