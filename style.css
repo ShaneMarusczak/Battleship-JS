@@ -1,156 +1,157 @@
 @import url("https://fonts.googleapis.com/css?family=Orbitron&display=swap");
 
 body {
-  margin: 40px auto;
-  width: 70%;
-  background-color: cornsilk;
-  font-family: "Orbitron", sans-serif;
+	margin: 40px auto;
+	width: 70%;
+	background-color: cornsilk;
+	font-family: "Orbitron", sans-serif;
 }
 
 p {
-  margin: 0;
+	margin: 0;
 }
 
 h1 {
-  margin: 0;
-  font-size: 3em;
-  font-weight: bolder;
+	margin: 0;
+	font-size: 3em;
+	font-weight: bolder;
 }
 
 p,
 button,
 input {
-  font-size: 1.5em;
-  line-height: 1.4em;
-  color: #333;
+	font-size: 1.5em;
+	line-height: 1.4em;
+	color: #333;
 }
 
 #gameboard,
 #gameboard_cpu {
-  position: relative;
-  margin: 25px;
-  width: 500px;
-  height: 500px;
+	position: relative;
+	margin: 25px;
+	width: 500px;
+	height: 500px;
 }
 
 #ships div:hover {
-  background-color: gray;
+	background-color: gray;
 }
 
 #gameboard div,
 #gameboard_cpu div {
-  position: absolute;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  background: #f6f8f9;
-  border: 1px solid #ddd;
-  width: 50px;
-  height: 50px;
+	position: absolute;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	background: #f6f8f9;
+	border: 1px solid #ddd;
+	width: 50px;
+	height: 50px;
 }
 
 #gameboard div {
-  cursor: url(cross-hair-cursor.png) 16 16, auto;
+	cursor: url(cross-hair-cursor.png) 16 16, auto;
 }
 
 #ships {
-  display: flex;
+	display: flex;
 }
 
 #ships div {
-  padding: 2px;
-  border-style: solid;
-  margin: 6px;
-  cursor: pointer;
+	padding: 2px;
+	border-style: solid;
+	margin: 6px;
+	cursor: pointer;
 }
 
 #shiplist,
 #shiplist_2 {
-  margin-top: 0;
+	margin-top: 0;
 }
 
 #wintext,
 #losstext {
-  margin-bottom: 10px;
-  display: none;
+	margin-bottom: 10px;
+	display: none;
 }
 
 #sunkships {
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 5px;
+	display: flex;
+	flex-direction: row;
+	margin-bottom: 5px;
 }
 
 #info_2 {
-  display: flex;
+	display: flex;
 }
 
 #rotate,
 #strtOvrBtn {
-  font-family: "Orbitron", sans-serif;
+	font-family: "Orbitron", sans-serif;
 }
 
 #strtOvrBtn {
-  margin-top: 25px;
+	margin-top: 25px;
 }
 
 #btns {
-  width: 175px;
-  margin-right: 75px;
-  font-family: "Orbitron", sans-serif;
-  display: flex;
-  flex-direction: column;
+	width: 175px;
+	margin-right: 75px;
+	font-family: "Orbitron", sans-serif;
+	display: flex;
+	flex-direction: column;
 }
 
 #boards {
-  display: flex;
-  width: auto;
+	display: flex;
+	width: auto;
 }
 
 #shiplist {
-  margin-left: 15vw;
+	margin-left: 15vw;
 }
+
 #shiplist_2 {
-  width: 190px;
+	width: 190px;
 }
 
 #ready {
-  display: none;
+	display: none;
 }
 
 @media screen and (max-width: 1500px) {
-  #boards {
-    flex-direction: column;
-  }
+	#boards {
+		flex-direction: column;
+	}
 }
 
 .clicked {
-  background-color: gray;
+	background-color: gray;
 }
 
 .sunkText {
-  color: red;
-  display: none;
+	color: red;
+	display: none;
 }
 
 #updateText {
-  font-size: small;
-  margin-top: 10px;
+	font-size: small;
+	margin-top: 10px;
 }
 
 #analysisLink {
-  margin-top: 10px;
+	margin-top: 10px;
 }
 
 #links {
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 .notDisplayed {
-  display: none;
+	display: none;
 }
 
 .inline {
-  display: inline;
+	display: inline;
 }
