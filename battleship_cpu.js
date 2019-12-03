@@ -1,3 +1,8 @@
+/* eslint-disable prefer-destructuring */
+/* eslint-disable no-tabs */
+/* eslint-disable spaced-comment */
+/* eslint-disable multiline-comment-style */
+/* eslint-disable arrow-parens */
 /*eslint-disable no-console */
 /*eslint-disable no-redeclare */
 /*
@@ -594,18 +599,22 @@
 	var searchingShot = function () {
 		var x;
 		var y;
-		do {
-			if (shotsFired < 6) {
-				x = randomIntFromInterval(3, 7);
-				y = randomIntFromInterval(3, 7);
-			} else if (shotsFired < 12) {
-				x = randomIntFromInterval(2, 8);
-				y = randomIntFromInterval(2, 8);
-			} else {
-				x = randomIntFromInterval(0, 9);
-				y = randomIntFromInterval(0, 9);
-			}
-		} while ((x % 2 != 0 && y % 2 == 0) || (x % 2 == 0 && y % 2 != 0));
+		var location = probabilityCalculator();
+		x = location[0];
+		y = location[1];
+		resetProbabilityChart();
+		// do {
+		// 	if (shotsFired < 6) {
+		// 		x = randomIntFromInterval(3, 7);
+		// 		y = randomIntFromInterval(3, 7);
+		// 	} else if (shotsFired < 12) {
+		// 		x = randomIntFromInterval(2, 8);
+		// 		y = randomIntFromInterval(2, 8);
+		// 	} else {
+		// 		x = randomIntFromInterval(0, 9);
+		// 		y = randomIntFromInterval(0, 9);
+		// 	}
+		// } while ((x % 2 != 0 && y % 2 == 0) || (x % 2 == 0 && y % 2 != 0));
 		lastShotX = x;
 		lastShotY = y;
 		if (gameBoard[x][y][0] == 0) {
@@ -646,6 +655,7 @@
 		}
 		shipSunkChecker();
 		gaveOverChecker();
+		probabilityCalculator();
 	};
 
 	var shipHitButNotSunkReassign = function () {
@@ -670,8 +680,76 @@
 		}
 	};
 
+	var probabilityCalculator = function () {
+		var longestLength;
+		var counter = 0;
+		if (!carrierSunk) {
+			longestLength = 5;
+		} else if (!battleshipSunk) {
+			longestLength = 4;
+		} else if (!submarineSunk || !cruiserSunk) {
+			longestLength = 2;
+		} else {
+			longestLength = 2;
+		}
+		for (var i = 0; i < rows; i++) {
+			for (var j = 0; j < rows - longestLength + 1; j++) {
+				for (var k = 0; k < longestLength; k++) {
+					if (gameBoard[i][j + k][0] !== 2 && gameBoard[i][j + k][0] !== 3) {
+						counter++;
+					}
+				}
+				if (counter === longestLength) {
+					for (var k = 0; k < longestLength; k++) {
+						probabilityChart[i][j + k]++;
+					}
+				}
+				counter = 0;
+			}
+		}
+		for (var i = 0; i < cols; i++) {
+			for (var j = 0; j < cols - longestLength + 1; j++) {
+				for (var k = 0; k < longestLength; k++) {
+					if (gameBoard[j + k][i][0] !== 2 && gameBoard[j + k][i][0] !== 3) {
+						counter++;
+					}
+				}
+				if (counter === longestLength) {
+					for (var k = 0; k < longestLength; k++) {
+						probabilityChart[j + k][i]++;
+					}
+				}
+				counter = 0;
+			}
+		}
+		var currentMax = 0;
+		var x;
+		var y;
+		for (var i = 0; i < cols; i++) {
+			for (var j = 0; j < rows; j++) {
+				if (probabilityChart[i][j] > currentMax) {
+					currentMax = probabilityChart[i][j];
+					x = i;
+					y = j;
+				}
+			}
+		}
+		return [x, y];
+	};
+
+	var resetProbabilityChart = function() {
+		for (let i = 0; i < cols; i++) {
+			for (let j = 0; j < rows; j++) {
+				probabilityChart[i][j] = 0;
+			}
+		}
+	};
+	var probabilityChart = [];
+
 	for (var i = 0; i < cols; i++) {
+		probabilityChart.push([]);
 		for (var j = 0; j < rows; j++) {
+			probabilityChart[i].push(0);
 			document.getElementById("s" + i + j).addEventListener("click", compMove);
 		}
 	}
