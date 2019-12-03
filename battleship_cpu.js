@@ -46,6 +46,12 @@
 	var direction = "hor";
 	var gameOver = false;
 	var probabilityChart = [];
+	var shotsfired = 0;
+
+	function randomIntFromInterval(min, max) {
+		//inclusive
+		return Math.floor(Math.random() * (max - min + 1) + min);
+	}
 
 	var shipSunkHelper = function (num, sunkShipName) {
 		document.getElementById(sunkShipName + "Sunk_cpu").classList.add("inline");
@@ -411,12 +417,14 @@
 					document.getElementById("c" + (x + 1) + y).style.background =
 						"#4d88ff";
 					gameBoard[x + 1][y][0] = 3;
+					shotsfired++;
 					return;
 				} else if (gameBoard[x + 1][y][0] == 1) {
 					document.getElementById("c" + (x + 1) + y).style.background = "red";
 					gameBoard[x + 1][y][0] = 2;
 					shipFound++;
 					lastShotX++;
+					shotsfired++;
 					return;
 				}
 			}
@@ -433,11 +441,13 @@
 						document.getElementById("c" + (x - i) + y).style.background =
 							"#4d88ff";
 						gameBoard[x - i][y][0] = 3;
+						shotsfired++;
 						return;
 					} else if (gameBoard[x - i][y][0] == 1) {
 						document.getElementById("c" + (x - i) + y).style.background = "red";
 						gameBoard[x - i][y][0] = 2;
 						shipFound++;
+						shotsfired++;
 						return;
 					}
 				}
@@ -451,12 +461,14 @@
 					document.getElementById("c" + x + (y + 1)).style.background =
 						"#4d88ff";
 					gameBoard[x][y + 1][0] = 3;
+					shotsfired++;
 					return;
 				} else if (gameBoard[x][y + 1][0] == 1) {
 					document.getElementById("c" + x + (y + 1)).style.background = "red";
 					gameBoard[x][y + 1][0] = 2;
 					shipFound++;
 					lastShotY++;
+					shotsfired++;
 					return;
 				}
 			}
@@ -473,11 +485,13 @@
 						document.getElementById("c" + x + (y - i)).style.background =
 							"#4d88ff";
 						gameBoard[x][y - i][0] = 3;
+						shotsfired++;
 						return;
 					} else if (gameBoard[x][y - i][0] == 1) {
 						document.getElementById("c" + x + (y - i)).style.background = "red";
 						gameBoard[x][y - i][0] = 2;
 						shipFound++;
+						shotsfired++;
 						return;
 					}
 				}
@@ -494,6 +508,7 @@
 						"#4d88ff";
 					gameBoard[x + 1][y][0] = 3;
 					scanCounter++;
+					shotsfired++;
 					return;
 				} else if (gameBoard[x + 1][y][0] == 1) {
 					document.getElementById("c" + (x + 1) + y).style.background = "red";
@@ -502,6 +517,7 @@
 					shipDirection = "ver";
 					scanCounter = 0;
 					lastShotX++;
+					shotsfired++;
 					return;
 				} else {
 					scanCounter++;
@@ -517,6 +533,7 @@
 						"#4d88ff";
 					gameBoard[x - 1][y][0] = 3;
 					scanCounter++;
+					shotsfired++;
 					return;
 				} else if (gameBoard[x - 1][y][0] == 1) {
 					document.getElementById("c" + (x - 1) + y).style.background = "red";
@@ -525,6 +542,7 @@
 					shipDirection = "ver";
 					scanCounter = 0;
 					lastShotX--;
+					shotsfired++;
 					return;
 				} else {
 					scanCounter++;
@@ -540,6 +558,7 @@
 						"#4d88ff";
 					gameBoard[x][y + 1][0] = 3;
 					scanCounter++;
+					shotsfired++;
 					return;
 				} else if (gameBoard[x][y + 1][0] == 1) {
 					document.getElementById("c" + x + (y + 1)).style.background = "red";
@@ -548,6 +567,7 @@
 					shipDirection = "hor";
 					scanCounter = 0;
 					lastShotY++;
+					shotsfired++;
 					return;
 				} else {
 					scanCounter++;
@@ -559,6 +579,7 @@
 				document.getElementById("c" + x + (y - 1)).style.background = "#4d88ff";
 				gameBoard[x][y - 1][0] = 3;
 				scanCounter++;
+				shotsfired++;
 				return;
 			} else if (gameBoard[x][y - 1][0] == 1) {
 				document.getElementById("c" + x + (y - 1)).style.background = "red";
@@ -567,6 +588,7 @@
 				shipDirection = "hor";
 				scanCounter = 0;
 				lastShotY--;
+				shotsfired++;
 				return;
 			}
 		}
@@ -575,19 +597,33 @@
 	var searchingShot = function () {
 		var x;
 		var y;
-		var location = probabilityCalculator();
-		x = location[0];
-		y = location[1];
-		resetProbabilityChart();
+		if (shotsfired < 11) {
+			do {
+				if (shotsfired < 5) {
+					x = randomIntFromInterval(3, 6);
+					y = randomIntFromInterval(3, 6);
+				} else if (shotsfired < 11) {
+					x = randomIntFromInterval(2, 7);
+					y = randomIntFromInterval(2, 7);
+				}
+			} while ((x % 2 != 0 && y % 2 == 0) || (x % 2 == 0 && y % 2 != 0));
+		} else {
+			var location = probabilityCalculator();
+			x = location[0];
+			y = location[1];
+			resetProbabilityChart();
+		}
 		lastShotX = x;
 		lastShotY = y;
 		if (gameBoard[x][y][0] == 0) {
 			document.getElementById("c" + x + y).style.background = "#4d88ff";
 			gameBoard[x][y][0] = 3;
+			shotsfired++;
 		} else if (gameBoard[x][y][0] == 1) {
 			document.getElementById("c" + x + y).style.background = "red";
 			gameBoard[x][y][0] = 2;
 			shipFound++;
+			shotsfired++;
 		} else if (
 			gameBoard[x][y][0] == 2 ||
 			gameBoard[x][y][0] == 3 ||
