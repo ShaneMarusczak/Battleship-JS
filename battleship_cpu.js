@@ -649,14 +649,14 @@
 		} else if (!battleshipSunk) {
 			longestLength = 4;
 		} else if (!submarineSunk || !cruiserSunk) {
-			longestLength = 2;
+			longestLength = 3;
 		} else {
 			longestLength = 2;
 		}
 		for (var i = 0; i < rows; i++) {
 			for (var j = 0; j < rows - longestLength + 1; j++) {
 				for (var k = 0; k < longestLength; k++) {
-					if (gameBoard[i][j + k][0] !== 2 && gameBoard[i][j + k][0] !== 3) {
+					if (gameBoard[i][j + k][0] !== 2 && gameBoard[i][j + k][0] !== 3 && gameBoard[i][j + k][0] !== 4) {
 						counter++;
 					}
 				}
@@ -671,7 +671,7 @@
 		for (var i = 0; i < cols; i++) {
 			for (var j = 0; j < cols - longestLength + 1; j++) {
 				for (var k = 0; k < longestLength; k++) {
-					if (gameBoard[j + k][i][0] !== 2 && gameBoard[j + k][i][0] !== 3) {
+					if (gameBoard[j + k][i][0] !== 2 && gameBoard[j + k][i][0] !== 3 && gameBoard[j + k][i][0] !== 4) {
 						counter++;
 					}
 				}
