@@ -1,6 +1,9 @@
+/*eslint-disable no-implicit-globals */
 /*eslint-disable no-console */
 /*eslint-disable no-redeclare */
 "use strict";
+//eslint-disable-next-line no-unused-vars
+var exportedGameBoard;
 (function() {
 	const rows = 10;
 	const cols = 10;
@@ -191,6 +194,7 @@
 	placeShip(3);
 	placeShip(3);
 	placeShip(2);
+	exportedGameBoard = gameBoard;
 
 	for (var i = 0; i < cols; i++) {
 		for (var j = 0; j < rows; j++) {
