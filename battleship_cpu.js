@@ -591,14 +591,14 @@
 	var searchingShot = function () {
 		var x;
 		var y;
-		if (shotsfired < 11) {
+		if (shotsfired < 10) {
 			do {
-				if (shotsfired < 5) {
-					x = randomIntFromInterval(3, 6);
-					y = randomIntFromInterval(3, 6);
-				} else if (shotsfired < 11) {
+				if (shotsfired < 4) {
 					x = randomIntFromInterval(2, 7);
 					y = randomIntFromInterval(2, 7);
+				} else {
+					x = randomIntFromInterval(1, 8);
+					y = randomIntFromInterval(1, 8);
 				}
 			} while ((x % 2 != 0 && y % 2 == 0) || (x % 2 == 0 && y % 2 != 0));
 		} else {
