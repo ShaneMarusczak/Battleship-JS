@@ -141,10 +141,11 @@ input {
 
 #analysisLink {
 	margin-top: 10px;
+	width: 76px;
 }
 
 #links {
-	display: flex;
+	display: inline-flex;
 	flex-direction: column;
 }
 
