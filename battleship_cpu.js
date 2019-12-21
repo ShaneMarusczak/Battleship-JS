@@ -591,7 +591,7 @@
 	var searchingShot = function () {
 		var x;
 		var y;
-		if (shotsfired < 10) {
+		if (shotsfired < 8) {
 			do {
 				if (shotsfired < 4) {
 					x = randomIntFromInterval(2, 7);
