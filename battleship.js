@@ -1,7 +1,6 @@
+"use strict";
 /*eslint-disable no-implicit-globals */
 /*eslint-disable no-console */
-/*eslint-disable no-redeclare */
-"use strict";
 //eslint-disable-next-line no-unused-vars
 var exportedGameBoard;
 (function() {
@@ -9,11 +8,11 @@ var exportedGameBoard;
 	const cols = 10;
 	const squareSize = 50;
 	const winningHitCount = 17;
-	var gameBoard = [];
-	var gameBoardContainer = document.getElementById("gameboard");
-	var strtOvrBtn = document.getElementById("strtOvrBtn");
-	var hitCount = 0;
-	var ships = [];
+	const gameBoard = [];
+	const gameBoardContainer = document.getElementById("gameboard");
+	const strtOvrBtn = document.getElementById("strtOvrBtn");
+	let hitCount = 0;
+	const ships = [];
 
 	gameBoardContainer.addEventListener("click", fireTorpedo, false);
 	strtOvrBtn.addEventListener("click", () => location.reload());
@@ -23,15 +22,15 @@ var exportedGameBoard;
 		return Math.floor(Math.random() * (max - min + 1) + min);
 	}
 
-	var currentColor;
-	var hoverColor = function(e) {
+	let currentColor;
+	const hoverColor = function(e) {
 		currentColor = e.target.style.background;
 		if (e.target.style.background === "rgb(128, 170, 255)") {
 			e.target.style.background = "#87CEFA";
 		}
 	};
 
-	var resetHoverColor = function(e) {
+	const resetHoverColor = function(e) {
 		e.target.style.background = currentColor;
 	};
 
@@ -43,11 +42,11 @@ var exportedGameBoard;
 			return;
 		}
 
-		var shipSunkCounter = 0;
+		let shipSunkCounter = 0;
 
 		if (e.target !== e.currentTarget) {
-			var row = e.target.id.substring(1, 2);
-			var col = e.target.id.substring(2, 3);
+			const row = e.target.id.substring(1, 2);
+			const col = e.target.id.substring(2, 3);
 
 			if (gameBoard[row][col][0] == 0) {
 				e.target.style.background = "#4d88ff";
@@ -60,16 +59,16 @@ var exportedGameBoard;
 				document.getElementById("s" + row + col).classList.add("hit");
 				currentColor = "red";
 				hitCount++;
-				for (var ship of ships) {
-					for (var coor of ship) {
+				for (const ship of ships) {
+					for (const coor of ship) {
 						if (coor[0] == row && coor[1] == col) {
-							for (var coor of ship) {
+							for (const coor of ship) {
 								if (gameBoard[coor[0]][coor[1]][0] == 2) {
 									shipSunkCounter++;
 								}
 								if (shipSunkCounter == ship.length) {
 									currentColor = "darkred";
-									for (var coor of ship) {
+									for (const coor of ship) {
 										document.getElementById(
 											"s" + coor[0] + coor[1]
 										).style.background = "darkred";
@@ -94,25 +93,25 @@ var exportedGameBoard;
 		e.stopPropagation();
 	}
 
-	var nameIndex = 0;
-	var names = ["Carrier", "Battleship", "Cruiser", "Submarine", "Destroyer"];
+	let nameIndex = 0;
+	const names = ["Carrier", "Battleship", "Cruiser", "Submarine", "Destroyer"];
 
 	function placeShip(len) {
-		var ship = [];
-		var name = names[nameIndex];
-		var dir = randomIntFromInterval(1, 2);
-		var row = randomIntFromInterval(0, 9);
-		var col = randomIntFromInterval(0, 9);
-		var shipPlaceCounter = 0;
+		const ship = [];
+		const name = names[nameIndex];
+		const dir = randomIntFromInterval(1, 2);
+		const row = randomIntFromInterval(0, 9);
+		const col = randomIntFromInterval(0, 9);
+		let shipPlaceCounter = 0;
 		if (dir == 1) {
 			if (col >= len - 1) {
-				for (var i = 0; i < len; i++) {
+				for (let i = 0; i < len; i++) {
 					if (gameBoard[row][col - i][0] == 0) {
 						shipPlaceCounter++;
 					}
 				}
 				if (shipPlaceCounter == len) {
-					for (var i = 0; i < len; i++) {
+					for (let i = 0; i < len; i++) {
 						gameBoard[row][col - i][0] = 1;
 						gameBoard[row][col - i][1] = name;
 						ship.push([row, col - i]);
@@ -121,13 +120,13 @@ var exportedGameBoard;
 					placeShip(len);
 				}
 			} else {
-				for (var i = 0; i < len; i++) {
+				for (let i = 0; i < len; i++) {
 					if (gameBoard[row][col + i][0] == 0) {
 						shipPlaceCounter++;
 					}
 				}
 				if (shipPlaceCounter == len) {
-					for (var i = 0; i < len; i++) {
+					for (let i = 0; i < len; i++) {
 						gameBoard[row][col + i][0] = 1;
 						gameBoard[row][col + i][1] = name;
 						ship.push([row, col + i]);
@@ -138,13 +137,13 @@ var exportedGameBoard;
 			}
 		} else {
 			if (row >= len - 1) {
-				for (var i = 0; i < len; i++) {
+				for (let i = 0; i < len; i++) {
 					if (gameBoard[row - i][col][0] == 0) {
 						shipPlaceCounter++;
 					}
 				}
 				if (shipPlaceCounter == len) {
-					for (var i = 0; i < len; i++) {
+					for (let i = 0; i < len; i++) {
 						gameBoard[row - i][col][0] = 1;
 						gameBoard[row - i][col][1] = name;
 						ship.push([row - i, col]);
@@ -153,13 +152,13 @@ var exportedGameBoard;
 					placeShip(len);
 				}
 			} else {
-				for (var i = 0; i < len; i++) {
+				for (let i = 0; i < len; i++) {
 					if (gameBoard[row + i][col][0] == 0) {
 						shipPlaceCounter++;
 					}
 				}
 				if (shipPlaceCounter == len) {
-					for (var i = 0; i < len; i++) {
+					for (let i = 0; i < len; i++) {
 						gameBoard[row + i][col][0] = 1;
 						gameBoard[row + i][col][1] = name;
 						ship.push([row + i, col]);
@@ -175,15 +174,15 @@ var exportedGameBoard;
 		}
 	}
 
-	for (var i = 0; i < cols; i++) {
+	for (let i = 0; i < cols; i++) {
 		gameBoard.push([]);
-		for (var j = 0; j < rows; j++) {
+		for (let j = 0; j < rows; j++) {
 			gameBoard[i].push([0, ""]);
-			var square = document.createElement("div");
+			const square = document.createElement("div");
 			gameBoardContainer.appendChild(square);
 			square.id = "s" + j + i;
-			var topPosition = j * squareSize;
-			var leftPosition = i * squareSize;
+			const topPosition = j * squareSize;
+			const leftPosition = i * squareSize;
 			square.style.top = topPosition + "px";
 			square.style.left = leftPosition + "px";
 		}
@@ -196,8 +195,8 @@ var exportedGameBoard;
 	placeShip(2);
 	exportedGameBoard = gameBoard;
 
-	for (var i = 0; i < cols; i++) {
-		for (var j = 0; j < rows; j++) {
+	for (let i = 0; i < cols; i++) {
+		for (let j = 0; j < rows; j++) {
 			document.getElementById("s" + i + j).style.background = "rgb(128, 170, 255)";
 			document.getElementById("s" + i + j).addEventListener("mouseover", hoverColor);
 			document.getElementById("s" + i + j).addEventListener("mouseleave", resetHoverColor);
@@ -207,8 +206,8 @@ var exportedGameBoard;
 	document.addEventListener("keydown", function(event) {
 		if (event.keyCode == 192) {
 			console.log(gameBoard);
-			for (var i = 0; i < cols; i++) {
-				for (var j = 0; j < rows; j++) {
+			for (let i = 0; i < cols; i++) {
+				for (let j = 0; j < rows; j++) {
 					if (gameBoard[i][j][0] == 1) {
 						document.getElementById("s" + i + j).style.background = "white";
 					}

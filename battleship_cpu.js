@@ -1,65 +1,55 @@
-/*eslint-disable prefer-destructuring */
-/*eslint-disable no-tabs */
-/* eslint-disable spaced-comment */
-/* eslint-disable multiline-comment-style */
-/* eslint-disable arrow-parens */
-/*eslint-disable no-console */
-/*eslint-disable no-redeclare */
-/*
- * This code is under a lot of development.
- * There is a lot of refactoring and clean up that needs to be done.
- * When I am satisfied it is working correctly I will perform a major cleanup.
- */
 "use strict";
+/*eslint-disable prefer-destructuring */
+/*eslint-disable no-console */
 (function () {
 	const rows = 10;
 	const cols = 10;
 	const cellSize = 50;
-	var shipFound = 0;
-	var shipsPlaced = 0;
-	var size;
-	var gameBoard = [];
-	var allShipsPlaced = false;
-	var placedCarrier = false;
-	var placedBattleship = false;
-	var placedCruiser = false;
-	var placedSubmarine = false;
-	var placedDetroyer = false;
-	var carrierSunk = false;
-	var battleshipSunk = false;
-	var cruiserSunk = false;
-	var submarineSunk = false;
-	var destroyerSunk = false;
-	var gameBoardContainer = document.getElementById("gameboard_cpu");
-	var carrier = document.getElementById("carrier");
-	var battleship = document.getElementById("battleship");
-	var cruiser = document.getElementById("cruiser");
-	var submarine = document.getElementById("submarine");
-	var destroyer = document.getElementById("destroyer");
-	var placed;
-	var placedShips = [];
-	var lastShotX;
-	var lastShotY;
-	var ships = [carrier, battleship, cruiser, submarine, destroyer];
-	var shipDirection = "";
-	var scanCounter = 0;
-	var direction = "hor";
-	var gameOver = false;
-	var probabilityChart = [];
-	var shotsfired = 0;
+	let shipFound = 0;
+	let shipsPlaced = 0;
+	let size;
+	const gameBoard = [];
+	let allShipsPlaced = false;
+	let placedCarrier = false;
+	let placedBattleship = false;
+	let placedCruiser = false;
+	let placedSubmarine = false;
+	let placedDetroyer = false;
+	let carrierSunk = false;
+	let battleshipSunk = false;
+	let cruiserSunk = false;
+	let submarineSunk = false;
+	let destroyerSunk = false;
+	const gameBoardContainer = document.getElementById("gameboard_cpu");
+	const carrier = document.getElementById("carrier");
+	const battleship = document.getElementById("battleship");
+	const cruiser = document.getElementById("cruiser");
+	const submarine = document.getElementById("submarine");
+	const destroyer = document.getElementById("destroyer");
+	let placed;
+	const placedShips = [];
+	let lastShotX;
+	let lastShotY;
+	const ships = [carrier, battleship, cruiser, submarine, destroyer];
+	let shipDirection = "";
+	let scanCounter = 0;
+	let direction = "hor";
+	let gameOver = false;
+	const probabilityChart = [];
+	let shotsfired = 0;
 
 	function randomIntFromInterval(min, max) {
 		//inclusive
 		return Math.floor(Math.random() * (max - min + 1) + min);
 	}
 
-	var shipSunkHelper = function (num, sunkShipName) {
+	const shipSunkHelper = function (num, sunkShipName) {
 		document.getElementById(sunkShipName + "Sunk_cpu").classList.add("inline");
 		sunkColorChange(sunkShipName);
 		shipFound = shipFound - num;
 		shipDirection = "";
-		for (var i = 0; i < cols; i++) {
-			for (var j = 0; j < rows; j++) {
+		for (let i = 0; i < cols; i++) {
+			for (let j = 0; j < rows; j++) {
 				if (gameBoard[i][j][1] == sunkShipName) {
 					gameBoard[i][j][0] = 4;
 				}
@@ -68,9 +58,9 @@
 		shipHitButNotSunkReassign();
 	};
 
-	var rotateShip = function () {
-		for (var i = 0; i < cols; i++) {
-			for (var j = 0; j < rows; j++) {
+	const rotateShip = function () {
+		for (let i = 0; i < cols; i++) {
+			for (let j = 0; j < rows; j++) {
 				if (direction == "hor") {
 					document
 						.getElementById("c" + i + j)
@@ -95,23 +85,23 @@
 		}
 	};
 
-	var rotatedHighlight = function () {
+	const rotatedHighlight = function () {
 		if (Number(this.id[1]) < rows + 1 - size) {
-			for (var i = 0; i < cols; i++) {
-				for (var j = 0; j < rows; j++) {
+			for (let i = 0; i < cols; i++) {
+				for (let j = 0; j < rows; j++) {
 					document
 						.getElementById("c" + i + j)
 						.addEventListener("click", placeShip);
 				}
 			}
-			for (var i = 0; i < size; i++) {
+			for (let i = 0; i < size; i++) {
 				document.getElementById(
 					this.id[0] + (Number(this.id[1]) + i) + this.id[2]
 				).style.background = "black";
 			}
 		} else {
-			for (var i = 0; i < cols; i++) {
-				for (var j = 0; j < rows; j++) {
+			for (let i = 0; i < cols; i++) {
+				for (let j = 0; j < rows; j++) {
 					document
 						.getElementById("c" + i + j)
 						.removeEventListener("click", placeShip);
@@ -120,23 +110,23 @@
 		}
 	};
 
-	var highlight = function () {
+	const highlight = function () {
 		if (Number(this.id[2]) < cols + 1 - size) {
-			for (var i = 0; i < cols; i++) {
-				for (var j = 0; j < rows; j++) {
+			for (let i = 0; i < cols; i++) {
+				for (let j = 0; j < rows; j++) {
 					document
 						.getElementById("c" + i + j)
 						.addEventListener("click", placeShip);
 				}
 			}
-			for (var i = 0; i < size; i++) {
+			for (let i = 0; i < size; i++) {
 				document.getElementById(
 					this.id[0] + this.id[1] + (Number(this.id[2]) + i)
 				).style.background = "black";
 			}
 		} else {
-			for (var i = 0; i < cols; i++) {
-				for (var j = 0; j < rows; j++) {
+			for (let i = 0; i < cols; i++) {
+				for (let j = 0; j < rows; j++) {
 					document
 						.getElementById("c" + i + j)
 						.removeEventListener("click", placeShip);
@@ -145,9 +135,9 @@
 		}
 	};
 
-	var resetColor = function () {
-		for (var i = 0; i < cols; i++) {
-			for (var j = 0; j < rows; j++) {
+	const resetColor = function () {
+		for (let i = 0; i < cols; i++) {
+			for (let j = 0; j < rows; j++) {
 				if (gameBoard[i][j][0] == 0) {
 					document.getElementById("c" + i + j).style.background = "#80aaff";
 				}
@@ -155,25 +145,25 @@
 		}
 	};
 
-	var placeShip = function () {
+	const placeShip = function () {
 		if (allShipsPlaced) {
 			return;
 		}
-		var ship = [];
-		var canPlace = true;
-		var x = Number(this.id[1]);
-		var y = Number(this.id[2]);
+		const ship = [];
+		let canPlace = true;
+		const x = Number(this.id[1]);
+		const y = Number(this.id[2]);
 
-		for (var placedShip of placedShips) {
-			for (var coor of placedShip) {
+		for (const placedShip of placedShips) {
+			for (const coor of placedShip) {
 				if (direction == "hor") {
-					for (var i = 0; i < size; i++) {
+					for (let i = 0; i < size; i++) {
 						if (x == coor[0] && y + i == coor[1]) {
 							canPlace = false;
 						}
 					}
 				} else {
-					for (var i = 0; i < size; i++) {
+					for (let i = 0; i < size; i++) {
 						if (x + i == coor[0] && y == coor[1]) {
 							canPlace = false;
 						}
@@ -185,8 +175,8 @@
 			alert("Can not place ship here!");
 		}
 		if (canPlace) {
-			for (var i = 0; i < cols; i++) {
-				for (var j = 0; j < rows; j++) {
+			for (let i = 0; i < cols; i++) {
+				for (let j = 0; j < rows; j++) {
 					if (
 						document.getElementById("c" + i + j).style.background == "black" &&
 						gameBoard[i][j][1] == ""
@@ -238,8 +228,8 @@
 				alert("All ships Placed!");
 				document.getElementById("ready").style.display = "block";
 				allShipsPlaced = true;
-				for (var i = 0; i < cols; i++) {
-					for (var j = 0; j < rows; j++) {
+				for (let i = 0; i < cols; i++) {
+					for (let j = 0; j < rows; j++) {
 						document
 							.getElementById("c" + i + j)
 							.removeEventListener("mouseleave", resetColor);
@@ -251,14 +241,14 @@
 		}
 	};
 
-	var shipSunkChecker = function () {
-		var carrierCounter = 0;
-		var battleshipCounter = 0;
-		var cruiserCounter = 0;
-		var submarineCounter = 0;
-		var destroyerCounter = 0;
-		for (var i = 0; i < cols; i++) {
-			for (var j = 0; j < rows; j++) {
+	const shipSunkChecker = function () {
+		let carrierCounter = 0;
+		let battleshipCounter = 0;
+		let cruiserCounter = 0;
+		let submarineCounter = 0;
+		let destroyerCounter = 0;
+		for (let i = 0; i < cols; i++) {
+			for (let j = 0; j < rows; j++) {
 				if (
 					gameBoard[i][j][1] == "carrier" &&
 					gameBoard[i][j][0] == 2 &&
@@ -318,9 +308,9 @@
 		}
 	};
 
-	var allShips = ["carrier", "battleship", "cruiser", "submarine", "destroyer"];
-	var placeShipSetup = function () {
-		for (var ship of allShips) {
+	const allShips = ["carrier", "battleship", "cruiser", "submarine", "destroyer"];
+	const placeShipSetup = function () {
+		for (const ship of allShips) {
 			if (this.id != ship) {
 				document.getElementById(ship).classList.remove("clicked");
 			}
@@ -345,22 +335,22 @@
 		}
 	};
 
-	for (var i = 0; i < cols; i++) {
+	for (let i = 0; i < cols; i++) {
 		gameBoard.push([]);
-		for (var j = 0; j < rows; j++) {
+		for (let j = 0; j < rows; j++) {
 			gameBoard[i].push([0, ""]);
-			var cell = document.createElement("div");
+			const cell = document.createElement("div");
 			gameBoardContainer.appendChild(cell);
 			cell.id = "c" + j + i;
-			var topPosition = j * cellSize;
-			var leftPosition = i * cellSize;
+			const topPosition = j * cellSize;
+			const leftPosition = i * cellSize;
 			cell.style.top = topPosition + "px";
 			cell.style.left = leftPosition + "px";
 		}
 	}
 
-	for (var i = 0; i < cols; i++) {
-		for (var j = 0; j < rows; j++) {
+	for (let i = 0; i < cols; i++) {
+		for (let j = 0; j < rows; j++) {
 			document.getElementById("c" + i + j).style.background = "#80aaff";
 			document
 				.getElementById("c" + i + j)
@@ -371,7 +361,7 @@
 		}
 	}
 
-	for (var ship of ships) {
+	for (const ship of ships) {
 		ship.addEventListener("click", placeShipSetup);
 	}
 
@@ -392,8 +382,8 @@
 			document.getElementById("losstext").style.display = "block";
 			gameOver = true;
 			gameOverColorChange();
-			for (var i = 0; i < cols; i++) {
-				for (var j = 0; j < rows; j++) {
+			for (let i = 0; i < cols; i++) {
+				for (let j = 0; j < rows; j++) {
 					document
 						.getElementById("s" + i + j)
 						.removeEventListener("click", compMove);
@@ -402,9 +392,9 @@
 		}
 	}
 
-	var shipFoundAttack = function () {
-		var x = lastShotX;
-		var y = lastShotY;
+	const shipFoundAttack = function () {
+		const x = lastShotX;
+		const y = lastShotY;
 		if (shipDirection == "ver") {
 			if (!(x + 1 > 9)) {
 				if (gameBoard[x + 1][y][0] == 0) {
@@ -428,7 +418,7 @@
 				gameBoard[x + 1][y][0] == 3 ||
 				gameBoard[x + 1][y][0] == 4
 			) {
-				for (var i = 1; i < 10; i++) {
+				for (let i = 1; i < 10; i++) {
 					if (x - i < 0) {
 						break;
 					} else if (gameBoard[x - i][y][0] == 0) {
@@ -472,7 +462,7 @@
 				gameBoard[x][y + 1][0] == 3 ||
 				gameBoard[x][y + 1][0] == 4
 			) {
-				for (var i = 1; i < 10; i++) {
+				for (let i = 1; i < 10; i++) {
 					if (y - i < 0) {
 						break;
 					} else if (gameBoard[x][y - i][0] == 0) {
@@ -588,9 +578,9 @@
 		}
 	};
 
-	var searchingShot = function () {
-		var x;
-		var y;
+	const searchingShot = function () {
+		let x;
+		let y;
 		if (shotsfired < 8) {
 			do {
 				if (shotsfired < 4) {
@@ -602,7 +592,7 @@
 				}
 			} while ((x % 2 != 0 && y % 2 == 0) || (x % 2 == 0 && y % 2 != 0));
 		} else {
-			var location = probabilityCalculator();
+			const location = probabilityCalculator();
 			x = location[0];
 			y = location[1];
 			resetProbabilityChart();
@@ -627,7 +617,7 @@
 		}
 	};
 
-	var compMove = function () {
+	const compMove = function () {
 		if (
 			document.getElementById("wintext").style.display == "block" ||
 			gameOver == true ||
@@ -649,9 +639,9 @@
 		gaveOverChecker();
 	};
 
-	var shipHitButNotSunkReassign = function () {
-		for (var i = 0; i < cols; i++) {
-			for (var j = 0; j < rows; j++) {
+	const shipHitButNotSunkReassign = function () {
+		for (let i = 0; i < cols; i++) {
+			for (let j = 0; j < rows; j++) {
 				if (gameBoard[i][j][0] == 2) {
 					lastShotX = i;
 					lastShotY = j;
@@ -661,9 +651,9 @@
 		}
 	};
 
-	var sunkColorChange = function (shipName) {
-		for (var i = 0; i < cols; i++) {
-			for (var j = 0; j < rows; j++) {
+	const sunkColorChange = function (shipName) {
+		for (let i = 0; i < cols; i++) {
+			for (let j = 0; j < rows; j++) {
 				if (gameBoard[i][j][1] == shipName && gameBoard[i][j][0] == 2) {
 					document.getElementById("c" + i + j).style.background = "darkred";
 				}
@@ -671,9 +661,9 @@
 		}
 	};
 
-	var probabilityCalculator = function () {
-		var longestLength;
-		var counter = 0;
+	const probabilityCalculator = function () {
+		let longestLength;
+		let counter = 0;
 		if (!carrierSunk) {
 			longestLength = 5;
 		} else if (!battleshipSunk) {
@@ -683,41 +673,41 @@
 		} else {
 			longestLength = 2;
 		}
-		for (var i = 0; i < rows; i++) {
-			for (var j = 0; j < rows - longestLength + 1; j++) {
-				for (var k = 0; k < longestLength; k++) {
+		for (let i = 0; i < rows; i++) {
+			for (let j = 0; j < rows - longestLength + 1; j++) {
+				for (let k = 0; k < longestLength; k++) {
 					if (gameBoard[i][j + k][0] !== 2 && gameBoard[i][j + k][0] !== 3 && gameBoard[i][j + k][0] !== 4) {
 						counter++;
 					}
 				}
 				if (counter === longestLength) {
-					for (var k = 0; k < longestLength; k++) {
+					for (let k = 0; k < longestLength; k++) {
 						probabilityChart[i][j + k]++;
 					}
 				}
 				counter = 0;
 			}
 		}
-		for (var i = 0; i < cols; i++) {
-			for (var j = 0; j < cols - longestLength + 1; j++) {
-				for (var k = 0; k < longestLength; k++) {
+		for (let i = 0; i < cols; i++) {
+			for (let j = 0; j < cols - longestLength + 1; j++) {
+				for (let k = 0; k < longestLength; k++) {
 					if (gameBoard[j + k][i][0] !== 2 && gameBoard[j + k][i][0] !== 3 && gameBoard[j + k][i][0] !== 4) {
 						counter++;
 					}
 				}
 				if (counter === longestLength) {
-					for (var k = 0; k < longestLength; k++) {
+					for (let k = 0; k < longestLength; k++) {
 						probabilityChart[j + k][i]++;
 					}
 				}
 				counter = 0;
 			}
 		}
-		var currentMax = 0;
-		var x;
-		var y;
-		for (var i = 0; i < cols; i++) {
-			for (var j = 0; j < rows; j++) {
+		let currentMax = 0;
+		let x;
+		let y;
+		for (let i = 0; i < cols; i++) {
+			for (let j = 0; j < rows; j++) {
 				if (probabilityChart[i][j] > currentMax) {
 					currentMax = probabilityChart[i][j];
 					x = i;
@@ -728,7 +718,7 @@
 		return [x, y];
 	};
 
-	var resetProbabilityChart = function () {
+	const resetProbabilityChart = function () {
 		for (let i = 0; i < cols; i++) {
 			for (let j = 0; j < rows; j++) {
 				probabilityChart[i][j] = 0;
@@ -736,17 +726,17 @@
 		}
 	};
 
-	for (var i = 0; i < cols; i++) {
+	for (let i = 0; i < cols; i++) {
 		probabilityChart.push([]);
-		for (var j = 0; j < rows; j++) {
+		for (let j = 0; j < rows; j++) {
 			probabilityChart[i].push(0);
 			document.getElementById("s" + i + j).addEventListener("click", compMove);
 		}
 	}
 
-	var gameOverColorChange = function() {
-		for (var i = 0; i < cols; i++) {
-			for (var j = 0; j < rows; j++) {
+	const gameOverColorChange = function() {
+		for (let i = 0; i < cols; i++) {
+			for (let j = 0; j < rows; j++) {
 				if (window.exportedGameBoard[i][j][0] === 1) {
 					document.getElementById("s" + i + j).style.background = "black";
 				}
