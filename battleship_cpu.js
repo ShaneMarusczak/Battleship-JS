@@ -255,29 +255,25 @@
 					!carrierSunk
 				) {
 					carrierCounter++;
-				}
-				if (
+				} else if (
 					gameBoard[i][j][1] == "battleship" &&
 					gameBoard[i][j][0] == 2 &&
 					!battleshipSunk
 				) {
 					battleshipCounter++;
-				}
-				if (
+				} else if (
 					gameBoard[i][j][1] == "cruiser" &&
 					gameBoard[i][j][0] == 2 &&
 					!cruiserSunk
 				) {
 					cruiserCounter++;
-				}
-				if (
+				} else if (
 					gameBoard[i][j][1] == "submarine" &&
 					gameBoard[i][j][0] == 2 &&
 					!submarineSunk
 				) {
 					submarineCounter++;
-				}
-				if (
+				} else if (
 					gameBoard[i][j][1] == "destroyer" &&
 					gameBoard[i][j][0] == 2 &&
 					!destroyerSunk
