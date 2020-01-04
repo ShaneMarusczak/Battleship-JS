@@ -630,6 +630,7 @@
 			}
 		} else {
 			alert("Not all ships are placed.");
+			return;
 		}
 		shipSunkChecker();
 		gaveOverChecker();
