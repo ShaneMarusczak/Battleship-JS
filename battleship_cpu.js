@@ -736,6 +736,7 @@
 			for (let j = 0; j < rows; j++) {
 				if (window.exportedGameBoard[i][j][0] === 1) {
 					document.getElementById("s" + i + j).style.background = "black";
+					window.currentColor = "black";
 				}
 			}
 		}

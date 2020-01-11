@@ -3,6 +3,7 @@
 /*eslint-disable no-console */
 //eslint-disable-next-line no-unused-vars
 var exportedGameBoard;
+var currentColor;
 (function() {
 	const rows = 10;
 	const cols = 10;
@@ -22,7 +23,6 @@ var exportedGameBoard;
 		return Math.floor(Math.random() * (max - min + 1) + min);
 	}
 
-	let currentColor;
 	const hoverColor = function(e) {
 		currentColor = e.target.style.background;
 		if (e.target.style.background === "rgb(128, 170, 255)") {
