@@ -731,14 +731,23 @@
 		}
 	}
 
+	let currentElement = null;
+
+	document.addEventListener("mouseover", function (e) {
+		currentElement = e.target;
+	});
+
+
 	const gameOverColorChange = function() {
 		for (let i = 0; i < cols; i++) {
 			for (let j = 0; j < rows; j++) {
 				if (window.exportedGameBoard[i][j][0] === 1) {
 					document.getElementById("s" + i + j).style.background = "black";
-					window.currentColor = "black";
 				}
 			}
+		}
+		if (currentElement.style.background == "black") {
+			window.currentColor = "black";
 		}
 	};
 
