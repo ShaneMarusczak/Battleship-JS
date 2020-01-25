@@ -311,21 +311,26 @@
 				document.getElementById(ship).classList.remove("clicked");
 			}
 		}
-		if (this.id == "carrier" && !placedCarrier) {
+		if (document.getElementById(this.id).classList.contains("clicked")) {
+			document.getElementById(this.id).classList.remove("clicked");
+			size = 0;
+			return;
+		}
+		if (this.id === "carrier" && !placedCarrier) {
 			size = 5;
 			this.classList.add("clicked");
-		} else if (this.id == "battleship" && !placedBattleship) {
+		} else if (this.id === "battleship" && !placedBattleship) {
 			size = 4;
 			this.classList.add("clicked");
-		} else if (this.id == "cruiser" && !placedCruiser) {
+		} else if (this.id === "cruiser" && !placedCruiser) {
 			size = 3;
 			this.classList.add("clicked");
 			placed = "cruiser";
-		} else if (this.id == "submarine" && !placedSubmarine) {
+		} else if (this.id === "submarine" && !placedSubmarine) {
 			size = 3;
 			this.classList.add("clicked");
 			placed = "submarine";
-		} else if (this.id == "destroyer" && !placedDetroyer) {
+		} else if (this.id === "destroyer" && !placedDetroyer) {
 			size = 2;
 			this.classList.add("clicked");
 		}
