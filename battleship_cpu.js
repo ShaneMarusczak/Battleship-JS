@@ -1,5 +1,4 @@
 "use strict";
-/*eslint-disable prefer-destructuring */
 /*eslint-disable no-console */
 (function () {
 	const rows = 10;
@@ -592,8 +591,7 @@
 			} while ((x % 2 != 0 && y % 2 == 0) || (x % 2 == 0 && y % 2 != 0));
 		} else {
 			const location = probabilityCalculator();
-			x = location[0];
-			y = location[1];
+			[x, y] = location;
 			resetProbabilityChart();
 		}
 		lastShotX = x;
