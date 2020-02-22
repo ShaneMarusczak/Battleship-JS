@@ -38,10 +38,8 @@
 	const probabilityChart = [];
 	let shotsfired = 0;
 
-	function randomIntFromInterval(min, max) {
-		//inclusive
-		return Math.floor(Math.random() * (max - min + 1) + min);
-	}
+	//inclusive
+	const randomIntFromInterval = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
 	const shipSunkHelper = function (num, sunkShipName) {
 		document.getElementById(sunkShipName + "Sunk_cpu").classList.add("inline");
