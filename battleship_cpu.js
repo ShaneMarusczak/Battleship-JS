@@ -713,7 +713,6 @@
 				}
 			}
 		}
-		console.log(probabilityChart);
 		let currentMax = 0;
 		let x;
 		let y;
