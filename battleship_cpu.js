@@ -590,8 +590,7 @@
 				}
 			} while ((x % 2 != 0 && y % 2 == 0) || (x % 2 == 0 && y % 2 != 0));
 		} else {
-			const location = probabilityCalculator();
-			[x, y] = location;
+			[x, y] = probabilityCalculator();
 			resetProbabilityChart();
 		}
 		lastShotX = x;
