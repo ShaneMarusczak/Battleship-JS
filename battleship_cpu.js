@@ -1,5 +1,8 @@
 "use strict";
+/*eslint-disable no-implicit-globals */
 /*eslint-disable no-console */
+//eslint-disable-next-line no-unused-vars
+var compMoveWindow;
 (function () {
 	const rows = 10;
 	const cols = 10;
@@ -340,8 +343,8 @@
 			const cell = document.createElement("div");
 			gameBoardContainer.appendChild(cell);
 			cell.id = "c" + j + i;
-			const topPosition = j * cellSize;
-			const leftPosition = i * cellSize;
+			const topPosition = j * cellSize + 5;
+			const leftPosition = i * cellSize + 5;
 			cell.style.top = topPosition + "px";
 			cell.style.left = leftPosition + "px";
 		}
@@ -616,9 +619,7 @@
 	const compMove = function () {
 		if (
 			document.getElementById("wintext").style.display == "block" ||
-			gameOver == true ||
-			this.style.background == "rgb(77, 136, 255)" ||
-			this.style.background == "red"
+			gameOver == true
 		) {
 			return;
 		}
@@ -635,6 +636,8 @@
 		shipSunkChecker();
 		gaveOverChecker();
 	};
+
+	compMoveWindow = compMove;
 
 	const shipHitButNotSunkReassign = function () {
 		for (let i = 0; i < cols; i++) {
@@ -735,7 +738,7 @@
 		probabilityChart.push([]);
 		for (let j = 0; j < rows; j++) {
 			probabilityChart[i].push(0);
-			document.getElementById("s" + i + j).addEventListener("click", compMove);
+			//document.getElementById("s" + i + j).addEventListener("click", compMove);
 		}
 	}
 
@@ -746,7 +749,7 @@
 	});
 
 
-	const gameOverColorChange = function() {
+	const gameOverColorChange = function () {
 		for (let i = 0; i < cols; i++) {
 			for (let j = 0; j < rows; j++) {
 				if (window.exportedGameBoard[i][j][0] === 1) {

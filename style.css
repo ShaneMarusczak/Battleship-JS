@@ -29,6 +29,9 @@ input {
 
 #gameboard,
 #gameboard_cpu {
+	border: 3px solid black;
+	padding: 5px;
+	border-radius: 7px;
 	position: relative;
 	margin: 25px;
 	width: 500px;

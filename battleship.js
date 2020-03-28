@@ -4,7 +4,7 @@
 //eslint-disable-next-line no-unused-vars
 var exportedGameBoard;
 var currentColor;
-(function() {
+(function () {
 	const rows = 10;
 	const cols = 10;
 	const squareSize = 50;
@@ -18,21 +18,21 @@ var currentColor;
 	gameBoardContainer.addEventListener("click", fireTorpedo, false);
 	strtOvrBtn.addEventListener("click", () => location.reload());
 
-	function randomIntFromInterval(min, max) {
-		//inclusive
-		return Math.floor(Math.random() * (max - min + 1) + min);
-	}
+	//inclusive
+	const randomIntFromInterval = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
-	const hoverColor = function(e) {
+	const hoverColor = function (e) {
 		currentColor = e.target.style.background;
 		if (e.target.style.background === "rgb(128, 170, 255)") {
 			e.target.style.background = "#87CEFA";
 		}
 	};
 
-	const resetHoverColor = function(e) {
+	const resetHoverColor = function (e) {
 		e.target.style.background = currentColor;
 	};
+
+	const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 	function fireTorpedo(e) {
 		if (
@@ -85,11 +85,18 @@ var currentColor;
 				if (hitCount == winningHitCount) {
 					document.getElementById("wintext").style.display = "block";
 					gameBoardContainer.removeEventListener("click", fireTorpedo);
+					return;
 				}
 			} else if (gameBoard[row][col][0] > 1) {
 				alert("Already Fired Here!");
+				return;
 			}
 		}
+		gameBoardContainer.removeEventListener("click", fireTorpedo, false);
+		sleep(600).then(() => {
+			window.compMoveWindow();
+			gameBoardContainer.addEventListener("click", fireTorpedo, false);
+		});
 		e.stopPropagation();
 	}
 
@@ -181,8 +188,8 @@ var currentColor;
 			const square = document.createElement("div");
 			gameBoardContainer.appendChild(square);
 			square.id = "s" + j + i;
-			const topPosition = j * squareSize;
-			const leftPosition = i * squareSize;
+			const topPosition = j * squareSize + 5;
+			const leftPosition = i * squareSize + 5;
 			square.style.top = topPosition + "px";
 			square.style.left = leftPosition + "px";
 		}
@@ -203,7 +210,7 @@ var currentColor;
 		}
 	}
 
-	document.addEventListener("keydown", function(event) {
+	document.addEventListener("keydown", function (event) {
 		if (event.keyCode == 192) {
 			console.log(gameBoard);
 			for (let i = 0; i < cols; i++) {
