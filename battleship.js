@@ -109,19 +109,6 @@ var currentColor;
 			}
 		}
 		modalControl();
-		// gameBoardContainer.removeEventListener("click", fireTorpedo, false);
-		// document.getElementById("thinking").style.display = "flex";
-		// sleep(800).then(() => {
-		// 	document.getElementById("message").innerText = "Fire!";
-		// });
-		// sleep(1200).then(() => {
-		// 	gameBoardContainer.addEventListener("click", fireTorpedo, false);
-		// 	document.getElementById("thinking").style.display = "none";
-		// 	sleep(200).then(() => {
-		// 		window.compMoveWindow();
-		// 	});
-		// });
-		// document.getElementById("message").innerText = "Thinking...";
 		e.stopPropagation();
 	}
 
