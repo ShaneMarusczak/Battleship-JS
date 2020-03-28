@@ -37,13 +37,15 @@ var currentColor;
 	const modalControl = () => {
 		gameBoardContainer.removeEventListener("click", fireTorpedo, false);
 		document.getElementById("thinking").style.display = "flex";
+		document.getElementById("shader").style.display = "block";
 		sleep(1400).then(() => {
 			document.getElementById("message").innerText = "Fire!";
 		});
-		sleep(2000).then(() => {
+		sleep(1900).then(() => {
 			gameBoardContainer.addEventListener("click", fireTorpedo, false);
 			document.getElementById("thinking").style.display = "none";
-			sleep(200).then(() => {
+			document.getElementById("shader").style.display = "none";
+			sleep(300).then(() => {
 				window.compMoveWindow();
 			});
 		});
