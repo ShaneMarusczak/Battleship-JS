@@ -34,6 +34,22 @@ var currentColor;
 
 	const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+	const modalControl = () => {
+		gameBoardContainer.removeEventListener("click", fireTorpedo, false);
+		document.getElementById("thinking").style.display = "flex";
+		sleep(1400).then(() => {
+			document.getElementById("message").innerText = "Fire!";
+		});
+		sleep(2000).then(() => {
+			gameBoardContainer.addEventListener("click", fireTorpedo, false);
+			document.getElementById("thinking").style.display = "none";
+			sleep(200).then(() => {
+				window.compMoveWindow();
+			});
+		});
+		document.getElementById("message").innerText = "Thinking...";
+	};
+
 	function fireTorpedo(e) {
 		if (
 			document.getElementById("ready").style.display != "block" ||
@@ -92,11 +108,20 @@ var currentColor;
 				return;
 			}
 		}
-		gameBoardContainer.removeEventListener("click", fireTorpedo, false);
-		sleep(600).then(() => {
-			window.compMoveWindow();
-			gameBoardContainer.addEventListener("click", fireTorpedo, false);
-		});
+		modalControl();
+		// gameBoardContainer.removeEventListener("click", fireTorpedo, false);
+		// document.getElementById("thinking").style.display = "flex";
+		// sleep(800).then(() => {
+		// 	document.getElementById("message").innerText = "Fire!";
+		// });
+		// sleep(1200).then(() => {
+		// 	gameBoardContainer.addEventListener("click", fireTorpedo, false);
+		// 	document.getElementById("thinking").style.display = "none";
+		// 	sleep(200).then(() => {
+		// 		window.compMoveWindow();
+		// 	});
+		// });
+		// document.getElementById("message").innerText = "Thinking...";
 		e.stopPropagation();
 	}
 
