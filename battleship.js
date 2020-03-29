@@ -35,7 +35,6 @@ var currentColor;
 	const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 	const modalControl = () => {
-		gameBoardContainer.removeEventListener("click", fireTorpedo, false);
 		document.getElementById("thinking").style.display = "flex";
 		document.getElementById("shader").style.display = "block";
 		sleep(1400).then(() => {
@@ -110,7 +109,8 @@ var currentColor;
 				return;
 			}
 		}
-		modalControl();
+		gameBoardContainer.removeEventListener("click", fireTorpedo, false);
+		sleep(150).then(() => modalControl());
 		e.stopPropagation();
 	}
 
