@@ -40,6 +40,16 @@ var compMoveWindow;
 	const probabilityChart = [];
 	let shotsfired = 0;
 
+	const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+	const alertModalControl = (message) => {
+		document.getElementById("alertshader").style.display = "block";
+		document.getElementById("alertmessage").innerText = message;
+		sleep(1400).then(() => {
+			document.getElementById("alertshader").style.display = "none";
+		});
+	};
+
 	//inclusive
 	const randomIntFromInterval = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
@@ -172,7 +182,7 @@ var compMoveWindow;
 			}
 		}
 		if (!canPlace) {
-			alert("Can not place ship here!");
+			alertModalControl("Can't place here!");
 		}
 		if (canPlace) {
 			for (let i = 0; i < cols; i++) {
@@ -225,7 +235,7 @@ var compMoveWindow;
 			}
 			if (shipsPlaced == 5) {
 				document.getElementById("instructions").classList.add("notDisplayed");
-				alert("All ships Placed!");
+				alertModalControl("All ships Placed!");
 				document.getElementById("ready").style.display = "block";
 				allShipsPlaced = true;
 				for (let i = 0; i < cols; i++) {
@@ -630,7 +640,7 @@ var compMoveWindow;
 				searchingShot();
 			}
 		} else {
-			alert("Not all ships are placed.");
+			alertModalControl("Place all ships!");
 			return;
 		}
 		shipSunkChecker();

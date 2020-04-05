@@ -32,6 +32,14 @@ var currentColor;
 		e.target.style.background = currentColor;
 	};
 
+	const alertModalControl = (message) => {
+		document.getElementById("alertshader").style.display = "block";
+		document.getElementById("alertmessage").innerText = message;
+		sleep(1400).then(() => {
+			document.getElementById("alertshader").style.display = "none";
+		});
+	};
+
 	const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 	const modalControl = () => {
@@ -105,7 +113,7 @@ var currentColor;
 					return;
 				}
 			} else if (gameBoard[row][col][0] > 1) {
-				alert("Already Fired Here!");
+				alertModalControl("Can't Fire Here!");
 				return;
 			}
 		}
