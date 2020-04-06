@@ -430,7 +430,7 @@ var compMoveWindow;
 				gameBoard[x + 1][y][0] == 4
 			) {
 				for (let i = 1; i < 10; i++) {
-					if (x - i < 0) {
+					if (x - i < 0 || gameBoard[x - i][y][0] == 3 || gameBoard[x - i][y][0] == 4) {
 						break;
 					} else if (gameBoard[x - i][y][0] == 0) {
 						document.getElementById("c" + (x - i) + y).style.background =
@@ -474,7 +474,7 @@ var compMoveWindow;
 				gameBoard[x][y + 1][0] == 4
 			) {
 				for (let i = 1; i < 10; i++) {
-					if (y - i < 0) {
+					if (y - i < 0 || gameBoard[x][y - i][0] === 3 || gameBoard[x][y - i][0] === 4) {
 						break;
 					} else if (gameBoard[x][y - i][0] == 0) {
 						document.getElementById("c" + x + (y - i)).style.background =
