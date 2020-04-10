@@ -12,6 +12,9 @@ var currentColor;
 	const gameBoard = [];
 	const gameBoardContainer = document.getElementById("gameboard");
 	const strtOvrBtn = document.getElementById("strtOvrBtn");
+	const hitSound = new Audio("Hit Ship Sound.mp3");
+	const missSound = new Audio("Miss Fire Sound.mp3");
+	const sunkSound = new Audio("Ship Sunk Sound.mp3");
 	let hitCount = 0;
 	const ships = [];
 	const searchngPhrases = [
@@ -96,11 +99,13 @@ var currentColor;
 				gameBoard[row][col][0] = 3;
 				document.getElementById("s" + row + col).classList.add("miss");
 				currentColor = "#4d88ff";
+				missSound.play();
 			} else if (gameBoard[row][col][0] == 1) {
 				e.target.style.background = "red";
 				gameBoard[row][col][0] = 2;
 				document.getElementById("s" + row + col).classList.add("hit");
 				currentColor = "red";
+				hitSound.play();
 				hitCount++;
 				for (const ship of ships) {
 					for (const coor of ship) {
@@ -120,6 +125,7 @@ var currentColor;
 										gameBoard[coor[0]][coor[1]][1] + "Sunk"
 									).style.display = "inline";
 									shipSunkThisShot = true;
+									sunkSound.play();
 								}
 							}
 						}

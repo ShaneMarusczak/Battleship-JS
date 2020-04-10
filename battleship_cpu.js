@@ -28,6 +28,7 @@ var compMoveWindow;
 	const cruiser = document.getElementById("cruiser");
 	const submarine = document.getElementById("submarine");
 	const destroyer = document.getElementById("destroyer");
+	const sunkSound = new Audio("Ship Sunk Sound.mp3");
 	let placed;
 	const placedShips = [];
 	let lastShotX;
@@ -304,22 +305,27 @@ var compMoveWindow;
 			}
 		}
 		if (carrierCounter == 5) {
+			sunkSound.play();
 			carrierSunk = true;
 			shipSunkHelper(5, "carrier");
 		}
 		if (battleshipCounter == 4) {
+			sunkSound.play();
 			battleshipSunk = true;
 			shipSunkHelper(4, "battleship");
 		}
 		if (cruiserCounter == 3) {
+			sunkSound.play();
 			cruiserSunk = true;
 			shipSunkHelper(3, "cruiser");
 		}
 		if (submarineCounter == 3) {
+			sunkSound.play();
 			submarineSunk = true;
 			shipSunkHelper(3, "submarine");
 		}
 		if (destroyerCounter == 2) {
+			sunkSound.play();
 			destroyerSunk = true;
 			shipSunkHelper(2, "destroyer");
 		}
