@@ -14,6 +14,12 @@ var currentColor;
 	const strtOvrBtn = document.getElementById("strtOvrBtn");
 	let hitCount = 0;
 	const ships = [];
+	const searchngPhrases = [
+							"Thinking...", "Hmm...", "Finding...", "Pinging...", "Tracking...", "Spotting...", "Hunting...", "Looking...",
+							"Probing...", "Scanning..."
+							];
+	const firingPhrases = ["Fire!", "Launch!", "Blast!", "Go!", "Torpedo!", "BOOM!", "BANG!", "There!", "Found!"];
+	const compSunkPhrases = ["Aww Man!", "SOS!", "Nice Shot!", "I'm Going Down!", "Capsized!", "I'm Sinking!", "Cheater!", "Shipwreck!"];
 
 	gameBoardContainer.addEventListener("click", fireTorpedo, false);
 	strtOvrBtn.addEventListener("click", () => location.reload());
@@ -32,34 +38,46 @@ var currentColor;
 		e.target.style.background = currentColor;
 	};
 
-	const alertModalControl = (message) => {
+	const alertModalControl = (message, duration) => {
 		document.getElementById("alertshader").style.display = "block";
 		document.getElementById("alertmessage").innerText = message;
-		sleep(1400).then(() => {
+		sleep(duration).then(() => {
 			document.getElementById("alertshader").style.display = "none";
 		});
 	};
 
 	const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-	const modalControl = () => {
+	const innerModalControl = () => {
 		document.getElementById("thinking").style.display = "flex";
 		document.getElementById("shader").style.display = "block";
 		sleep(1400).then(() => {
-			document.getElementById("message").innerText = "Fire!";
+			document.getElementById("message").innerText = firingPhrases[randomIntFromInterval(0, firingPhrases.length - 1)];
 		});
-		sleep(1900).then(() => {
-			gameBoardContainer.addEventListener("click", fireTorpedo, false);
+		sleep(2000).then(() => {
 			document.getElementById("thinking").style.display = "none";
 			document.getElementById("shader").style.display = "none";
 			sleep(300).then(() => {
 				window.compMoveWindow();
+				gameBoardContainer.addEventListener("click", fireTorpedo, false);
 			});
 		});
-		document.getElementById("message").innerText = "Thinking...";
+		document.getElementById("message").innerText = searchngPhrases[randomIntFromInterval(0, searchngPhrases.length - 1)];
+	};
+
+	const modalControl = (shipSunkThisShot) => {
+		gameBoardContainer.removeEventListener("click", fireTorpedo, false);
+		if (shipSunkThisShot) {
+			const delay = 1500;
+			alertModalControl(compSunkPhrases[randomIntFromInterval(0, compSunkPhrases.length - 1)], delay);
+			sleep(delay).then(() => innerModalControl());
+		} else {
+			innerModalControl();
+		}
 	};
 
 	function fireTorpedo(e) {
+		let shipSunkThisShot = false;
 		if (
 			document.getElementById("ready").style.display != "block" ||
 			document.getElementById("losstext").style.display == "block"
@@ -101,6 +119,7 @@ var currentColor;
 									document.getElementById(
 										gameBoard[coor[0]][coor[1]][1] + "Sunk"
 									).style.display = "inline";
+									shipSunkThisShot = true;
 								}
 							}
 						}
@@ -113,12 +132,11 @@ var currentColor;
 					return;
 				}
 			} else if (gameBoard[row][col][0] > 1) {
-				alertModalControl("Can't Fire Here!");
+				alertModalControl("Can't Fire Here!", 1400);
 				return;
 			}
 		}
-		gameBoardContainer.removeEventListener("click", fireTorpedo, false);
-		sleep(150).then(() => modalControl());
+		sleep(200).then(() => modalControl(shipSunkThisShot));
 		e.stopPropagation();
 	}
 

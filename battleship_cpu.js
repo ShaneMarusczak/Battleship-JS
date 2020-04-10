@@ -39,13 +39,19 @@ var compMoveWindow;
 	let gameOver = false;
 	const probabilityChart = [];
 	let shotsfired = 0;
+	const sunkPhrases = [
+						"I am winning!", "That was easy!", "Found You!", "You're Sunk!", "Down she goes!", "Gotcha!", "Success!", "Ha Ha!", "Easy Spot!",
+						"I'm Better!", "I'm gonna win!", "Easy!", "Sink that ship!", "Boom!"
+					];
 
 	const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-	const alertModalControl = (message) => {
+	const capitalizeFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+
+	const alertModalControl = (message, duration) => {
 		document.getElementById("alertshader").style.display = "block";
 		document.getElementById("alertmessage").innerText = message;
-		sleep(1400).then(() => {
+		sleep(duration).then(() => {
 			document.getElementById("alertshader").style.display = "none";
 		});
 	};
@@ -64,6 +70,11 @@ var compMoveWindow;
 					gameBoard[i][j][0] = 4;
 				}
 			}
+		}
+		if (randomIntFromInterval(0, 10) === 0) {
+			alertModalControl(capitalizeFirst(sunkShipName) + " Sunk!", 1500);
+		} else {
+			alertModalControl(sunkPhrases[randomIntFromInterval(0, sunkPhrases.length - 1)], 1500);
 		}
 		shipHitButNotSunkReassign();
 	};
@@ -182,7 +193,7 @@ var compMoveWindow;
 			}
 		}
 		if (!canPlace) {
-			alertModalControl("Can't place here!");
+			alertModalControl("Can't place here!", 1400);
 		}
 		if (canPlace) {
 			for (let i = 0; i < cols; i++) {
@@ -235,7 +246,7 @@ var compMoveWindow;
 			}
 			if (shipsPlaced == 5) {
 				document.getElementById("instructions").classList.add("notDisplayed");
-				alertModalControl("All ships Placed!");
+				alertModalControl("All ships Placed!", 1400);
 				document.getElementById("ready").style.display = "block";
 				allShipsPlaced = true;
 				for (let i = 0; i < cols; i++) {
@@ -640,7 +651,7 @@ var compMoveWindow;
 				searchingShot();
 			}
 		} else {
-			alertModalControl("Place all ships!");
+			alertModalControl("Place all ships!", 1400);
 			return;
 		}
 		shipSunkChecker();
@@ -748,7 +759,6 @@ var compMoveWindow;
 		probabilityChart.push([]);
 		for (let j = 0; j < rows; j++) {
 			probabilityChart[i].push(0);
-			//document.getElementById("s" + i + j).addEventListener("click", compMove);
 		}
 	}
 
