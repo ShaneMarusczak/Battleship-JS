@@ -18,9 +18,9 @@ var currentColor;
 	let hitCount = 0;
 	const ships = [];
 	const searchngPhrases = [
-							"Thinking...", "Hmm...", "Finding...", "Pinging...", "Tracking...", "Spotting...", "Hunting...", "Looking...",
-							"Probing...", "Scanning..."
-							];
+		"Thinking...", "Hmm...", "Finding...", "Pinging...", "Tracking...", "Spotting...", "Hunting...", "Looking...",
+		"Probing...", "Scanning..."
+	];
 	const firingPhrases = ["Fire!", "Launch!", "Blast!", "Go!", "Torpedo!", "BOOM!", "BANG!", "There!", "Found!"];
 	const compSunkPhrases = ["Aww Man!", "SOS!", "Nice Shot!", "I'm Going Down!", "Capsized!", "I'm Sinking!", "Cheater!", "Shipwreck!"];
 
@@ -81,14 +81,9 @@ var currentColor;
 
 	function fireTorpedo(e) {
 		let shipSunkThisShot = false;
-		if (
-			document.getElementById("ready").style.display != "block" ||
-			document.getElementById("losstext").style.display == "block"
-		) {
+		if (!window.gameStarted || window.gameOver) {
 			return;
 		}
-
-		let shipSunkCounter = 0;
 
 		if (e.target !== e.currentTarget) {
 			const row = e.target.id.substring(1, 2);
@@ -107,6 +102,7 @@ var currentColor;
 				currentColor = "red";
 				hitSound.play();
 				hitCount++;
+				let shipSunkCounter = 0;
 				for (const ship of ships) {
 					for (const coor of ship) {
 						if (coor[0] == row && coor[1] == col) {
@@ -135,6 +131,7 @@ var currentColor;
 				if (hitCount == winningHitCount) {
 					document.getElementById("wintext").style.display = "block";
 					gameBoardContainer.removeEventListener("click", fireTorpedo);
+					window.gameOver = true;
 					return;
 				}
 			} else if (gameBoard[row][col][0] > 1) {
