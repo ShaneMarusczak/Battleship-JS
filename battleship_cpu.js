@@ -41,9 +41,9 @@ var compMoveWindow;
 	const probabilityChart = [];
 	let shotsfired = 0;
 	const sunkPhrases = [
-						"I am winning!", "That was easy!", "Found You!", "You're Sunk!", "Down she goes!", "Gotcha!", "Success!", "Ha Ha!", "Easy Spot!",
-						"I'm Better!", "I'm gonna win!", "Easy!", "Sink that ship!", "Boom!"
-					];
+		"I am winning!", "That was easy!", "Found You!", "You're Sunk!", "Down she goes!", "Gotcha!", "Success!", "Ha Ha!", "Easy Spot!",
+		"I'm Better!", "I'm gonna win!", "Easy!", "Sink that ship!", "Boom!"
+	];
 
 	const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -609,15 +609,10 @@ var compMoveWindow;
 	const searchingShot = function () {
 		let x;
 		let y;
-		if (shotsfired < 8) {
+		if (shotsfired < 11) {
 			do {
-				if (shotsfired < 4) {
-					x = randomIntFromInterval(2, 7);
-					y = randomIntFromInterval(2, 7);
-				} else {
-					x = randomIntFromInterval(1, 8);
-					y = randomIntFromInterval(1, 8);
-				}
+				x = randomIntFromInterval(0, randomIntFromInterval(1, 8));
+				y = randomIntFromInterval(0, randomIntFromInterval(1, 8));
 			} while ((x % 2 != 0 && y % 2 == 0) || (x % 2 == 0 && y % 2 != 0));
 		} else {
 			[x, y] = probabilityCalculator();
