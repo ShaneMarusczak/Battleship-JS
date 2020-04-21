@@ -611,8 +611,8 @@ var compMoveWindow;
 		let y;
 		if (shotsfired < 11) {
 			do {
-				x = randomIntFromInterval(0, randomIntFromInterval(1, 8));
-				y = randomIntFromInterval(0, randomIntFromInterval(1, 8));
+				x = randomIntFromInterval(0, 8);
+				y = randomIntFromInterval(0, 8);
 			} while ((x % 2 != 0 && y % 2 == 0) || (x % 2 == 0 && y % 2 != 0));
 		} else {
 			[x, y] = probabilityCalculator();
