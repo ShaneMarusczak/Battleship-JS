@@ -18,11 +18,14 @@ var currentColor;
 	let hitCount = 0;
 	const ships = [];
 	const searchngPhrases = [
-		"Thinking...", "Hmm...", "Finding...", "Pinging...", "Tracking...", "Spotting...", "Hunting...", "Looking...",
-		"Probing...", "Scanning..."
+		"Thinking...", "Hmm...", "Finding...", "Tracking...", "Spotting...", "Hunting...", "Looking...",
+		"Scanning..."
 	];
-	const firingPhrases = ["Fire!", "Launch!", "Blast!", "Go!", "Torpedo!", "BOOM!", "BANG!", "There!", "Found!"];
-	const compSunkPhrases = ["Aww Man!", "SOS!", "Nice Shot!", "I'm Going Down!", "Capsized!", "I'm Sinking!", "Cheater!", "Shipwreck!"];
+	const firingPhrases = ["Fire!", "Launch!", "Blast!", "BOOM!", "BANG!", "There!"];
+	const compSunkPhrases = [
+		"Aww Man!", "SOS!", "I'm Going Down!", "Capsized!", "I'm Sinking!", "Cheater!", "Shipwreck!",
+		"No Fair!", "Awww!", "Hull Breach!", "I won't lose!", "Abandon Ship!", "Overboard!"
+	];
 
 	gameBoardContainer.addEventListener("click", fireTorpedo, false);
 	strtOvrBtn.addEventListener("click", () => location.reload());

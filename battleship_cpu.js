@@ -37,8 +37,8 @@ var gameStarted = false;
 	let direction = "hor";
 	let shotsfired = 0;
 	const sunkPhrases = [
-		"I am winning!", "That was easy!", "Found You!", "You're Sunk!", "Down she goes!", "Gotcha!", "Success!", "Ha Ha!", "Easy Spot!",
-		"I'm Better!", "I'm gonna win!", "Easy!", "Sink that ship!", "Boom!"
+		"I am winning!", "Found You!", "You're Sunk!", "Down she goes!", "Gotcha!", "Ha Ha!", "I'm the best!", "Woo Hoo!",
+		"I'm Better!", "I'm gonna win!", "Easy!", "Sink that ship!", "Try Harder!", "Yawn..", "Sunk!", "Oh Yeah!"
 	];
 
 	const getCId = (x, y) => "c" + x + y;
