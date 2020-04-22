@@ -291,12 +291,12 @@ var gameStarted = false;
 	const allShips = ["carrier", "battleship", "cruiser", "submarine", "destroyer"];
 	const placeShipSetup = (e) => {
 		const elemId = e.target.parentElement.id;
-		allShips.forEach(s => document.getElementById(s).classList.remove("clicked"));
 		if (document.getElementById(elemId).classList.contains("clicked")) {
 			document.getElementById(elemId).classList.remove("clicked");
 			size = 0;
 			return;
 		}
+		allShips.forEach(s => document.getElementById(s).classList.remove("clicked"));
 		if (elemId === "carrier" && !placedCarrier) {
 			size = 5;
 			e.target.parentElement.classList.add("clicked");
