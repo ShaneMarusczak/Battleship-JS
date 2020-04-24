@@ -12,9 +12,9 @@ var currentColor;
 	const gameBoard = [];
 	const gameBoardContainer = document.getElementById("gameboard");
 	const strtOvrBtn = document.getElementById("strtOvrBtn");
-	const hitSound = new Audio("Hit Ship Sound.mp3");
-	const missSound = new Audio("Miss Fire Sound.mp3");
-	const sunkSound = new Audio("Ship Sunk Sound.mp3");
+	const hitSound = new Audio("static/Hit Ship Sound.mp3");
+	const missSound = new Audio("static/Miss Fire Sound.mp3");
+	const sunkSound = new Audio("static/Ship Sunk Sound.mp3");
 	let hitCount = 0;
 	const ships = [];
 	const searchngPhrases = [
