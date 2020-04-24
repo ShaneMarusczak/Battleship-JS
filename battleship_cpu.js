@@ -20,7 +20,7 @@ var gameStarted = false;
 	const probabilityChart = [];
 	let shipFound = 0;
 	let shipsPlaced = 0;
-	let currentElement, lastShotX, lastShotY, placed, size;
+	let lastShotX, lastShotY, placed, size;
 	let allShipsPlaced = false;
 	let placedCarrier = false;
 	let placedBattleship = false;
@@ -623,11 +623,6 @@ var gameStarted = false;
 		}
 	}
 
-	document.addEventListener("mouseover", (e) => {
-		currentElement = e.target.target;
-	});
-
-
 	const gameOverColorChange = () => {
 		for (let i = 0; i < cols; i++) {
 			for (let j = 0; j < rows; j++) {
@@ -635,9 +630,6 @@ var gameStarted = false;
 					document.getElementById("s" + i + j).classList.add("blackBackground");
 				}
 			}
-		}
-		if (currentElement.style.background == "black") {
-			window.currentColor = "black";
 		}
 	};
 
