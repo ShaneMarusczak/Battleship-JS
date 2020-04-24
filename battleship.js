@@ -4,7 +4,7 @@
 //eslint-disable-next-line no-unused-vars
 var exportedGameBoard;
 var currentColor;
-(function () {
+(() => {
 	const rows = 10;
 	const cols = 10;
 	const squareSize = 50;
@@ -227,45 +227,47 @@ var currentColor;
 		}
 	}
 
-	for (let i = 0; i < cols; i++) {
-		gameBoard.push([]);
-		for (let j = 0; j < rows; j++) {
-			gameBoard[i].push([0, ""]);
-			const square = document.createElement("div");
-			gameBoardContainer.appendChild(square);
-			square.id = "s" + j + i;
-			const topPosition = j * squareSize + 5;
-			const leftPosition = i * squareSize + 5;
-			square.style.top = topPosition + "px";
-			square.style.left = leftPosition + "px";
+	(() => {
+		for (let i = 0; i < cols; i++) {
+			gameBoard.push([]);
+			for (let j = 0; j < rows; j++) {
+				gameBoard[i].push([0, ""]);
+				const square = document.createElement("div");
+				gameBoardContainer.appendChild(square);
+				square.id = "s" + j + i;
+				const topPosition = j * squareSize + 5;
+				const leftPosition = i * squareSize + 5;
+				square.style.top = topPosition + "px";
+				square.style.left = leftPosition + "px";
+			}
 		}
-	}
 
-	placeShip(5);
-	placeShip(4);
-	placeShip(3);
-	placeShip(3);
-	placeShip(2);
-	exportedGameBoard = gameBoard;
+		placeShip(5);
+		placeShip(4);
+		placeShip(3);
+		placeShip(3);
+		placeShip(2);
+		exportedGameBoard = gameBoard;
 
-	for (let i = 0; i < cols; i++) {
-		for (let j = 0; j < rows; j++) {
-			document.getElementById("s" + i + j).style.background = "rgb(128, 170, 255)";
-			document.getElementById("s" + i + j).addEventListener("mouseover", hoverColor);
-			document.getElementById("s" + i + j).addEventListener("mouseleave", resetHoverColor);
+		for (let i = 0; i < cols; i++) {
+			for (let j = 0; j < rows; j++) {
+				document.getElementById("s" + i + j).style.background = "rgb(128, 170, 255)";
+				document.getElementById("s" + i + j).addEventListener("mouseover", hoverColor);
+				document.getElementById("s" + i + j).addEventListener("mouseleave", resetHoverColor);
+			}
 		}
-	}
 
-	document.addEventListener("keydown", function (event) {
-		if (event.keyCode == 192) {
-			console.log(gameBoard);
-			for (let i = 0; i < cols; i++) {
-				for (let j = 0; j < rows; j++) {
-					if (gameBoard[i][j][0] == 1) {
-						document.getElementById("s" + i + j).style.background = "white";
+		document.addEventListener("keydown", function (event) {
+			if (event.keyCode == 192) {
+				console.log(gameBoard);
+				for (let i = 0; i < cols; i++) {
+					for (let j = 0; j < rows; j++) {
+						if (gameBoard[i][j][0] == 1) {
+							document.getElementById("s" + i + j).style.background = "white";
+						}
 					}
 				}
 			}
-		}
-	});
+		});
+	})();
 })();

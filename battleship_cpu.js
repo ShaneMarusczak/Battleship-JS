@@ -3,7 +3,7 @@
 var compMoveWindow;
 var gameOver = false;
 var gameStarted = false;
-(function () {
+(() => {
 	const rows = 10;
 	const cols = 10;
 	const cellSize = 50;
@@ -520,8 +520,6 @@ var gameStarted = false;
 		gaveOverChecker();
 	};
 
-	compMoveWindow = compMove;
-
 	const shipHitButNotSunkReassign = () => {
 		for (let i = 0; i < cols; i++) {
 			for (let j = 0; j < rows; j++) {
@@ -616,13 +614,6 @@ var gameStarted = false;
 		}
 	};
 
-	for (let i = 0; i < cols; i++) {
-		probabilityChart.push([]);
-		for (let j = 0; j < rows; j++) {
-			probabilityChart[i].push(0);
-		}
-	}
-
 	const gameOverColorChange = () => {
 		for (let i = 0; i < cols; i++) {
 			for (let j = 0; j < rows; j++) {
@@ -633,37 +624,48 @@ var gameStarted = false;
 		}
 	};
 
-	for (let i = 0; i < cols; i++) {
-		gameBoard.push([]);
-		for (let j = 0; j < rows; j++) {
-			gameBoard[i].push([0, ""]);
-			const cell = document.createElement("div");
-			gameBoardContainer.appendChild(cell);
-			cell.id = "c" + j + i;
-			const topPosition = j * cellSize + 5;
-			const leftPosition = i * cellSize + 5;
-			cell.style.top = topPosition + "px";
-			cell.style.left = leftPosition + "px";
+	(() => {
+		compMoveWindow = compMove;
+
+		for (let i = 0; i < cols; i++) {
+			probabilityChart.push([]);
+			for (let j = 0; j < rows; j++) {
+				probabilityChart[i].push(0);
+			}
 		}
-	}
 
-	for (let i = 0; i < cols; i++) {
-		for (let j = 0; j < rows; j++) {
-			document.getElementById(getCId(i, j)).style.background = "#80aaff";
-			document.getElementById(getCId(i, j)).addEventListener("mouseover", highlight);
-			document.getElementById(getCId(i, j)).addEventListener("mouseleave", resetColor);
+		for (let i = 0; i < cols; i++) {
+			gameBoard.push([]);
+			for (let j = 0; j < rows; j++) {
+				gameBoard[i].push([0, ""]);
+				const cell = document.createElement("div");
+				gameBoardContainer.appendChild(cell);
+				cell.id = "c" + j + i;
+				const topPosition = j * cellSize + 5;
+				const leftPosition = i * cellSize + 5;
+				cell.style.top = topPosition + "px";
+				cell.style.left = leftPosition + "px";
+			}
 		}
-	}
 
-	ships.forEach(s => s.addEventListener("click", placeShipSetup));
-
-	document.getElementById("rotate").addEventListener("click", rotateShip);
-
-	document.getElementById("strtOvrBtn").addEventListener("click", () => location.reload());
-
-	document.addEventListener("keydown", function (event) {
-		if (event.keyCode == 192) {
-			console.log(gameBoard);
+		for (let i = 0; i < cols; i++) {
+			for (let j = 0; j < rows; j++) {
+				document.getElementById(getCId(i, j)).style.background = "#80aaff";
+				document.getElementById(getCId(i, j)).addEventListener("mouseover", highlight);
+				document.getElementById(getCId(i, j)).addEventListener("mouseleave", resetColor);
+			}
 		}
-	});
+
+		ships.forEach(s => s.addEventListener("click", placeShipSetup));
+
+		document.getElementById("rotate").addEventListener("click", rotateShip);
+
+		document.getElementById("strtOvrBtn").addEventListener("click", () => location.reload());
+
+		document.addEventListener("keydown", function (event) {
+			if (event.keyCode == 192) {
+				console.log(gameBoard);
+			}
+		});
+	})();
 })();
