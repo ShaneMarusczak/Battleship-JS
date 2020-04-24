@@ -4,6 +4,7 @@
 <head>
 	<title>Battleship</title>
 	<link rel="stylesheet" type="text/css" href="static/style.min.css" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <div id="shader"></div>
@@ -55,22 +56,27 @@
 				<button id="strtOvrBtn">Start Over</button>
 			</div>
 			<div id="sunkships">
-				<ul id="shiplist_2">
-					Player Ships:
-					<li>Carrier (5)<span class="sunkText" id="carrierSunk_cpu"> Sunk!</span></li>
-					<li>Battleship (4)<span class="sunkText" id="battleshipSunk_cpu"> Sunk!</span></li>
-					<li>Cruiser (3)<span class="sunkText" id="cruiserSunk_cpu"> Sunk!</span></li>
-					<li>Submarine (3)<span class="sunkText" id="submarineSunk_cpu"> Sunk!</span></li>
-					<li>Destroyer (2)<span class="sunkText" id="destroyerSunk_cpu"> Sunk!</span></li>
-				</ul>
-				<ul id="shiplist">
-					Computer Ships:
-					<li>Carrier (5)<span class="sunkText" id="CarrierSunk"> Sunk!</span></li>
-					<li>Battleship (4)<span class="sunkText" id="BattleshipSunk"> Sunk!</span></li>
-					<li>Cruiser (3)<span class="sunkText" id="CruiserSunk"> Sunk!</span></li>
-					<li>Submarine (3)<span class="sunkText" id="SubmarineSunk"> Sunk!</span></li>
-					<li>Destroyer (2)<span class="sunkText" id="DestroyerSunk"> Sunk!</span></li>
-				</ul>
+				<div class="shiplist_2">
+					<h4>Player's Ships:</h4>
+					<ul>
+						<li>Carrier (5)<span class="sunkText" id="carrierSunk_cpu"> Sunk!</span></li>
+						<li>Battleship (4)<span class="sunkText" id="battleshipSunk_cpu"> Sunk!</span></li>
+						<li>Cruiser (3)<span class="sunkText" id="cruiserSunk_cpu"> Sunk!</span></li>
+						<li>Submarine (3)<span class="sunkText" id="submarineSunk_cpu"> Sunk!</span></li>
+						<li>Destroyer (2)<span class="sunkText" id="destroyerSunk_cpu"> Sunk!</span></li>
+					</ul>
+				</div>
+				<div class="shiplist">
+					<h4>Computer Ships:</h4>
+					<ul>
+						<li>Carrier (5)<span class="sunkText" id="CarrierSunk"> Sunk!</span></li>
+						<li>Battleship (4)<span class="sunkText" id="BattleshipSunk"> Sunk!</span></li>
+						<li>Cruiser (3)<span class="sunkText" id="CruiserSunk"> Sunk!</span></li>
+						<li>Submarine (3)<span class="sunkText" id="SubmarineSunk"> Sunk!</span></li>
+						<li>Destroyer (2)<span class="sunkText" id="DestroyerSunk"> Sunk!</span></li>
+					</ul>
+				</div>
+
 			</div>
 		</div>
 		<p id="wintext">You Win! Click Start over to play again!</p>

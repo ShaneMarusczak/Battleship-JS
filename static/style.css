@@ -1,12 +1,14 @@
 @import url("https://fonts.googleapis.com/css?family=Orbitron&display=swap");
 
 body {
+	width: auto;
 	background-color: cornsilk;
 }
 
 #main {
 	margin: 40px auto;
-	width: 70%;
+	width: 100%;
+	margin-left: 10vw;
 	font-family: "Orbitron", sans-serif;
 	margin-top: 15px;
 	margin-bottom: 0;
@@ -93,8 +95,8 @@ input {
 	cursor: pointer;
 }
 
-#shiplist,
-#shiplist_2 {
+.shiplist,
+.shiplist_2 {
 	margin-top: 0;
 }
 
@@ -112,6 +114,11 @@ input {
 
 #info_2 {
 	display: flex;
+	width: 100%;
+}
+
+h2, ul {
+	white-space: nowrap;
 }
 
 #rotate,
@@ -125,7 +132,7 @@ input {
 
 #btns {
 	width: 175px;
-	margin-right: 75px;
+	margin-right: 5vw;
 	font-family: "Orbitron", sans-serif;
 	display: flex;
 	flex-direction: column;
@@ -136,12 +143,25 @@ input {
 	width: auto;
 }
 
-#shiplist {
-	margin-left: 15vw;
+@media screen and (max-width: 1500px) {
+	.shiplist {
+		margin-left: 1vw;
+		width: auto;
+	}
 }
 
-#shiplist_2 {
+@media screen and (min-width: 1500px) {
+	.shiplist {
+		margin-left: 15vw;
+	}
+}
+
+.shiplist_2 {
 	width: 190px;
+}
+
+h4 {
+	margin-top: 0;
 }
 
 #ready {
@@ -298,7 +318,7 @@ a:hover {
 	margin-top: 10vh;
 	background-color: azure;
 	width: 20vw;
-	height:15vh;
+	height: 15vh;
 }
 
 #alertmessage {
