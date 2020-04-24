@@ -632,7 +632,7 @@ var gameStarted = false;
 		for (let i = 0; i < cols; i++) {
 			for (let j = 0; j < rows; j++) {
 				if (window.exportedGameBoard[i][j][0] === 1) {
-					document.getElementById("s" + i + j).style.background = "black";
+					document.getElementById("s" + i + j).classList.add("blackBackground");
 				}
 			}
 		}

@@ -313,3 +313,7 @@ a:hover {
 		font-size: medium;
 	}
 }
+
+.blackBackground {
+	background: black !important;
+}
