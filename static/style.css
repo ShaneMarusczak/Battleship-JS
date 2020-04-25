@@ -1,17 +1,24 @@
 @import url("https://fonts.googleapis.com/css?family=Orbitron&display=swap");
 
+header {
+	text-align: center;
+}
+
+html {
+	display: flex;
+}
+
 body {
-	width: auto;
 	background-color: cornsilk;
 }
 
 #main {
 	margin: 40px auto;
-	width: 70%;
-	margin-left: 10vw;
 	font-family: "Orbitron", sans-serif;
 	margin-top: 15px;
 	margin-bottom: 0;
+	padding-left: 4vw;
+	width: auto;
 }
 
 p {
@@ -25,7 +32,6 @@ h1 {
 }
 
 p,
-button,
 input {
 	font-size: 1.5em;
 	line-height: 1.4em;
@@ -60,8 +66,8 @@ input {
 	border-radius: 7px;
 	position: relative;
 	margin: 25px;
-	width: 500px;
-	height: 500px;
+	width: 500px !important;
+	height: 500px !important;
 }
 
 #ships div:hover {
@@ -84,8 +90,18 @@ input {
 	cursor: url(cross-hair-cursor.png) 16 16, auto;
 }
 
+#leftList,
+#rightList {
+	padding: 5px;
+	border: 3px solid black;
+	border-radius: 7px;
+}
+
 #ships {
-	display: flex;
+	padding: 5px;
+	border: 3px solid black;
+	border-radius: 7px;
+	width: fit-content;
 }
 
 #ships div {
@@ -93,49 +109,43 @@ input {
 	border-style: solid;
 	margin: 6px;
 	cursor: pointer;
+	width: 150px;
+	border-radius: 7px;
 }
 
-.shiplist,
-.shiplist_2 {
-	margin-top: 0;
+#rotate {
+	font-size: large;
+	font-weight: bold;
+	border: 2px;
+	text-align: center;
 }
 
 #wintext,
 #losstext {
+	margin-top: 15px;
 	margin-bottom: 10px;
+	font-weight: bold;
 	display: none;
 }
 
-#sunkships {
-	display: flex;
-	flex-direction: row;
-	margin-bottom: 5px;
-}
-
-#info_2 {
-	display: flex;
-	width: 100%;
-}
-
-h2, ul {
-	white-space: nowrap;
-}
-
-#rotate,
-#strtOvrBtn {
-	font-family: "Orbitron", sans-serif;
+a {
+	font-size: 1.2em;
 }
 
 #strtOvrBtn {
-	margin-top: 25px;
+	display: inline-block;
+	width: fit-content;
+	font-size: 1.7em;
+	padding: 5px;
+	border: solid black;
+	border-radius: 7px;
+	font-family: "Orbitron", sans-serif;
+	margin-bottom: 10px;
 }
 
-#btns {
-	width: 175px;
-	margin-right: 5vw;
-	font-family: "Orbitron", sans-serif;
-	display: flex;
-	flex-direction: column;
+#strtOvrBtn:hover {
+	background-color: gray;
+	cursor: pointer;
 }
 
 #boards {
@@ -143,29 +153,14 @@ h2, ul {
 	width: auto;
 }
 
-@media screen and (max-width: 1500px) {
-	.shiplist {
-		margin-left: 1vw;
-		width: auto;
-	}
-}
-
-@media screen and (min-width: 1500px) {
-	.shiplist {
-		margin-left: 15vw;
-	}
-}
-
-.shiplist_2 {
-	width: 190px;
+.shiplist {
+	padding-top: 5vh;
+	margin-left: 1vw;
+	width: 200px;
 }
 
 h4 {
 	margin-top: 0;
-}
-
-#ready {
-	display: none;
 }
 
 @media screen and (max-width: 1500px) {
@@ -179,18 +174,13 @@ h4 {
 }
 
 .sunkText {
-	color: red;
-	display: none;
+	color: darkred;
+	text-decoration: line-through;
 }
 
 #updateText {
-	font-size: small;
+	font-size: medium;
 	margin-top: 10px;
-}
-
-#analysisLink {
-	margin-top: 10px;
-	width: 76px;
 }
 
 #links {
@@ -336,4 +326,13 @@ a:hover {
 
 .blackBackground {
 	background: black !important;
+}
+
+.boardContainer {
+	display: flex;
+	flex-direction: row;
+}
+
+footer {
+	text-align: center;
 }

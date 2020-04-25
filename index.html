@@ -17,77 +17,79 @@
 
 <body>
 	<div id="main">
-		<h1>Battleship</h1>
-		<h2 id="ready">Fire at the board on the right to play!</h2>
-		<h2 id="instructions">Click on each ship to place on the board below.</h2>
-		<div id="ships">
-			<div id="carrier">
-				<p>Carrier</p>
-			</div>
-			<div id="battleship">
-				<p>Battleship</p>
-			</div>
-			<div id="cruiser">
-				<p>Cruiser</p>
-			</div>
-			<div id="submarine">
-				<p>Submarine</p>
-			</div>
-			<div id="destroyer">
-				<p>Destroyer</p>
-			</div>
-		</div>
+		<header>
+			<h1>Battleship</h1>
+			<p id="wintext">You Win! Click Start over to play again!</p>
+			<p id="losstext">The computer won this time! Click Start over to play again!</p>
+		</header>
 		<div id="boards">
-			<div id="gameboard_cpu">
-				<div id="thinking">
-					<span id="message">Thinking...</span>
-					<div class="animation">
-						<div></div>
-						<div></div>
-						<div></div>
-						<div></div>
+			<div class="boardContainer">
+				<div class="shiplist">
+					<div id="leftList" class="notDisplayed">
+						<h4>Player's Ships:</h4>
+						<p id="carrierSunk_cpu">Carrier (5)</p>
+						<p id="battleshipSunk_cpu">Battleship (4)</p>
+						<p id="cruiserSunk_cpu">Cruiser (3)</p>
+						<p id="submarineSunk_cpu">Submarine (3)</p>
+						<p id="destroyerSunk_cpu">Destroyer (2)</p>
+					</div>
+					<div id="ships">
+						<p id="instructions"><b>Click on each ship to place on the board to the right.</b></p>
+						<div id="rotate">
+							<p>Rotate</p>
+						</div>
+						<div id="carrier">
+							<p>Carrier</p>
+						</div>
+						<div id="battleship">
+							<p>Battleship</p>
+						</div>
+						<div id="cruiser">
+							<p>Cruiser</p>
+						</div>
+						<div id="submarine">
+							<p>Submarine</p>
+						</div>
+						<div id="destroyer">
+							<p>Destroyer</p>
+						</div>
+					</div>
+				</div>
+
+				<div id="gameboard_cpu">
+					<div id="thinking">
+						<span id="message">Thinking...</span>
+						<div class="animation">
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div id="gameboard"></div>
-		</div>
-		<div id="info_2">
-			<div id="btns">
-				<button id="rotate">Rotate Ship</button>
-				<button id="strtOvrBtn">Start Over</button>
-			</div>
-			<div id="sunkships">
-				<div class="shiplist_2">
-					<h4>Player's Ships:</h4>
-					<ul>
-						<li>Carrier (5)<span class="sunkText" id="carrierSunk_cpu"> Sunk!</span></li>
-						<li>Battleship (4)<span class="sunkText" id="battleshipSunk_cpu"> Sunk!</span></li>
-						<li>Cruiser (3)<span class="sunkText" id="cruiserSunk_cpu"> Sunk!</span></li>
-						<li>Submarine (3)<span class="sunkText" id="submarineSunk_cpu"> Sunk!</span></li>
-						<li>Destroyer (2)<span class="sunkText" id="destroyerSunk_cpu"> Sunk!</span></li>
-					</ul>
-				</div>
+			<div class="boardContainer">
+				<div id="gameboard"></div>
 				<div class="shiplist">
-					<h4>Computer Ships:</h4>
-					<ul>
-						<li>Carrier (5)<span class="sunkText" id="CarrierSunk"> Sunk!</span></li>
-						<li>Battleship (4)<span class="sunkText" id="BattleshipSunk"> Sunk!</span></li>
-						<li>Cruiser (3)<span class="sunkText" id="CruiserSunk"> Sunk!</span></li>
-						<li>Submarine (3)<span class="sunkText" id="SubmarineSunk"> Sunk!</span></li>
-						<li>Destroyer (2)<span class="sunkText" id="DestroyerSunk"> Sunk!</span></li>
-					</ul>
+					<div id="rightList" class="notDisplayed">
+						<h4>Computer Ships:</h4>
+						<p id="CarrierSunk">Carrier (5)</p>
+						<p id="BattleshipSunk">Battleship (4)</p>
+						<p id="CruiserSunk">Cruiser (3)</p>
+						<p id="SubmarineSunk">Submarine (3)</p>
+						<p id="DestroyerSunk">Destroyer (2)</p>
+					</div>
 				</div>
-
 			</div>
 		</div>
-		<p id="wintext">You Win! Click Start over to play again!</p>
-		<p id="losstext">The computer won this time! Click Start over to play again!</p>
-		<div id="links">
+		<footer>
+			<p id="strtOvrBtn">Start Over</p>
+			<br />
 			<a id="gitHubLink" href="https://github.com/ShaneMarusczak/Battleship-JS" target="_blank"
 				rel="noreferrer">Github Repo</a>
 			<a id="analysisLink" href="https://marusczak.com/Sudoku-Game">Sudoku!</a>
-		</div>
-		<p id="updateText">Last Updated: April 24, 2020</p>
+			<p id="updateText">Last Updated: April 25, 2020</p>
+		</footer>
 	</div>
 </body>
 <script type="text/javascript" src="scripts/battleship.min.js"></script>

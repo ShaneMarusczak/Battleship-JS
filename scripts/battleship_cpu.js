@@ -60,7 +60,7 @@ var gameStarted = false;
 
 	const shipSunkHelper = (num, sunkShipName) => {
 		sunkSound.play();
-		document.getElementById(sunkShipName + "Sunk_cpu").classList.add("inline");
+		document.getElementById(sunkShipName + "Sunk_cpu").classList.add("sunkText");
 		sunkColorChange(sunkShipName);
 		shipFound = shipFound - num;
 		shipDirection = "";
@@ -227,9 +227,10 @@ var gameStarted = false;
 				document.getElementById("destroyer").classList.add("notDisplayed");
 			}
 			if (shipsPlaced === 5) {
-				document.getElementById("instructions").classList.add("notDisplayed");
+				document.getElementById("leftList").classList.remove("notDisplayed");
+				document.getElementById("rightList").classList.remove("notDisplayed");
+				document.getElementById("ships").classList.add("notDisplayed");
 				alertModalControl("All ships Placed!", 1400);
-				document.getElementById("ready").style.display = "block";
 				allShipsPlaced = true;
 				gameStarted = true;
 				for (let i = 0; i < cols; i++) {

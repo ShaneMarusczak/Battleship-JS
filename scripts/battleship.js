@@ -122,7 +122,7 @@ var currentColor;
 									}
 									document.getElementById(
 										gameBoard[coor[0]][coor[1]][1] + "Sunk"
-									).style.display = "inline";
+									).classList.add("sunkText");
 									shipSunkThisShot = true;
 									sunkSound.play();
 								}
