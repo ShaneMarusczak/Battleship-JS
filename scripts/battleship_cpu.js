@@ -228,7 +228,6 @@ var gameStarted = false;
 			}
 			if (shipsPlaced === 5) {
 				document.getElementById("leftList").classList.remove("notDisplayed");
-				document.getElementById("rightList").classList.remove("notDisplayed");
 				document.getElementById("ships").classList.add("notDisplayed");
 				alertModalControl("All ships Placed!", 1400);
 				allShipsPlaced = true;
