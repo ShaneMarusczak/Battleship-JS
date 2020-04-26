@@ -227,6 +227,7 @@ var gameStarted = false;
 				document.getElementById("destroyer").classList.add("notDisplayed");
 			}
 			if (shipsPlaced === 5) {
+				document.getElementById("downArrow").classList.add("notDisplayed");
 				document.getElementById("leftList").classList.remove("notDisplayed");
 				document.getElementById("ships").classList.add("notDisplayed");
 				alertModalControl("All ships Placed!", 1400);

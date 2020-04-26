@@ -3,8 +3,40 @@
 header {
 	padding-top: 35px;
 	text-align: center;
-	margin-bottom: 40px;
+	margin-bottom: 30px;
 	height: 94px;
+}
+
+@keyframes gbounce {
+	0% {
+		transform: translateY(0);
+	}
+
+	30% {
+		transform: translateY(-50px);
+	}
+
+	50% {
+		transform: translateY(0);
+	}
+
+	100% {
+		transform: translateY(0);
+	}
+}
+
+.gbounce {
+	animation: gbounce 2s;
+	animation-timing-function: ease;
+	animation-iteration-count: infinite;
+}
+
+#downArrow {
+	margin-left: 50px;
+	top: 10vh;
+	width: 90px;
+	height: 130px;
+	position: fixed;
 }
 
 html {
@@ -151,7 +183,7 @@ input {
 
 .rotateBackAnimation {
 	-webkit-transform: rotate(-90deg);
-	-webkit-transition: -webkit-transform 1.2s;
+	-webkit-transition: -webkit-transform .8s;
 }
 
 #wintext,
