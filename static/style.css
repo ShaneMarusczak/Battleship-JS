@@ -12,11 +12,11 @@ header {
 		transform: translateY(0);
 	}
 
-	30% {
+	45% {
 		transform: translateY(-50px);
 	}
 
-	50% {
+	90% {
 		transform: translateY(0);
 	}
 
@@ -26,16 +26,16 @@ header {
 }
 
 .gbounce {
-	animation: gbounce 2s;
+	animation: gbounce 4s;
 	animation-timing-function: ease;
 	animation-iteration-count: infinite;
 }
 
 #downArrow {
 	margin-left: 50px;
-	top: 10vh;
-	width: 90px;
-	height: 130px;
+	top: 150px;
+	width: 85px;
+	height: 90px;
 	position: fixed;
 }
 
@@ -191,7 +191,6 @@ input {
 	font-weight: bold;
 	display: none;
 }
-
 
 .shiplist {
 	padding-top: 5vh;
