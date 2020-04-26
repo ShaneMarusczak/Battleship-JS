@@ -13,7 +13,7 @@ header {
 	}
 
 	45% {
-		transform: translateY(-50px);
+		transform: translateY(-60px);
 	}
 
 	90% {
@@ -26,14 +26,14 @@ header {
 }
 
 .gbounce {
-	animation: gbounce 4s;
+	animation: gbounce 4.5s;
 	animation-timing-function: ease;
 	animation-iteration-count: infinite;
 }
 
 #downArrow {
 	margin-left: 50px;
-	top: 150px;
+	top: 140px;
 	width: 85px;
 	height: 90px;
 	position: fixed;
