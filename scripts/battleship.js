@@ -5,6 +5,7 @@
 var exportedGameBoard;
 var currentColor;
 (() => {
+	let hitCount = 0;
 	const rows = 10;
 	const cols = 10;
 	const squareSize = 50;
@@ -15,7 +16,6 @@ var currentColor;
 	const hitSound = new Audio("static/Hit Ship Sound.mp3");
 	const missSound = new Audio("static/Miss Fire Sound.mp3");
 	const sunkSound = new Audio("static/Ship Sunk Sound.mp3");
-	let hitCount = 0;
 	const ships = [];
 	const searchngPhrases = [
 		"Thinking...", "Hmm...", "Finding...", "Tracking...", "Spotting...", "Hunting...", "Looking...",
@@ -26,9 +26,6 @@ var currentColor;
 		"Aww Man!", "SOS!", "I'm Going Down!", "Capsized!", "I'm Sinking!", "Cheater!", "Shipwreck!",
 		"No Fair!", "Awww!", "Hull Breach!", "I won't lose!", "Abandon Ship!", "Overboard!"
 	];
-
-	gameBoardContainer.addEventListener("click", fireTorpedo, false);
-	strtOvrBtn.addEventListener("click", () => location.reload());
 
 	//inclusive
 	const randomIntFromInterval = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
@@ -135,6 +132,7 @@ var currentColor;
 					document.getElementById("wintext").style.display = "block";
 					gameBoardContainer.removeEventListener("click", fireTorpedo);
 					window.gameOver = true;
+					alertModalControl("YOU WIN!!!", 3000);
 					return;
 				}
 			} else if (gameBoard[row][col][0] > 1) {
@@ -228,6 +226,9 @@ var currentColor;
 	}
 
 	(() => {
+		gameBoardContainer.addEventListener("click", fireTorpedo, false);
+		strtOvrBtn.addEventListener("click", () => location.reload());
+
 		for (let i = 0; i < cols; i++) {
 			gameBoard.push([]);
 			for (let j = 0; j < rows; j++) {
@@ -239,6 +240,9 @@ var currentColor;
 				const leftPosition = i * squareSize + 5;
 				square.style.top = topPosition + "px";
 				square.style.left = leftPosition + "px";
+				square.style.background = "rgb(128, 170, 255)";
+				square.addEventListener("mouseover", hoverColor);
+				square.addEventListener("mouseleave", resetHoverColor);
 			}
 		}
 
@@ -248,14 +252,6 @@ var currentColor;
 		placeShip(3);
 		placeShip(2);
 		exportedGameBoard = gameBoard;
-
-		for (let i = 0; i < cols; i++) {
-			for (let j = 0; j < rows; j++) {
-				document.getElementById("s" + i + j).style.background = "rgb(128, 170, 255)";
-				document.getElementById("s" + i + j).addEventListener("mouseover", hoverColor);
-				document.getElementById("s" + i + j).addEventListener("mouseleave", resetHoverColor);
-			}
-		}
 
 		document.addEventListener("keydown", function (event) {
 			if (event.keyCode == 192) {

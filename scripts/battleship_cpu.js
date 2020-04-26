@@ -4,20 +4,6 @@ var compMoveWindow;
 var gameOver = false;
 var gameStarted = false;
 (() => {
-	const rows = 10;
-	const cols = 10;
-	const cellSize = 50;
-	const gameBoard = [];
-	const gameBoardContainer = document.getElementById("gameboard_cpu");
-	const carrier = document.getElementById("carrier");
-	const battleship = document.getElementById("battleship");
-	const cruiser = document.getElementById("cruiser");
-	const submarine = document.getElementById("submarine");
-	const destroyer = document.getElementById("destroyer");
-	const sunkSound = new Audio("static/Ship Sunk Sound.mp3");
-	const placedShips = [];
-	const ships = [carrier, battleship, cruiser, submarine, destroyer];
-	const probabilityChart = [];
 	let shipFound = 0;
 	let shipsPlaced = 0;
 	let lastShotX, lastShotY, placed, size;
@@ -36,6 +22,20 @@ var gameStarted = false;
 	let scanCounter = 0;
 	let direction = "hor";
 	let shotsfired = 0;
+	const rows = 10;
+	const cols = 10;
+	const cellSize = 50;
+	const gameBoard = [];
+	const gameBoardContainer = document.getElementById("gameboard_cpu");
+	const carrier = document.getElementById("carrier");
+	const battleship = document.getElementById("battleship");
+	const cruiser = document.getElementById("cruiser");
+	const submarine = document.getElementById("submarine");
+	const destroyer = document.getElementById("destroyer");
+	const sunkSound = new Audio("static/Ship Sunk Sound.mp3");
+	const placedShips = [];
+	const ships = [carrier, battleship, cruiser, submarine, destroyer];
+	const probabilityChart = [];
 	const sunkPhrases = [
 		"I am winning!", "Found You!", "You're Sunk!", "Down she goes!", "Gotcha!", "Ha Ha!", "I'm the best!", "Woo Hoo!",
 		"I'm Better!", "I'm gonna win!", "Easy!", "Sink that ship!", "Try Harder!", "Yawn..", "Sunk!", "Oh Yeah!"
@@ -322,11 +322,7 @@ var gameStarted = false;
 			document.getElementById("losstext").style.display = "block";
 			gameOver = true;
 			gameOverColorChange();
-			for (let i = 0; i < cols; i++) {
-				for (let j = 0; j < rows; j++) {
-					document.getElementById("s" + i + j).removeEventListener("click", compMove);
-				}
-			}
+			sleep(1500).then(() => alertModalControl("HA HA! I WIN!", 2000));
 		}
 	};
 
@@ -624,19 +620,26 @@ var gameStarted = false;
 		}
 	};
 
+	const rotateIcon = () => {
+		document.getElementsByClassName("rotateArrow")[0].classList.add("rotateAnimation");
+		document.getElementsByClassName("rotateArrow")[0].classList.remove("rotateBackAnimation");
+
+	};
+
+	const rotateIconBack = () => {
+		document.getElementsByClassName("rotateArrow")[0].classList.remove("rotateAnimation");
+		document.getElementsByClassName("rotateArrow")[0].classList.add("rotateBackAnimation");
+
+	};
+
 	(() => {
 		compMoveWindow = compMove;
 
 		for (let i = 0; i < cols; i++) {
+			gameBoard.push([]);
 			probabilityChart.push([]);
 			for (let j = 0; j < rows; j++) {
 				probabilityChart[i].push(0);
-			}
-		}
-
-		for (let i = 0; i < cols; i++) {
-			gameBoard.push([]);
-			for (let j = 0; j < rows; j++) {
 				gameBoard[i].push([0, ""]);
 				const cell = document.createElement("div");
 				gameBoardContainer.appendChild(cell);
@@ -645,21 +648,16 @@ var gameStarted = false;
 				const leftPosition = i * cellSize + 5;
 				cell.style.top = topPosition + "px";
 				cell.style.left = leftPosition + "px";
-			}
-		}
-
-		for (let i = 0; i < cols; i++) {
-			for (let j = 0; j < rows; j++) {
-				document.getElementById(getCId(i, j)).style.background = "#80aaff";
-				document.getElementById(getCId(i, j)).addEventListener("mouseover", highlight);
-				document.getElementById(getCId(i, j)).addEventListener("mouseleave", resetColor);
+				cell.style.background = "#80aaff";
+				cell.addEventListener("mouseover", highlight);
+				cell.addEventListener("mouseleave", resetColor);
 			}
 		}
 
 		ships.forEach(s => s.addEventListener("click", placeShipSetup));
-
+		document.getElementById("rotate").addEventListener("mouseover", rotateIcon);
+		document.getElementById("rotate").addEventListener("mouseleave", rotateIconBack);
 		document.getElementById("rotate").addEventListener("click", rotateShip);
-
 		document.getElementById("strtOvrBtn").addEventListener("click", () => location.reload());
 
 		document.addEventListener("keydown", function (event) {
