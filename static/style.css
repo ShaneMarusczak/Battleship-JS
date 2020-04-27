@@ -183,13 +183,13 @@ input {
 }
 
 .rotateAnimation {
-	-webkit-transform: rotate(90deg);
-	-webkit-transition: -webkit-transform 1.2s;
+	transform: rotate(90deg);
+	transition: transform 900ms;
 }
 
 .rotateBackAnimation {
-	-webkit-transform: rotate(0deg);
-	-webkit-transition: -webkit-transform .8s;
+	transform: rotate(0deg);
+	transition: transform 500ms;
 }
 
 #wintext,
