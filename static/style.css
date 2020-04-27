@@ -362,24 +362,23 @@ footer {
 	width: 60px;
 	height: 60px;
 	position: absolute;
-	right:110px;
-	top:40px;
-	margin-top: 5px;
+	right: 120px;
+	top: 40px;
 	transition: 1.5s;
 	z-index: 0;
 	background-color: transparent;
 	border-radius: 30px;
 }
 
-@media screen and (max-width: 1500px) {
-	#githubicon {
-		left:650px;
-	}
+#githubicon:hover {
+	transform: translateY(-5px);
+	background-color: azure;
 }
 
-#githubicon:hover{
-	margin-top: 0;
-	background-color: azure;
+@media screen and (max-width: 1500px) {
+	#githubicon {
+		left: 650px;
+	}
 }
 
 #strtOvrBtn {
