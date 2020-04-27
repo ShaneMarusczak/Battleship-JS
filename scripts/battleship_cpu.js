@@ -60,6 +60,7 @@ var gameStarted = false;
 
 	const shipSunkHelper = (num, sunkShipName) => {
 		sunkSound.play();
+		document.getElementById(sunkShipName + "Sunk_cpu").classList.remove("hitText");
 		document.getElementById(sunkShipName + "Sunk_cpu").classList.add("sunkText");
 		sunkColorChange(sunkShipName);
 		shipFound = shipFound - num;
@@ -289,6 +290,17 @@ var gameStarted = false;
 		}
 	};
 
+	const shipHitChecker = () => {
+		for (let i = 0; i < cols; i++) {
+			for (let j = 0; j < rows; j++) {
+				if (isAlreadyHit(i, j)) {
+					document.getElementById(gameBoard[i][j][1] + "Sunk_cpu").classList.add("hitText");
+
+				}
+			}
+		}
+	};
+
 	const allShips = ["carrier", "battleship", "cruiser", "submarine", "destroyer"];
 	const placeShipSetup = (e) => {
 		const elemId = e.target.parentElement.id;
@@ -513,6 +525,7 @@ var gameStarted = false;
 			alertModalControl("Place all ships!", 1400);
 			return;
 		}
+		shipHitChecker();
 		shipSunkChecker();
 		gaveOverChecker();
 	};
