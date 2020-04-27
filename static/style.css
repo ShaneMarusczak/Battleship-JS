@@ -12,12 +12,8 @@ header {
 		transform: translateY(0);
 	}
 
-	45% {
-		transform: translateY(-60px);
-	}
-
-	90% {
-		transform: translateY(0);
+	40% {
+		transform: translateY(-50px);
 	}
 
 	100% {
@@ -26,7 +22,7 @@ header {
 }
 
 .gbounce {
-	animation: gbounce 4.5s;
+	animation: gbounce 5s;
 	animation-timing-function: ease;
 	animation-iteration-count: infinite;
 }
@@ -58,7 +54,7 @@ body {
 	font-family: "Orbitron", sans-serif;
 	margin-top: 15px;
 	margin-bottom: 0;
-	padding-left: 4vw;
+	padding-left: 5vw;
 	width: auto;
 }
 
@@ -360,6 +356,41 @@ a:hover {
 
 footer {
 	text-align: center;
+}
+
+#githubicon {
+	width: 60px;
+	height: 60px;
+	position: absolute;
+	right:110px;
+	top:40px;
+	margin-top: 5px;
+	transition: 1.5s;
+	z-index: 0;
+	background-color: transparent;
+	border-radius: 30px;
+}
+
+@media screen and (max-width: 1500px) {
+	#githubicon {
+		/* right:0; */
+		left:650px;
+	}
+}
+
+#githubicon:hover{
+	margin-top: 0;
+	background-color: azure;
+}
+
+@keyframes iconFloat {
+	0% {
+		transform: translateY(0);
+	}
+
+	100% {
+		transform: translateY(-5px);
+	}
 }
 
 #strtOvrBtn {
