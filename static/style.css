@@ -382,16 +382,6 @@ footer {
 	background-color: azure;
 }
 
-@keyframes iconFloat {
-	0% {
-		transform: translateY(0);
-	}
-
-	100% {
-		transform: translateY(-5px);
-	}
-}
-
 #strtOvrBtn {
 	display: inline-block;
 	width: fit-content;
