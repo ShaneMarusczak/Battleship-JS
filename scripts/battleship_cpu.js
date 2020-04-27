@@ -491,7 +491,7 @@ var gameStarted = false;
 
 	const searchingShot = () => {
 		let x, y;
-		if (shotsfired < 4 || randomIntFromInterval(0, 8) === 0) {
+		if (shotsfired < 6 || randomIntFromInterval(0, 9) === 0) {
 			do {
 				x = randomIntFromInterval(0, 8);
 				y = randomIntFromInterval(0, 8);
