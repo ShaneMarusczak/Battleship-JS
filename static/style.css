@@ -373,7 +373,6 @@ footer {
 
 @media screen and (max-width: 1500px) {
 	#githubicon {
-		/* right:0; */
 		left:650px;
 	}
 }
