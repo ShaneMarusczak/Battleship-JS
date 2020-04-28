@@ -7,12 +7,16 @@ header {
 	height: 94px;
 }
 
+.curserPointer:hover {
+	cursor: pointer;
+}
+
 @keyframes gbounce {
 	0% {
 		transform: translateY(0);
 	}
 
-	40% {
+	50% {
 		transform: translateY(-50px);
 	}
 
@@ -22,8 +26,7 @@ header {
 }
 
 .gbounce {
-	animation: gbounce 5s;
-	animation-timing-function: ease;
+	animation: gbounce 4.5s;
 	animation-iteration-count: infinite;
 }
 

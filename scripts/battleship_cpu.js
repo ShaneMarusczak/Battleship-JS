@@ -36,6 +36,23 @@ var gameStarted = false;
 	const placedShips = [];
 	const ships = [carrier, battleship, cruiser, submarine, destroyer];
 	const probabilityChart = [];
+
+	const shipLengths = {
+		"battleship": 4,
+		"carrier": 5,
+		"cruiser": 3,
+		"destroyer": 2,
+		"submarine": 3
+	};
+
+	const shipsPlacedStore = {
+		"battleship": placedBattleship,
+		"carrier": placedCarrier,
+		"cruiser": placedCruiser,
+		"destroyer": placedDetroyer,
+		"submarine": placedSubmarine
+	};
+
 	const sunkPhrases = [
 		"I am winning!", "Found You!", "You're Sunk!", "Down she goes!", "Gotcha!", "Ha Ha!", "I'm the best!", "Woo Hoo!",
 		"I'm Better!", "I'm gonna win!", "Easy!", "Sink that ship!", "Try Harder!", "Yawn..", "Sunk!", "Oh Yeah!"
@@ -151,97 +168,195 @@ var gameStarted = false;
 		}
 	};
 
-	const placeShip = (e) => {
-		if (allShipsPlaced) {
-			return;
-		}
-		const ship = [];
-		let canPlace = true;
-		const x = Number(e.target.id[1]);
-		const y = Number(e.target.id[2]);
-
-		for (const placedShip of placedShips) {
-			for (const coor of placedShip) {
-				if (direction === "hor") {
-					for (let i = 0; i < size; i++) {
-						if (x === coor[0] && y + i === coor[1]) {
-							canPlace = false;
-						}
-					}
-				} else {
-					for (let i = 0; i < size; i++) {
-						if (x + i === coor[0] && y === coor[1]) {
-							canPlace = false;
-						}
+	const moveShip = (e) => {
+		if (size === 0 && !allShipsPlaced) {
+			const x = Number(e.target.id[1]);
+			const y = Number(e.target.id[2]);
+			const [, shipName] = gameBoard[x][y];
+			shipsPlacedStore[shipName] = false;
+			size = shipLengths[shipName];
+			placed = shipName;
+			shipsPlaced--;
+			for (const ship of placedShips) {
+				for (const coor of ship) {
+					if (coor[0] === x && coor[1] === y) {
+						placedShips.splice(placedShips.indexOf(ship), 1);
 					}
 				}
 			}
-		}
-		if (!canPlace) {
-			alertModalControl("Can't place here!", 1400);
-		}
-		if (canPlace) {
 			for (let i = 0; i < cols; i++) {
 				for (let j = 0; j < rows; j++) {
-					if (
-						document.getElementById(getCId(i, j)).style.background == "black" &&
-						gameBoard[i][j][1] == ""
-					) {
-						if (size === 5) {
-							gameBoard[i][j][1] = "carrier";
-						} else if (size === 4) {
-							gameBoard[i][j][1] = "battleship";
-						} else if (size === 3 && placed === "cruiser") {
-							gameBoard[i][j][1] = "cruiser";
-						} else if (size === 3 && placed === "submarine") {
-							gameBoard[i][j][1] = "submarine";
-						} else if (size === 2) {
-							gameBoard[i][j][1] = "destroyer";
-						}
-						document.getElementById(getCId(i, j)).removeEventListener("mouseover", highlight);
-						gameBoard[i][j][0] = 1;
-						ship.push([i, j]);
+					if (isShip(i, j, shipName)) {
+						const elem = document.getElementById(getCId(i, j));
+						elem.removeEventListener("mouseover", canMoveShipHighlight);
+						elem.removeEventListener("mouseleave", canMoveShipHighlightRevert);
+						elem.removeEventListener("click", moveShip);
+						elem.classList.remove("curserPointer");
+						gameBoard[i][j][0] = 0;
+						gameBoard[i][j][1] = "";
 					}
 				}
 			}
-			if (size === 5) {
-				placedCarrier = true;
-				shipsPlaced++;
-				document.getElementById("carrier").classList.add("notDisplayed");
-			} else if (size === 4) {
-				placedBattleship = true;
-				shipsPlaced++;
-				document.getElementById("battleship").classList.add("notDisplayed");
-			} else if (size === 3) {
-				if (placed === "cruiser") {
-					placedCruiser = true;
-					shipsPlaced++;
-					document.getElementById("cruiser").classList.add("notDisplayed");
-				} else if (placed === "submarine") {
-					placedSubmarine = true;
-					shipsPlaced++;
-					document.getElementById("submarine").classList.add("notDisplayed");
-				}
-			} else if (size === 2) {
-				placedDetroyer = true;
-				shipsPlaced++;
-				document.getElementById("destroyer").classList.add("notDisplayed");
+		}
+	};
+
+	const allShips = ["carrier", "battleship", "cruiser", "submarine", "destroyer"];
+	const placeShipSetup = (e) => {
+		if (!allShipsPlaced) {
+			const elemId = e.target.parentElement.id;
+			if (document.getElementById(elemId).classList.contains("clicked")) {
+				document.getElementById(elemId).classList.remove("clicked");
+				size = 0;
+				return;
 			}
-			if (shipsPlaced === 5) {
-				document.getElementById("downArrow").classList.add("notDisplayed");
-				document.getElementById("leftList").classList.remove("notDisplayed");
-				document.getElementById("ships").classList.add("notDisplayed");
-				alertModalControl("All ships Placed!", 1400);
-				allShipsPlaced = true;
-				gameStarted = true;
+			allShips.forEach(s => document.getElementById(s).classList.remove("clicked"));
+			if (elemId === "carrier" && !placedCarrier) {
+				size = shipLengths[elemId];
+				e.target.parentElement.classList.add("clicked");
+			} else if (elemId === "battleship" && !placedBattleship) {
+				size = shipLengths[elemId];
+				e.target.parentElement.classList.add("clicked");
+			} else if (elemId === "cruiser" && !placedCruiser) {
+				size = shipLengths[elemId];
+				e.target.parentElement.classList.add("clicked");
+				placed = "cruiser";
+			} else if (elemId === "submarine" && !placedSubmarine) {
+				size = shipLengths[elemId];
+				e.target.parentElement.classList.add("clicked");
+				placed = "submarine";
+			} else if (elemId === "destroyer" && !placedDetroyer) {
+				size = shipLengths[elemId];
+				e.target.parentElement.classList.add("clicked");
+			}
+		}
+	};
+
+	const canMoveShipHighlight = (e) => {
+		if (size === 0) {
+			const x = Number(e.target.id[1]);
+			const y = Number(e.target.id[2]);
+			const [, shipName] = gameBoard[x][y];
+			for (let i = 0; i < cols; i++) {
+				for (let j = 0; j < rows; j++) {
+					if (isShip(i, j, shipName)) {
+						document.getElementById(getCId(i, j)).style.background = "#4c4c4c";
+					}
+				}
+			}
+		}
+	};
+
+	const canMoveShipHighlightRevert = (e) => {
+		const x = Number(e.target.id[1]);
+		const y = Number(e.target.id[2]);
+		const [, shipName] = gameBoard[x][y];
+		for (let i = 0; i < cols; i++) {
+			for (let j = 0; j < rows; j++) {
+				if (isShip(i, j, shipName)) {
+					document.getElementById(getCId(i, j)).style.background = "black";
+				}
+			}
+		}
+	};
+
+	const placeShip = (e) => {
+		if (!allShipsPlaced) {
+			const ship = [];
+			let canPlace = true;
+			const x = Number(e.target.id[1]);
+			const y = Number(e.target.id[2]);
+
+			for (const placedShip of placedShips) {
+				for (const coor of placedShip) {
+					if (direction === "hor") {
+						for (let i = 0; i < size; i++) {
+							if (x === coor[0] && y + i === coor[1]) {
+								canPlace = false;
+							}
+						}
+					} else {
+						for (let i = 0; i < size; i++) {
+							if (x + i === coor[0] && y === coor[1]) {
+								canPlace = false;
+							}
+						}
+					}
+				}
+			}
+			if (canPlace) {
 				for (let i = 0; i < cols; i++) {
 					for (let j = 0; j < rows; j++) {
-						document.getElementById(getCId(i, j)).removeEventListener("mouseleave", resetColor);
+						if (
+							document.getElementById(getCId(i, j)).style.background == "black" &&
+							gameBoard[i][j][1] == ""
+						) {
+							if (size === shipLengths.carrier) {
+								gameBoard[i][j][1] = "carrier";
+							} else if (size === shipLengths.battleship) {
+								gameBoard[i][j][1] = "battleship";
+							} else if (size === shipLengths.cruiser && placed === "cruiser") {
+								gameBoard[i][j][1] = "cruiser";
+							} else if (size === shipLengths.submarine && placed === "submarine") {
+								gameBoard[i][j][1] = "submarine";
+							} else if (size === shipLengths.destroyer) {
+								gameBoard[i][j][1] = "destroyer";
+							}
+							const elem = document.getElementById(getCId(i, j));
+							elem.addEventListener("click", moveShip);
+							elem.addEventListener("mouseover", canMoveShipHighlight);
+							elem.addEventListener("mouseleave", canMoveShipHighlightRevert);
+							elem.classList.add("curserPointer");
+							gameBoard[i][j][0] = 1;
+							ship.push([i, j]);
+						}
 					}
 				}
+				if (size === shipLengths.carrier) {
+					placedCarrier = true;
+					shipsPlaced++;
+					document.getElementById("carrier").classList.add("notDisplayed");
+				} else if (size === shipLengths.battleship) {
+					placedBattleship = true;
+					shipsPlaced++;
+					document.getElementById("battleship").classList.add("notDisplayed");
+				} else if (size === shipLengths.cruiser) {
+					if (placed === "cruiser") {
+						placedCruiser = true;
+						shipsPlaced++;
+						document.getElementById("cruiser").classList.add("notDisplayed");
+					} else if (placed === "submarine") {
+						placedSubmarine = true;
+						shipsPlaced++;
+						document.getElementById("submarine").classList.add("notDisplayed");
+					}
+				} else if (size === shipLengths.destroyer) {
+					placedDetroyer = true;
+					shipsPlaced++;
+					document.getElementById("destroyer").classList.add("notDisplayed");
+				}
+				if (shipsPlaced === 5) {
+					document.getElementById("downArrow").classList.add("notDisplayed");
+					document.getElementById("leftList").classList.remove("notDisplayed");
+					document.getElementById("ships").classList.add("notDisplayed");
+					alertModalControl("All ships Placed!", 1400);
+					allShipsPlaced = true;
+					gameStarted = true;
+					for (let i = 0; i < cols; i++) {
+						for (let j = 0; j < rows; j++) {
+							const elem = document.getElementById(getCId(i, j));
+							elem.removeEventListener("mouseleave", resetColor);
+							elem.removeEventListener("click", moveShip);
+							elem.removeEventListener("mouseover", canMoveShipHighlight);
+							elem.removeEventListener("mouseleave", canMoveShipHighlightRevert);
+							elem.classList.remove("curserPointer");
+						}
+					}
+				}
+				size = 0;
+				placedShips.push(ship);
+			} else {
+				alertModalControl("Can't place here!", 1400);
 			}
-			size = 0;
-			placedShips.push(ship);
 		}
 	};
 
@@ -268,23 +383,23 @@ var gameStarted = false;
 				}
 			}
 		}
-		if (carrierCounter == 5) {
+		if (carrierCounter == shipLengths.carrier) {
 			carrierSunk = true;
 			shipSunkHelper(5, "carrier");
 		}
-		if (battleshipCounter == 4) {
+		if (battleshipCounter == shipLengths.battleship) {
 			battleshipSunk = true;
 			shipSunkHelper(4, "battleship");
 		}
-		if (cruiserCounter == 3) {
+		if (cruiserCounter == shipLengths.cruiser) {
 			cruiserSunk = true;
 			shipSunkHelper(3, "cruiser");
 		}
-		if (submarineCounter == 3) {
+		if (submarineCounter == shipLengths.submarine) {
 			submarineSunk = true;
 			shipSunkHelper(3, "submarine");
 		}
-		if (destroyerCounter == 2) {
+		if (destroyerCounter == shipLengths.destroyer) {
 			destroyerSunk = true;
 			shipSunkHelper(2, "destroyer");
 		}
@@ -298,35 +413,6 @@ var gameStarted = false;
 
 				}
 			}
-		}
-	};
-
-	const allShips = ["carrier", "battleship", "cruiser", "submarine", "destroyer"];
-	const placeShipSetup = (e) => {
-		const elemId = e.target.parentElement.id;
-		if (document.getElementById(elemId).classList.contains("clicked")) {
-			document.getElementById(elemId).classList.remove("clicked");
-			size = 0;
-			return;
-		}
-		allShips.forEach(s => document.getElementById(s).classList.remove("clicked"));
-		if (elemId === "carrier" && !placedCarrier) {
-			size = 5;
-			e.target.parentElement.classList.add("clicked");
-		} else if (elemId === "battleship" && !placedBattleship) {
-			size = 4;
-			e.target.parentElement.classList.add("clicked");
-		} else if (elemId === "cruiser" && !placedCruiser) {
-			size = 3;
-			e.target.parentElement.classList.add("clicked");
-			placed = "cruiser";
-		} else if (elemId === "submarine" && !placedSubmarine) {
-			size = 3;
-			e.target.parentElement.classList.add("clicked");
-			placed = "submarine";
-		} else if (elemId === "destroyer" && !placedDetroyer) {
-			size = 2;
-			e.target.parentElement.classList.add("clicked");
 		}
 	};
 
@@ -556,19 +642,19 @@ var gameStarted = false;
 		const lengthsLeft = [];
 		let counter = 0;
 		if (!carrierSunk) {
-			lengthsLeft.push(5);
+			lengthsLeft.push(shipLengths.carrier);
 		}
 		if (!battleshipSunk) {
-			lengthsLeft.push(4);
+			lengthsLeft.push(shipLengths.battleship);
 		}
 		if (!submarineSunk) {
-			lengthsLeft.push(3);
+			lengthsLeft.push(shipLengths.submarine);
 		}
 		if (!cruiserSunk) {
-			lengthsLeft.push(3);
+			lengthsLeft.push(shipLengths.cruiser);
 		}
 		if (!destroyerSunk) {
-			lengthsLeft.push(2);
+			lengthsLeft.push(shipLengths.destroyer);
 		}
 		for (let n = 0; n < lengthsLeft.length; n++) {
 			for (let i = 0; i < rows; i++) {
