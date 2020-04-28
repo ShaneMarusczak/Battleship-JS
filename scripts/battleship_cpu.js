@@ -120,41 +120,25 @@ var gameStarted = false;
 
 	const rotatedHighlight = (e) => {
 		const elemId = e.target.id;
-		if (Number(elemId[1]) < rows + 1 - size) {
-			for (let i = 0; i < cols; i++) {
-				for (let j = 0; j < rows; j++) {
-					document.getElementById(getCId(i, j)).addEventListener("click", placeShip);
-				}
-			}
+		if (Number(elemId[1]) < rows + 1 - size && isMiss(elemId[1], elemId[2])) {
+			e.target.addEventListener("click", placeShip);
 			for (let i = 0; i < size; i++) {
 				document.getElementById(elemId[0] + (Number(elemId[1]) + i) + elemId[2]).style.background = "black";
 			}
 		} else {
-			for (let i = 0; i < cols; i++) {
-				for (let j = 0; j < rows; j++) {
-					document.getElementById(getCId(i, j)).removeEventListener("click", placeShip);
-				}
-			}
+			e.target.removeEventListener("click", placeShip);
 		}
 	};
 
 	const highlight = (e) => {
 		const elemId = e.target.id;
-		if (Number(elemId[2]) < cols + 1 - size) {
-			for (let i = 0; i < cols; i++) {
-				for (let j = 0; j < rows; j++) {
-					document.getElementById(getCId(i, j)).addEventListener("click", placeShip);
-				}
-			}
+		if (Number(elemId[2]) < cols + 1 - size && isMiss(elemId[1], elemId[2])) {
+			e.target.addEventListener("click", placeShip);
 			for (let i = 0; i < size; i++) {
 				document.getElementById(elemId[0] + elemId[1] + (Number(elemId[2]) + i)).style.background = "black";
 			}
 		} else {
-			for (let i = 0; i < cols; i++) {
-				for (let j = 0; j < rows; j++) {
-					document.getElementById(getCId(i, j)).removeEventListener("click", placeShip);
-				}
-			}
+			e.target.removeEventListener("click", placeShip);
 		}
 	};
 
@@ -170,6 +154,7 @@ var gameStarted = false;
 
 	const moveShip = (e) => {
 		if (size === 0 && !allShipsPlaced) {
+			let thisShip;
 			const x = Number(e.target.id[1]);
 			const y = Number(e.target.id[2]);
 			const [, shipName] = gameBoard[x][y];
@@ -180,24 +165,22 @@ var gameStarted = false;
 			for (const ship of placedShips) {
 				for (const coor of ship) {
 					if (coor[0] === x && coor[1] === y) {
-						placedShips.splice(placedShips.indexOf(ship), 1);
+						thisShip = ship;
 					}
 				}
 			}
-			for (let i = 0; i < cols; i++) {
-				for (let j = 0; j < rows; j++) {
-					if (isShip(i, j, shipName)) {
-						const elem = document.getElementById(getCId(i, j));
+			thisShip.forEach(s => {
+				const elem = document.getElementById(getCId(s[0], s[1]));
 						elem.removeEventListener("mouseover", canMoveShipHighlight);
 						elem.removeEventListener("mouseleave", canMoveShipHighlightRevert);
 						elem.removeEventListener("click", moveShip);
 						elem.classList.remove("curserPointer");
-						gameBoard[i][j][0] = 0;
-						gameBoard[i][j][1] = "";
-					}
-				}
-			}
+						gameBoard[s[0]][s[1]][0] = 0;
+						gameBoard[s[0]][s[1]][1] = "";
+			});
+			placedShips.splice(placedShips.indexOf(thisShip), 1);
 		}
+		e.stopImmediatePropagation();
 	};
 
 	const allShips = ["carrier", "battleship", "cruiser", "submarine", "destroyer"];
@@ -305,6 +288,7 @@ var gameStarted = false;
 							elem.addEventListener("click", moveShip);
 							elem.addEventListener("mouseover", canMoveShipHighlight);
 							elem.addEventListener("mouseleave", canMoveShipHighlightRevert);
+							elem.removeEventListener("click", placeShip);
 							elem.classList.add("curserPointer");
 							gameBoard[i][j][0] = 1;
 							ship.push([i, j]);
