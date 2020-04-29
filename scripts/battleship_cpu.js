@@ -120,7 +120,14 @@ var gameStarted = false;
 
 	const rotatedHighlight = (e) => {
 		const elemId = e.target.id;
-		if (Number(elemId[1]) < rows + 1 - size && isMiss(elemId[1], elemId[2])) {
+		let canPlace = true;
+		for (let i = 0; i < size; i++) {
+			if (!isMiss((Number(elemId[1]) + i), elemId[2])) {
+				canPlace = false;
+				break;
+			}
+		}
+		if (Number(elemId[1]) < rows + 1 - size && canPlace) {
 			e.target.addEventListener("click", placeShip);
 			for (let i = 0; i < size; i++) {
 				document.getElementById(elemId[0] + (Number(elemId[1]) + i) + elemId[2]).style.background = "black";
@@ -132,7 +139,14 @@ var gameStarted = false;
 
 	const highlight = (e) => {
 		const elemId = e.target.id;
-		if (Number(elemId[2]) < cols + 1 - size && isMiss(elemId[1], elemId[2])) {
+		let canPlace = true;
+		for (let i = 0; i < size; i++) {
+			if (!isMiss(elemId[1], (Number(elemId[2]) + i))) {
+				canPlace = false;
+				break;
+			}
+		}
+		if (Number(elemId[2]) < cols + 1 - size && canPlace) {
 			e.target.addEventListener("click", placeShip);
 			for (let i = 0; i < size; i++) {
 				document.getElementById(elemId[0] + elemId[1] + (Number(elemId[2]) + i)).style.background = "black";
@@ -166,17 +180,18 @@ var gameStarted = false;
 				for (const coor of ship) {
 					if (coor[0] === x && coor[1] === y) {
 						thisShip = ship;
+						break;
 					}
 				}
 			}
 			thisShip.forEach(s => {
 				const elem = document.getElementById(getCId(s[0], s[1]));
-						elem.removeEventListener("mouseover", canMoveShipHighlight);
-						elem.removeEventListener("mouseleave", canMoveShipHighlightRevert);
-						elem.removeEventListener("click", moveShip);
-						elem.classList.remove("curserPointer");
-						gameBoard[s[0]][s[1]][0] = 0;
-						gameBoard[s[0]][s[1]][1] = "";
+				elem.removeEventListener("mouseover", canMoveShipHighlight);
+				elem.removeEventListener("mouseleave", canMoveShipHighlightRevert);
+				elem.removeEventListener("click", moveShip);
+				elem.classList.remove("curserPointer");
+				gameBoard[s[0]][s[1]][0] = 0;
+				gameBoard[s[0]][s[1]][1] = "";
 			});
 			placedShips.splice(placedShips.indexOf(thisShip), 1);
 		}
@@ -242,105 +257,80 @@ var gameStarted = false;
 		}
 	};
 
-	const placeShip = (e) => {
+	const placeShip = () => {
 		if (!allShipsPlaced) {
 			const ship = [];
-			let canPlace = true;
-			const x = Number(e.target.id[1]);
-			const y = Number(e.target.id[2]);
-
-			for (const placedShip of placedShips) {
-				for (const coor of placedShip) {
-					if (direction === "hor") {
-						for (let i = 0; i < size; i++) {
-							if (x === coor[0] && y + i === coor[1]) {
-								canPlace = false;
-							}
+			for (let i = 0; i < cols; i++) {
+				for (let j = 0; j < rows; j++) {
+					if (
+						document.getElementById(getCId(i, j)).style.background == "black" &&
+						gameBoard[i][j][1] == ""
+					) {
+						if (size === shipLengths.carrier) {
+							gameBoard[i][j][1] = "carrier";
+						} else if (size === shipLengths.battleship) {
+							gameBoard[i][j][1] = "battleship";
+						} else if (size === shipLengths.cruiser && placed === "cruiser") {
+							gameBoard[i][j][1] = "cruiser";
+						} else if (size === shipLengths.submarine && placed === "submarine") {
+							gameBoard[i][j][1] = "submarine";
+						} else if (size === shipLengths.destroyer) {
+							gameBoard[i][j][1] = "destroyer";
 						}
-					} else {
-						for (let i = 0; i < size; i++) {
-							if (x + i === coor[0] && y === coor[1]) {
-								canPlace = false;
-							}
-						}
+						const elem = document.getElementById(getCId(i, j));
+						elem.addEventListener("click", moveShip);
+						elem.addEventListener("mouseover", canMoveShipHighlight);
+						elem.addEventListener("mouseleave", canMoveShipHighlightRevert);
+						elem.removeEventListener("click", placeShip);
+						elem.classList.add("curserPointer");
+						gameBoard[i][j][0] = 1;
+						ship.push([i, j]);
 					}
 				}
 			}
-			if (canPlace) {
+			if (size === shipLengths.carrier) {
+				placedCarrier = true;
+				shipsPlaced++;
+				document.getElementById("carrier").classList.add("notDisplayed");
+			} else if (size === shipLengths.battleship) {
+				placedBattleship = true;
+				shipsPlaced++;
+				document.getElementById("battleship").classList.add("notDisplayed");
+			} else if (size === shipLengths.cruiser) {
+				if (placed === "cruiser") {
+					placedCruiser = true;
+					shipsPlaced++;
+					document.getElementById("cruiser").classList.add("notDisplayed");
+				} else if (placed === "submarine") {
+					placedSubmarine = true;
+					shipsPlaced++;
+					document.getElementById("submarine").classList.add("notDisplayed");
+				}
+			} else if (size === shipLengths.destroyer) {
+				placedDetroyer = true;
+				shipsPlaced++;
+				document.getElementById("destroyer").classList.add("notDisplayed");
+			}
+			if (shipsPlaced === 5) {
+				document.getElementById("downArrow").classList.add("notDisplayed");
+				document.getElementById("leftList").classList.remove("notDisplayed");
+				document.getElementById("ships").classList.add("notDisplayed");
+				alertModalControl("All ships Placed!", 1400);
+				allShipsPlaced = true;
+				gameStarted = true;
 				for (let i = 0; i < cols; i++) {
 					for (let j = 0; j < rows; j++) {
-						if (
-							document.getElementById(getCId(i, j)).style.background == "black" &&
-							gameBoard[i][j][1] == ""
-						) {
-							if (size === shipLengths.carrier) {
-								gameBoard[i][j][1] = "carrier";
-							} else if (size === shipLengths.battleship) {
-								gameBoard[i][j][1] = "battleship";
-							} else if (size === shipLengths.cruiser && placed === "cruiser") {
-								gameBoard[i][j][1] = "cruiser";
-							} else if (size === shipLengths.submarine && placed === "submarine") {
-								gameBoard[i][j][1] = "submarine";
-							} else if (size === shipLengths.destroyer) {
-								gameBoard[i][j][1] = "destroyer";
-							}
-							const elem = document.getElementById(getCId(i, j));
-							elem.addEventListener("click", moveShip);
-							elem.addEventListener("mouseover", canMoveShipHighlight);
-							elem.addEventListener("mouseleave", canMoveShipHighlightRevert);
-							elem.removeEventListener("click", placeShip);
-							elem.classList.add("curserPointer");
-							gameBoard[i][j][0] = 1;
-							ship.push([i, j]);
-						}
+						const elem = document.getElementById(getCId(i, j));
+						elem.removeEventListener("mouseleave", resetColor);
+						elem.removeEventListener("click", moveShip);
+						elem.removeEventListener("mouseover", canMoveShipHighlight);
+						elem.removeEventListener("mouseleave", canMoveShipHighlightRevert);
+						elem.classList.remove("curserPointer");
 					}
 				}
-				if (size === shipLengths.carrier) {
-					placedCarrier = true;
-					shipsPlaced++;
-					document.getElementById("carrier").classList.add("notDisplayed");
-				} else if (size === shipLengths.battleship) {
-					placedBattleship = true;
-					shipsPlaced++;
-					document.getElementById("battleship").classList.add("notDisplayed");
-				} else if (size === shipLengths.cruiser) {
-					if (placed === "cruiser") {
-						placedCruiser = true;
-						shipsPlaced++;
-						document.getElementById("cruiser").classList.add("notDisplayed");
-					} else if (placed === "submarine") {
-						placedSubmarine = true;
-						shipsPlaced++;
-						document.getElementById("submarine").classList.add("notDisplayed");
-					}
-				} else if (size === shipLengths.destroyer) {
-					placedDetroyer = true;
-					shipsPlaced++;
-					document.getElementById("destroyer").classList.add("notDisplayed");
-				}
-				if (shipsPlaced === 5) {
-					document.getElementById("downArrow").classList.add("notDisplayed");
-					document.getElementById("leftList").classList.remove("notDisplayed");
-					document.getElementById("ships").classList.add("notDisplayed");
-					alertModalControl("All ships Placed!", 1400);
-					allShipsPlaced = true;
-					gameStarted = true;
-					for (let i = 0; i < cols; i++) {
-						for (let j = 0; j < rows; j++) {
-							const elem = document.getElementById(getCId(i, j));
-							elem.removeEventListener("mouseleave", resetColor);
-							elem.removeEventListener("click", moveShip);
-							elem.removeEventListener("mouseover", canMoveShipHighlight);
-							elem.removeEventListener("mouseleave", canMoveShipHighlightRevert);
-							elem.classList.remove("curserPointer");
-						}
-					}
-				}
-				size = 0;
-				placedShips.push(ship);
-			} else {
-				alertModalControl("Can't place here!", 1400);
 			}
+			size = 0;
+			placedShips.push(ship);
 		}
 	};
 
