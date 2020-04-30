@@ -8,7 +8,7 @@ header {
 }
 
 #githubicon {
-	position: fixed;
+	position: absolute;
 	top: 40px;
 	right: 10vw;
 	width: 60px;
