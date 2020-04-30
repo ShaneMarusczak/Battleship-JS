@@ -7,6 +7,23 @@ header {
 	height: 94px;
 }
 
+#githubicon {
+	position: fixed;
+	top: 40px;
+	right: 10vw;
+	width: 60px;
+	height: 60px;
+	transition: 1.5s;
+	z-index: 0;
+	background-color: transparent;
+	border-radius: 30px;
+}
+
+#githubicon:hover {
+	transform: translateY(-5px);
+	background-color: azure;
+}
+
 .curserPointer:hover {
 	cursor: pointer;
 }
@@ -109,14 +126,16 @@ input {
 	#boards {
 		flex-direction: column;
 	}
+
+	html {
+		justify-content: normal !important;
+	}
 }
 
 .boardContainer {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-
-
 }
 
 #gameboard,
@@ -366,23 +385,6 @@ a:hover {
 
 footer {
 	text-align: center;
-}
-
-#githubicon {
-	width: 60px;
-	height: 60px;
-	position: absolute;
-	right: 10vw;
-	top: 40px;
-	transition: 1.5s;
-	z-index: 0;
-	background-color: transparent;
-	border-radius: 30px;
-}
-
-#githubicon:hover {
-	transform: translateY(-5px);
-	background-color: azure;
 }
 
 #strtOvrBtn {
