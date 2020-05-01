@@ -50,7 +50,14 @@ var currentColor;
 		return "";
 	}
 
-	const playerWinsOnLoad = Number(getCookie("playerwins"));
+	let playerWinsOnLoad = Number(getCookie("playerwins"));
+
+
+	const resetWinLoss = () => {
+		setCookie("playerwins", 0, 0.25);
+		playerWinsOnLoad = 0;
+		document.getElementById("playerWins").textContent = "Player Wins: " + 0;
+	};
 
 	//inclusive
 	const randomIntFromInterval = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
@@ -256,6 +263,8 @@ var currentColor;
 	(() => {
 		gameBoardContainer.addEventListener("click", fireTorpedo, false);
 		strtOvrBtn.addEventListener("click", () => location.reload());
+		document.getElementById("resetWinLoss").addEventListener("click", resetWinLoss);
+
 		document.getElementById("playerWins").textContent = "Player Wins: " + playerWinsOnLoad;
 
 		for (let i = 0; i < cols; i++) {

@@ -81,7 +81,13 @@ var gameStarted = false;
 		return "";
 	}
 
-	const compWinsOnLoad = Number(getCookie("compwins"));
+	let compWinsOnLoad = Number(getCookie("compwins"));
+
+	const resetWinLoss = () => {
+		compWinsOnLoad = 0;
+		setCookie("compwins", 0, 0.25);
+		document.getElementById("compWins").textContent = "Computer Wins: " + 0;
+	};
 
 	const getCId = (x, y) => "c" + x + y;
 
@@ -770,6 +776,7 @@ var gameStarted = false;
 		document.getElementById("rotate").addEventListener("mouseleave", rotateIconBack);
 		document.getElementById("rotate").addEventListener("click", rotateShip);
 		document.getElementById("strtOvrBtn").addEventListener("click", () => location.reload());
+		document.getElementById("resetWinLoss").addEventListener("click", resetWinLoss);
 
 		document.addEventListener("keydown", function (event) {
 			if (event.keyCode == 192) {

@@ -387,7 +387,8 @@ footer {
 	text-align: center;
 }
 
-#strtOvrBtn {
+#strtOvrBtn,
+#resetWinLoss {
 	display: inline-block;
 	width: fit-content;
 	font-size: 1.7em;
@@ -398,7 +399,8 @@ footer {
 	margin-bottom: 10px;
 }
 
-#strtOvrBtn:hover {
+#strtOvrBtn:hover,
+#resetWinLoss:hover {
 	background-color: gray;
 	cursor: pointer;
 }
