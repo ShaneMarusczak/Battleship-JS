@@ -1,8 +1,4 @@
 "use strict";
-//eslint-disable-next-line no-unused-vars
-var compMoveWindow;
-var gameOver = false;
-var gameStarted = false;
 (() => {
 	let shipFound = 0;
 	let shipsPlaced = 0;
@@ -58,53 +54,9 @@ var gameStarted = false;
 		"I'm Better!", "I'm gonna win!", "Easy!", "Sink that ship!", "Try Harder!", "Yawn..", "Sunk!", "Oh Yeah!"
 	];
 
-	function setCookie(cname, cvalue, exdays) {
-		var d = new Date();
-		d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-		var expires = "expires=" + d.toUTCString();
-		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-	}
-
-	function getCookie(cname) {
-		var name = cname + "=";
-		var decodedCookie = decodeURIComponent(document.cookie);
-		var ca = decodedCookie.split(";");
-		for (var i = 0; i < ca.length; i++) {
-			var c = ca[i];
-			while (c.charAt(0) == " ") {
-				c = c.substring(1);
-			}
-			if (c.indexOf(name) == 0) {
-				return c.substring(name.length, c.length);
-			}
-		}
-		return "";
-	}
-
-	let compWinsOnLoad = Number(getCookie("compwins"));
-
-	const resetWinLoss = () => {
-		compWinsOnLoad = 0;
-		setCookie("compwins", 0, 0.25);
-		document.getElementById("compWins").textContent = "Computer Wins: " + 0;
-	};
-
 	const getCId = (x, y) => "c" + x + y;
 
-	const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
 	const capitalizeFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
-
-	const alertModalControl = (message, duration) => {
-		document.getElementById("alertshader").style.display = "block";
-		document.getElementById("alertmessage").innerText = message;
-		sleep(duration).then(() => {
-			document.getElementById("alertshader").style.display = "none";
-		});
-	};
-
-	//inclusive
-	const randomIntFromInterval = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
 	const shipSunkHelper = (num, sunkShipName) => {
 		sunkSound.play();
@@ -120,10 +72,10 @@ var gameStarted = false;
 				}
 			}
 		}
-		if (randomIntFromInterval(0, 10) === 0) {
-			alertModalControl(capitalizeFirst(sunkShipName) + " Sunk!", 1500);
+		if (window.randomIntFromInterval(0, 10) === 0) {
+			window.alertModalControl(capitalizeFirst(sunkShipName) + " Sunk!", 1500);
 		} else {
-			alertModalControl(sunkPhrases[randomIntFromInterval(0, sunkPhrases.length - 1)], 1500);
+			window.alertModalControl(sunkPhrases[window.randomIntFromInterval(0, sunkPhrases.length - 1)], 1500);
 		}
 		if (shipFound > 0) {
 			shipHitButNotSunkReassign();
@@ -346,9 +298,9 @@ var gameStarted = false;
 				document.getElementById("downArrow").classList.add("notDisplayed");
 				document.getElementById("leftList").classList.remove("notDisplayed");
 				document.getElementById("ships").classList.add("notDisplayed");
-				alertModalControl("All ships Placed!", 1400);
+				window.alertModalControl("All ships Placed!", 1400);
 				allShipsPlaced = true;
-				gameStarted = true;
+				window.gameStarted = true;
 				for (let i = 0; i < cols; i++) {
 					for (let j = 0; j < rows; j++) {
 						const elem = document.getElementById(getCId(i, j));
@@ -424,16 +376,16 @@ var gameStarted = false;
 	const gaveOverChecker = () => {
 		if (carrierSunk && battleshipSunk && cruiserSunk && submarineSunk && destroyerSunk) {
 			document.getElementById("losstext").style.display = "block";
-			gameOver = true;
+			window.gameOver = true;
 			gameOverColorChange();
-			sleep(1500).then(() => alertModalControl("HA HA! I WIN!", 2000));
-			const valueToPass = compWinsOnLoad + 1;
-			setCookie("compwins", valueToPass, 0.25);
+			window.sleep(1500).then(() => window.alertModalControl("HA HA! I WIN!", 2000));
+			const valueToPass = window.compWinsOnLoad() + 1;
+			window.setCookie("compwins", valueToPass, 0.25);
 			document.getElementById("compWins").textContent = "Computer Wins: " + valueToPass;
 		}
 	};
 
-	let fireFirst = randomIntFromInterval(0, 1);
+	let fireFirst = window.randomIntFromInterval(0, 1);
 
 	const shipFoundAttack = () => {
 		const x = lastShotX;
@@ -593,10 +545,10 @@ var gameStarted = false;
 
 	const searchingShot = () => {
 		let x, y;
-		if (shotsfired < 6 || randomIntFromInterval(0, 8) === 0) {
+		if (shotsfired < 6 || window.randomIntFromInterval(0, 8) === 0) {
 			do {
-				x = randomIntFromInterval(0, 8);
-				y = randomIntFromInterval(0, 8);
+				x = window.randomIntFromInterval(0, 8);
+				y = window.randomIntFromInterval(0, 8);
 			} while ((x % 2 != 0 && y % 2 == 0) || (x % 2 == 0 && y % 2 != 0));
 		} else {
 			[x, y] = probabilityCalculator();
@@ -614,7 +566,7 @@ var gameStarted = false;
 	};
 
 	const compMove = () => {
-		if (gameOver || !gameStarted) {
+		if (window.gameOver || !window.gameStarted) {
 			return;
 		}
 		if (allShipsPlaced) {
@@ -624,7 +576,7 @@ var gameStarted = false;
 				searchingShot();
 			}
 		} else {
-			alertModalControl("Place all ships!", 1400);
+			window.alertModalControl("Place all ships!", 1400);
 			return;
 		}
 		shipHitChecker();
@@ -749,7 +701,7 @@ var gameStarted = false;
 	};
 
 	(() => {
-		compMoveWindow = compMove;
+		window.compMoveWindow = compMove;
 
 		for (let i = 0; i < cols; i++) {
 			gameBoard.push([]);
@@ -771,12 +723,10 @@ var gameStarted = false;
 		}
 
 		ships.forEach(s => s.addEventListener("click", placeShipSetup));
-		document.getElementById("compWins").textContent = "Computer Wins: " + compWinsOnLoad;
+		document.getElementById("compWins").textContent = "Computer Wins: " + window.compWinsOnLoad();
 		document.getElementById("rotate").addEventListener("mouseover", rotateIcon);
 		document.getElementById("rotate").addEventListener("mouseleave", rotateIconBack);
 		document.getElementById("rotate").addEventListener("click", rotateShip);
-		document.getElementById("strtOvrBtn").addEventListener("click", () => location.reload());
-		document.getElementById("resetWinLoss").addEventListener("click", resetWinLoss);
 
 		document.addEventListener("keydown", function (event) {
 			if (event.keyCode == 192) {

@@ -1,9 +1,5 @@
 "use strict";
-/*eslint-disable no-implicit-globals */
 /*eslint-disable no-console */
-//eslint-disable-next-line no-unused-vars
-var exportedGameBoard;
-var currentColor;
 (() => {
 	let hitCount = 0;
 	const rows = 10;
@@ -12,7 +8,6 @@ var currentColor;
 	const winningHitCount = 17;
 	const gameBoard = [];
 	const gameBoardContainer = document.getElementById("gameboard");
-	const strtOvrBtn = document.getElementById("strtOvrBtn");
 	const hitSound = new Audio("static/Hit Ship Sound.mp3");
 	const missSound = new Audio("static/Miss Fire Sound.mp3");
 	const sunkSound = new Audio("static/Ship Sunk Sound.mp3");
@@ -27,85 +22,40 @@ var currentColor;
 		"No Fair!", "Awww!", "Hull Breach!", "I won't lose!", "Abandon Ship!", "Overboard!"
 	];
 
-	function setCookie(cname, cvalue, exdays) {
-		var d = new Date();
-		d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-		var expires = "expires=" + d.toUTCString();
-		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-	}
-
-	function getCookie(cname) {
-		var name = cname + "=";
-		var decodedCookie = decodeURIComponent(document.cookie);
-		var ca = decodedCookie.split(";");
-		for (var i = 0; i < ca.length; i++) {
-			var c = ca[i];
-			while (c.charAt(0) == " ") {
-				c = c.substring(1);
-			}
-			if (c.indexOf(name) == 0) {
-				return c.substring(name.length, c.length);
-			}
-		}
-		return "";
-	}
-
-	let playerWinsOnLoad = Number(getCookie("playerwins"));
-
-
-	const resetWinLoss = () => {
-		setCookie("playerwins", 0, 0.25);
-		playerWinsOnLoad = 0;
-		document.getElementById("playerWins").textContent = "Player Wins: " + 0;
-	};
-
-	//inclusive
-	const randomIntFromInterval = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
-
 	const hoverColor = function (e) {
-		currentColor = e.target.style.background;
+		window.currentColor = e.target.style.background;
 		if (e.target.style.background === "rgb(128, 170, 255)") {
 			e.target.style.background = "#87CEFA";
 		}
 	};
 
 	const resetHoverColor = function (e) {
-		e.target.style.background = currentColor;
+		e.target.style.background = window.currentColor;
 	};
-
-	const alertModalControl = (message, duration) => {
-		document.getElementById("alertshader").style.display = "block";
-		document.getElementById("alertmessage").innerText = message;
-		sleep(duration).then(() => {
-			document.getElementById("alertshader").style.display = "none";
-		});
-	};
-
-	const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 	const innerModalControl = () => {
 		document.getElementById("thinking").style.display = "flex";
 		document.getElementById("shader").style.display = "block";
-		sleep(1400).then(() => {
-			document.getElementById("message").innerText = firingPhrases[randomIntFromInterval(0, firingPhrases.length - 1)];
+		window.sleep(1400).then(() => {
+			document.getElementById("message").innerText = firingPhrases[window.randomIntFromInterval(0, firingPhrases.length - 1)];
 		});
-		sleep(2000).then(() => {
+		window.sleep(2000).then(() => {
 			document.getElementById("thinking").style.display = "none";
 			document.getElementById("shader").style.display = "none";
-			sleep(300).then(() => {
+			window.sleep(300).then(() => {
 				window.compMoveWindow();
 				gameBoardContainer.addEventListener("click", fireTorpedo, false);
 			});
 		});
-		document.getElementById("message").innerText = searchngPhrases[randomIntFromInterval(0, searchngPhrases.length - 1)];
+		document.getElementById("message").innerText = searchngPhrases[window.randomIntFromInterval(0, searchngPhrases.length - 1)];
 	};
 
 	const modalControl = (shipSunkThisShot) => {
 		gameBoardContainer.removeEventListener("click", fireTorpedo, false);
 		if (shipSunkThisShot) {
 			const delay = 1500;
-			alertModalControl(compSunkPhrases[randomIntFromInterval(0, compSunkPhrases.length - 1)], delay);
-			sleep(delay).then(() => innerModalControl());
+			window.alertModalControl(compSunkPhrases[window.randomIntFromInterval(0, compSunkPhrases.length - 1)], delay);
+			window.sleep(delay).then(() => innerModalControl());
 		} else {
 			innerModalControl();
 		}
@@ -125,13 +75,13 @@ var currentColor;
 				e.target.style.background = "#4d88ff";
 				gameBoard[row][col][0] = 3;
 				document.getElementById("s" + row + col).classList.add("miss");
-				currentColor = "#4d88ff";
+				window.currentColor = "#4d88ff";
 				missSound.play();
 			} else if (gameBoard[row][col][0] == 1) {
 				e.target.style.background = "red";
 				gameBoard[row][col][0] = 2;
 				document.getElementById("s" + row + col).classList.add("hit");
-				currentColor = "red";
+				window.currentColor = "red";
 				hitSound.play();
 				hitCount++;
 				let shipSunkCounter = 0;
@@ -143,7 +93,7 @@ var currentColor;
 									shipSunkCounter++;
 								}
 								if (shipSunkCounter == ship.length) {
-									currentColor = "darkred";
+									window.currentColor = "darkred";
 									for (const coor of ship) {
 										document.getElementById(
 											"s" + coor[0] + coor[1]
@@ -164,18 +114,18 @@ var currentColor;
 					document.getElementById("wintext").style.display = "block";
 					gameBoardContainer.removeEventListener("click", fireTorpedo);
 					window.gameOver = true;
-					alertModalControl("YOU WIN!!!", 3000);
-					const valuetoPass = playerWinsOnLoad + 1;
-					setCookie("playerwins", valuetoPass, 0.25);
+					window.alertModalControl("YOU WIN!!!", 3000);
+					const valuetoPass = window.playerWinsOnLoad() + 1;
+					window.setCookie("playerwins", valuetoPass, 0.25);
 					document.getElementById("playerWins").textContent = "Player Wins: " + valuetoPass;
 					return;
 				}
 			} else if (gameBoard[row][col][0] > 1) {
-				alertModalControl("Can't Fire Here!", 1400);
+				window.alertModalControl("Can't Fire Here!", 1400);
 				return;
 			}
 		}
-		sleep(200).then(() => modalControl(shipSunkThisShot));
+		window.sleep(200).then(() => modalControl(shipSunkThisShot));
 		e.stopPropagation();
 	}
 
@@ -185,9 +135,9 @@ var currentColor;
 	function placeShip(len) {
 		const ship = [];
 		const name = names[nameIndex];
-		const dir = randomIntFromInterval(1, 2);
-		const row = randomIntFromInterval(0, 9);
-		const col = randomIntFromInterval(0, 9);
+		const dir = window.randomIntFromInterval(1, 2);
+		const row = window.randomIntFromInterval(0, 9);
+		const col = window.randomIntFromInterval(0, 9);
 		let shipPlaceCounter = 0;
 		if (dir == 1) {
 			if (col >= len - 1) {
@@ -262,10 +212,7 @@ var currentColor;
 
 	(() => {
 		gameBoardContainer.addEventListener("click", fireTorpedo, false);
-		strtOvrBtn.addEventListener("click", () => location.reload());
-		document.getElementById("resetWinLoss").addEventListener("click", resetWinLoss);
-
-		document.getElementById("playerWins").textContent = "Player Wins: " + playerWinsOnLoad;
+		document.getElementById("playerWins").textContent = "Player Wins: " + window.playerWinsOnLoad();
 
 		for (let i = 0; i < cols; i++) {
 			gameBoard.push([]);
@@ -289,7 +236,7 @@ var currentColor;
 		placeShip(3);
 		placeShip(3);
 		placeShip(2);
-		exportedGameBoard = gameBoard;
+		window.exportedGameBoard = gameBoard;
 
 		document.addEventListener("keydown", function (event) {
 			if (event.keyCode == 192) {
