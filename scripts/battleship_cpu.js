@@ -487,6 +487,9 @@
 					return;
 				} else {
 					scanCounter++;
+					if (scanCounter === 1) {
+						scanCounter++;
+					}
 					fireFirst = 0;
 				}
 			}
