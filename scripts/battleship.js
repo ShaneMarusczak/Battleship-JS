@@ -27,6 +27,31 @@ var currentColor;
 		"No Fair!", "Awww!", "Hull Breach!", "I won't lose!", "Abandon Ship!", "Overboard!"
 	];
 
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+		var expires = "expires=" + d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(";");
+		for (var i = 0; i < ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == " ") {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+
+	const playerWinsOnLoad = Number(getCookie("playerwins"));
+
 	//inclusive
 	const randomIntFromInterval = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
@@ -133,6 +158,9 @@ var currentColor;
 					gameBoardContainer.removeEventListener("click", fireTorpedo);
 					window.gameOver = true;
 					alertModalControl("YOU WIN!!!", 3000);
+					const valuetoPass = playerWinsOnLoad + 1;
+					setCookie("playerwins", valuetoPass, 0.25);
+					document.getElementById("playerWins").textContent = "Player Wins: " + valuetoPass;
 					return;
 				}
 			} else if (gameBoard[row][col][0] > 1) {
@@ -228,6 +256,7 @@ var currentColor;
 	(() => {
 		gameBoardContainer.addEventListener("click", fireTorpedo, false);
 		strtOvrBtn.addEventListener("click", () => location.reload());
+		document.getElementById("playerWins").textContent = "Player Wins: " + playerWinsOnLoad;
 
 		for (let i = 0; i < cols; i++) {
 			gameBoard.push([]);

@@ -58,6 +58,31 @@ var gameStarted = false;
 		"I'm Better!", "I'm gonna win!", "Easy!", "Sink that ship!", "Try Harder!", "Yawn..", "Sunk!", "Oh Yeah!"
 	];
 
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+		var expires = "expires=" + d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+
+	function getCookie(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(";");
+		for (var i = 0; i < ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == " ") {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+
+	const compWinsOnLoad = Number(getCookie("compwins"));
+
 	const getCId = (x, y) => "c" + x + y;
 
 	const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -396,8 +421,13 @@ var gameStarted = false;
 			gameOver = true;
 			gameOverColorChange();
 			sleep(1500).then(() => alertModalControl("HA HA! I WIN!", 2000));
+			const valueToPass = compWinsOnLoad + 1;
+			setCookie("compwins", valueToPass, 0.25);
+			document.getElementById("compWins").textContent = "Computer Wins: " + valueToPass;
 		}
 	};
+
+	let fireFirst = randomIntFromInterval(0, 1);
 
 	const shipFoundAttack = () => {
 		const x = lastShotX;
@@ -456,13 +486,15 @@ var gameStarted = false;
 				shipDirection = "";
 			}
 		}
-		if (scanCounter === 0 && shipDirection === "") {
+		if (fireFirst === 0 && shipDirection === "" && scanCounter < 2) {
 			if (x + 1 > 9) {
 				scanCounter++;
+				fireFirst = 1;
 			} else {
 				if (isMiss(x + 1, y)) {
 					missHelper(x + 1, y);
 					scanCounter++;
+					fireFirst = 1;
 					return;
 				} else if (isHit(x + 1, y)) {
 					hitHelper(x + 1, y);
@@ -472,16 +504,19 @@ var gameStarted = false;
 					return;
 				} else {
 					scanCounter++;
+					fireFirst = 1;
 				}
 			}
 		}
-		if (scanCounter === 1 && shipDirection === "") {
+		if (fireFirst === 1 && shipDirection === "" && scanCounter < 2) {
 			if (y + 1 > 9) {
 				scanCounter++;
+				fireFirst = 0;
 			} else {
 				if (isMiss(x, y + 1)) {
 					missHelper(x, y + 1);
 					scanCounter++;
+					fireFirst = 0;
 					return;
 				} else if (isHit(x, y + 1)) {
 					hitHelper(x, y + 1);
@@ -491,6 +526,7 @@ var gameStarted = false;
 					return;
 				} else {
 					scanCounter++;
+					fireFirst = 0;
 				}
 			}
 		}
@@ -551,7 +587,7 @@ var gameStarted = false;
 
 	const searchingShot = () => {
 		let x, y;
-		if (shotsfired < 6 || randomIntFromInterval(0, 9) === 0) {
+		if (shotsfired < 6 || randomIntFromInterval(0, 8) === 0) {
 			do {
 				x = randomIntFromInterval(0, 8);
 				y = randomIntFromInterval(0, 8);
@@ -729,6 +765,7 @@ var gameStarted = false;
 		}
 
 		ships.forEach(s => s.addEventListener("click", placeShipSetup));
+		document.getElementById("compWins").textContent = "Computer Wins: " + compWinsOnLoad;
 		document.getElementById("rotate").addEventListener("mouseover", rotateIcon);
 		document.getElementById("rotate").addEventListener("mouseleave", rotateIconBack);
 		document.getElementById("rotate").addEventListener("click", rotateShip);
