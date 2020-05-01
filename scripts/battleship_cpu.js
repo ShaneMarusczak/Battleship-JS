@@ -469,6 +469,9 @@
 		if (fireFirst === 1 && shipDirection === "" && scanCounter < 2) {
 			if (y + 1 > 9) {
 				scanCounter++;
+				if (scanCounter === 1) {
+					scanCounter++;
+				}
 				fireFirst = 0;
 			} else {
 				if (isMiss(x, y + 1)) {
