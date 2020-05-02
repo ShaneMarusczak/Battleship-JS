@@ -49,16 +49,10 @@ header {
 
 #downArrow {
 	margin-left: 50px;
-	top: 150px;
+	top: 190px;
 	width: 85px;
 	height: 90px;
 	position: absolute;
-}
-
-@media screen and (max-width: 1000px) {
-	#downArrow {
-		top: 130px;
-	}
 }
 
 html {
@@ -180,7 +174,7 @@ input {
 	width: fit-content;
 	width: 175px;
 	position: absolute;
-	top: 225px;
+	top: 270px;
 }
 
 #ships div {
