@@ -14,12 +14,13 @@
 	const ships = [];
 	const searchngPhrases = [
 		"Thinking...", "Hmm...", "Finding...", "Tracking...", "Spotting...", "Hunting...", "Looking...",
-		"Scanning..."
+		"Scanning...", "Seeking..."
 	];
-	const firingPhrases = ["Fire!", "Launch!", "Blast!", "BOOM!", "BANG!", "There!"];
+	const firingPhrases = ["Fire!", "Launch!", "Blast!", "BOOM!", "BANG!", "There!", "Attack!"];
 	const compSunkPhrases = [
 		"Aww Man!", "SOS!", "I'm Going Down!", "Capsized!", "I'm Sinking!", "Cheater!", "Shipwreck!",
-		"No Fair!", "Awww!", "Hull Breach!", "I won't lose!", "Abandon Ship!", "Overboard!"
+		"No Fair!", "Hull Breach!", "I won't lose!", "Abandon Ship!", "Overboard!", "Stop it!",
+		"No Way!", "Hey! Stop!", "You wont win!", "Lucky Shot!", ":("
 	];
 
 	const hoverColor = function (e) {

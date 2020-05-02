@@ -50,8 +50,9 @@
 	};
 
 	const sunkPhrases = [
-		"I am winning!", "Found You!", "You're Sunk!", "Down she goes!", "Gotcha!", "Ha Ha!", "I'm the best!", "Woo Hoo!",
-		"I'm Better!", "I'm gonna win!", "Easy!", "Sink that ship!", "Try Harder!", "Yawn..", "Sunk!", "Oh Yeah!"
+		"Found You!", "You're Sunk!", "Down she goes!", "Gotcha!", "Ha Ha!", "I'm the best!", "Woo Hoo!", "I'm Better!",
+		"I'm gonna win!", "Easy!", "Sink that ship!", "Try Harder!", "Yawn...", "Sunk!", "Oh Yeah!", "You're Gonna Lose!",
+		"Really? Easy..", "Yes!!", "So Easy!", "Child's Play!", ":)"
 	];
 
 	const getCId = (x, y) => "c" + x + y;
@@ -524,6 +525,18 @@
 				scanCounter = 0;
 				lastShotY--;
 				return;
+			} else {
+				if (isMiss(x + 1, y)) {
+					missHelper(x + 1, y);
+					scanCounter++;
+					return;
+				} else if (isHit(x + 1, y)) {
+					hitHelper(x + 1, y);
+					shipDirection = "ver";
+					scanCounter = 0;
+					lastShotX++;
+					return;
+				}
 			}
 		}
 	};
