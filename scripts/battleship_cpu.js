@@ -677,15 +677,14 @@
 		}
 		let currentMax = 0;
 		let currentMaxes = [];
-		let x, y;
 		for (let i = 0; i < cols; i++) {
 			for (let j = 0; j < rows; j++) {
 				if (probabilityChart[i][j] === currentMax) {
-					currentMaxes.push([x, y]);
+					currentMaxes.push([i, j]);
 				} else if (probabilityChart[i][j] > currentMax) {
 					currentMax = probabilityChart[i][j];
 					currentMaxes = [];
-					currentMaxes.push([x, y]);
+					currentMaxes.push([i, j]);
 				}
 			}
 		}
