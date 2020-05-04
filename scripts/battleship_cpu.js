@@ -676,17 +676,20 @@
 			}
 		}
 		let currentMax = 0;
+		let currentMaxes = [];
 		let x, y;
 		for (let i = 0; i < cols; i++) {
 			for (let j = 0; j < rows; j++) {
-				if (probabilityChart[i][j] > currentMax) {
+				if (probabilityChart[i][j] === currentMax) {
+					currentMaxes.push([x, y]);
+				} else if (probabilityChart[i][j] > currentMax) {
 					currentMax = probabilityChart[i][j];
-					x = i;
-					y = j;
+					currentMaxes = [];
+					currentMaxes.push([x, y]);
 				}
 			}
 		}
-		return [x, y];
+		return currentMaxes[window.randomIntFromInterval(0, currentMaxes.length - 1)];
 	};
 
 	const resetProbabilityChart = () => {
