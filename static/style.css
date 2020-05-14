@@ -24,6 +24,21 @@ header {
 	background-color: azure;
 }
 
+#homeIcon {
+	position: absolute;
+	top: 40px;
+	left: 5vw;
+	width: 70px;
+	height: 70px;
+	transition: 1.5s;
+	z-index: 0;
+	background-color: transparent;
+}
+
+#homeIcon:hover {
+	transform: translateY(-5px);
+}
+
 .curserPointer:hover {
 	cursor: pointer;
 }
