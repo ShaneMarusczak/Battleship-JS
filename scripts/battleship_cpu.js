@@ -55,6 +55,8 @@
 		"Really? Easy..", "Yes!!", "So Easy!", "Child's Play!", ":)"
 	];
 
+	const isValidXY = (x, y) => x < rows && y < rows;
+
 	const getCId = (x, y) => "c" + x + y;
 
 	const capitalizeFirst = (str) => str.charAt(0).toUpperCase() + str.slice(1);
@@ -106,7 +108,7 @@
 		const elemId = e.target.id;
 		let canPlace = true;
 		for (let i = 0; i < size; i++) {
-			if (!isMiss((Number(elemId[1]) + i), elemId[2])) {
+			if (!isMiss((Number(elemId[1]) + i), Number(elemId[2]))) {
 				canPlace = false;
 				break;
 			}
@@ -125,7 +127,7 @@
 		const elemId = e.target.id;
 		let canPlace = true;
 		for (let i = 0; i < size; i++) {
-			if (!isMiss(elemId[1], (Number(elemId[2]) + i))) {
+			if (!isMiss(Number(elemId[1]), (Number(elemId[2]) + i))) {
 				canPlace = false;
 				break;
 			}
@@ -318,7 +320,7 @@
 		}
 	};
 
-	const isShip = (x, y, shipName) => gameBoard[x][y][1] === shipName;
+	const isShip = (x, y, shipName) => isValidXY(x, y) && gameBoard[x][y][1] === shipName;
 
 	const shipSunkChecker = () => {
 		let carrierCounter = 0;
@@ -527,13 +529,13 @@
 		}
 	};
 
-	const isMiss = (x, y) => gameBoard[x][y][0] === 0;
+	const isMiss = (x, y) => isValidXY(x, y) && gameBoard[x][y][0] === 0;
 
-	const isHit = (x, y) => gameBoard[x][y][0] === 1;
+	const isHit = (x, y) => isValidXY(x, y) && gameBoard[x][y][0] === 1;
 
-	const isAlreadyHit = (x, y) => gameBoard[x][y][0] === 2;
+	const isAlreadyHit = (x, y) => isValidXY(x, y) && gameBoard[x][y][0] === 2;
 
-	const alreadyFiredAt = (x, y) => gameBoard[x][y][0] > 1;
+	const alreadyFiredAt = (x, y) => isValidXY(x, y) && gameBoard[x][y][0] > 1;
 
 	const hitHelper = (x, y) => {
 		document.getElementById(getCId(x, y)).style.background = "red";
