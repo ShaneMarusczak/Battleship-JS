@@ -386,8 +386,6 @@
 		}
 	};
 
-	let fireFirst = window.randomIntFromInterval(0, 1);
-
 	const shipFoundAttack = () => {
 		const x = lastShotX;
 		const y = lastShotY;
@@ -445,15 +443,13 @@
 				shipDirection = "";
 			}
 		}
-		if (fireFirst === 0 && shipDirection === "" && scanCounter < 2) {
+		if (scanCounter === 0 && shipDirection === "") {
 			if (x + 1 > 9) {
 				scanCounter++;
-				fireFirst = 1;
 			} else {
 				if (isMiss(x + 1, y)) {
 					missHelper(x + 1, y);
 					scanCounter++;
-					fireFirst = 1;
 					return;
 				} else if (isHit(x + 1, y)) {
 					hitHelper(x + 1, y);
@@ -463,22 +459,16 @@
 					return;
 				} else {
 					scanCounter++;
-					fireFirst = 1;
 				}
 			}
 		}
-		if (fireFirst === 1 && shipDirection === "" && scanCounter < 2) {
+		if (scanCounter === 1 && shipDirection === "") {
 			if (y + 1 > 9) {
 				scanCounter++;
-				if (scanCounter === 1) {
-					scanCounter++;
-				}
-				fireFirst = 0;
 			} else {
 				if (isMiss(x, y + 1)) {
 					missHelper(x, y + 1);
 					scanCounter++;
-					fireFirst = 0;
 					return;
 				} else if (isHit(x, y + 1)) {
 					hitHelper(x, y + 1);
@@ -488,10 +478,6 @@
 					return;
 				} else {
 					scanCounter++;
-					if (scanCounter === 1) {
-						scanCounter++;
-					}
-					fireFirst = 0;
 				}
 			}
 		}
@@ -514,7 +500,7 @@
 				}
 			}
 		}
-		if (scanCounter === 3 && shipDirection === "") {
+		if (scanCounter >= 3 && shipDirection === "") {
 			if (isMiss(x, y - 1)) {
 				missHelper(x, y - 1);
 				scanCounter++;
