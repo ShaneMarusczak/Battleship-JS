@@ -209,7 +209,7 @@ input {
 }
 
 #ships div:hover {
-	background-color: gray;
+	background-color: lightgray;
 }
 
 #rotate {
@@ -417,6 +417,6 @@ footer {
 
 #strtOvrBtn:hover,
 #resetWinLoss:hover {
-	background-color: gray;
+	background-color: lightgray;
 	cursor: pointer;
 }
