@@ -156,6 +156,7 @@ input {
 	margin: 25px;
 	width: 500px !important;
 	height: 500px !important;
+	background-color: azure;
 }
 
 #gameboard div,
@@ -174,12 +175,17 @@ input {
 	cursor: url(cross-hair-cursor.png) 16 16, auto;
 }
 
+.shadowBox {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
 #leftList,
 #rightList {
 	margin-top: -175px;
 	padding: 5px;
 	border: 3px solid black;
 	border-radius: 7px;
+	background-color: azure;
 }
 
 #ships {
@@ -190,6 +196,7 @@ input {
 	width: 175px;
 	position: absolute;
 	top: 270px;
+	background-color: azure;
 }
 
 #ships div {
