@@ -698,14 +698,14 @@
 	};
 
 	const rotateIcon = () => {
-		document.getElementsByClassName("rotateArrow")[0].classList.add("rotateAnimation");
-		document.getElementsByClassName("rotateArrow")[0].classList.remove("rotateBackAnimation");
+		document.getElementById("rotateArrow").classList.add("rotateAnimation");
+		document.getElementById("rotateArrow").classList.remove("rotateBackAnimation");
 
 	};
 
 	const rotateIconBack = () => {
-		document.getElementsByClassName("rotateArrow")[0].classList.remove("rotateAnimation");
-		document.getElementsByClassName("rotateArrow")[0].classList.add("rotateBackAnimation");
+		document.getElementById("rotateArrow").classList.remove("rotateAnimation");
+		document.getElementById("rotateArrow").classList.add("rotateBackAnimation");
 
 	};
 
@@ -742,5 +742,10 @@
 				console.log(gameBoard);
 			}
 		});
+		if (window.getCookie("darkMode") === "Y") {
+			window.setDarkMode();
+		} else {
+			window.removeDarkMode();
+		}
 	})();
 })();

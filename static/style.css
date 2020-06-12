@@ -13,14 +13,12 @@ header {
 	right: 10vw;
 	width: 60px;
 	height: 60px;
-	transition: 1.5s;
 	z-index: 0;
 	background-color: transparent;
 	border-radius: 30px;
 }
 
 #githubicon:hover {
-	transform: translateY(-5px);
 	background-color: azure;
 }
 
@@ -30,13 +28,18 @@ header {
 	left: 5vw;
 	width: 70px;
 	height: 70px;
-	transition: 1.5s;
 	z-index: 0;
 	background-color: transparent;
 }
 
-#homeIcon:hover {
+.upBounce {
 	transform: translateY(-5px);
+	transition: 1s;
+}
+
+.downBounce {
+	transform: translateY(0px);
+	transition: 1s;
 }
 
 .curserPointer:hover {
@@ -74,9 +77,6 @@ html {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-}
-
-body {
 	background-color: cornsilk;
 }
 
@@ -209,8 +209,10 @@ input {
 }
 
 #ships div:hover {
-	background-color: lightgray;
+	background-color: gray;
 }
+
+
 
 #rotate {
 	font-size: large;
@@ -219,7 +221,7 @@ input {
 	text-align: center;
 }
 
-.rotateArrow {
+#rotateArrow {
 	width: 35px;
 	height: 35px;
 }
@@ -249,7 +251,7 @@ h4 {
 }
 
 .clicked {
-	background-color: lightgray;
+	background-color: gray;
 }
 
 .sunkText {
@@ -417,6 +419,42 @@ footer {
 
 #strtOvrBtn:hover,
 #resetWinLoss:hover {
-	background-color: lightgray;
+	background-color: gray;
 	cursor: pointer;
 }
+
+.darkBackground {
+	background-color: #282828 !important;
+	color: azure !important;
+}
+
+.darkGrayBackground {
+	background-color: dimgray !important;
+}
+
+.lightBackground {
+	filter: invert(.9);
+}
+
+#darkMode {
+	margin: 0 auto;
+	width: fit-content;
+}
+
+#darkMode:hover {
+	cursor: pointer;
+}
+
+.lightText {
+	color: lightgray;
+}
+
+/* #playerWins,
+#compWins,
+p,
+#rightList,
+#leftList,
+#ships,
+#rotateArrow {
+	transition: 1.5s;
+} */
