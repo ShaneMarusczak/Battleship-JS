@@ -117,7 +117,7 @@
 					window.gameOver = true;
 					window.alertModalControl("YOU WIN!!!", 3000);
 					const valuetoPass = window.playerWinsOnLoad() + 1;
-					window.setCookie("playerwins", valuetoPass, 0.25);
+					window.setCookie("playerwinsBattleship", valuetoPass, 0.25);
 					document.getElementById("playerWins").textContent = "Player Wins: " + valuetoPass;
 					return;
 				}

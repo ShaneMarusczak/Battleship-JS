@@ -42,19 +42,19 @@ function getCookie(cname) {
 }
 
 function resetWinLoss() {
-	window.setCookie("compwins", 0, 0.25);
+	window.setCookie("compwinsBattleship", 0, 0.25);
 	document.getElementById("compWins").textContent = "Computer Wins: " + 0;
-	window.setCookie("playerwins", 0, 0.25);
+	window.setCookie("playerwinsBattleship", 0, 0.25);
 	document.getElementById("playerWins").textContent = "Player Wins: " + 0;
 }
 
 
 function playerWinsOnLoad() {
-	return Number(window.getCookie("playerwins"));
+	return Number(window.getCookie("playerwinsBattleship"));
 }
 
 function compWinsOnLoad() {
-	return Number(window.getCookie("compwins"));
+	return Number(window.getCookie("compwinsBattleship"));
 }
 
 var exportedGameBoard;

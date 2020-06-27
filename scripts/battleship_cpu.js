@@ -383,7 +383,7 @@
 			gameOverColorChange();
 			window.sleep(1500).then(() => window.alertModalControl("HA HA! I WIN!", 2000));
 			const valueToPass = window.compWinsOnLoad() + 1;
-			window.setCookie("compwins", valueToPass, 0.25);
+			window.setCookie("compwinsBattleship", valueToPass, 0.25);
 			document.getElementById("compWins").textContent = "Computer Wins: " + valueToPass;
 		}
 	};
