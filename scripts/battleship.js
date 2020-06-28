@@ -24,14 +24,14 @@
 	];
 
 	const hoverColor = function (e) {
-		window.currentColor = e.target.style.background;
-		if (e.target.style.background === "rgb(128, 170, 255)") {
-			e.target.style.background = "#87CEFA";
+		window.currentColor = e.target.style.backgroundColor;
+		if (e.target.style.backgroundColor === "rgb(128, 170, 255)") {
+			e.target.style.backgroundColor = "#87CEFA";
 		}
 	};
 
 	const resetHoverColor = function (e) {
-		e.target.style.background = window.currentColor;
+		e.target.style.backgroundColor = window.currentColor;
 	};
 
 	const innerModalControl = () => {
@@ -73,13 +73,13 @@
 			const col = e.target.id.substring(2, 3);
 
 			if (gameBoard[row][col][0] == 0) {
-				e.target.style.background = "#4d88ff";
+				e.target.style.backgroundColor = "#4d88ff";
 				gameBoard[row][col][0] = 3;
 				document.getElementById("s" + row + col).classList.add("miss");
 				window.currentColor = "#4d88ff";
 				missSound.play();
 			} else if (gameBoard[row][col][0] == 1) {
-				e.target.style.background = "red";
+				e.target.style.backgroundColor = "red";
 				gameBoard[row][col][0] = 2;
 				document.getElementById("s" + row + col).classList.add("hit");
 				window.currentColor = "red";
@@ -98,7 +98,7 @@
 									for (const coor of ship) {
 										document.getElementById(
 											"s" + coor[0] + coor[1]
-										).style.background = "darkred";
+										).style.backgroundColor = "darkred";
 									}
 									document.getElementById(
 										gameBoard[coor[0]][coor[1]][1] + "Sunk"

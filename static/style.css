@@ -212,8 +212,6 @@ input {
 	background-color: gray;
 }
 
-
-
 #rotate {
 	font-size: large;
 	font-weight: bold;
@@ -397,10 +395,6 @@ a:hover {
 	line-height: 15vh;
 }
 
-.blackBackground {
-	background: black !important;
-}
-
 footer {
 	text-align: center;
 }
@@ -436,6 +430,26 @@ footer {
 	filter: invert(.9);
 }
 
+.blackBackground {
+	background-color: black !important;
+}
+
+.greyBackground {
+	background-color: #4c4c4c !important;
+}
+
+.redBackground {
+	background-color: red !important;
+}
+
+.darkRedBackground {
+	background-color: darkred !important;
+}
+
+.missBackground {
+	background-color: #4d88ff !important;
+}
+
 #darkMode {
 	margin: 0 auto;
 	width: fit-content;
@@ -448,13 +462,3 @@ footer {
 .lightText {
 	color: lightgray;
 }
-
-/* #playerWins,
-#compWins,
-p,
-#rightList,
-#leftList,
-#ships,
-#rotateArrow {
-	transition: 1.5s;
-} */

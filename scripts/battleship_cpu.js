@@ -116,7 +116,7 @@
 		if (Number(elemId[1]) < rows + 1 - size && canPlace) {
 			e.target.addEventListener("click", placeShip);
 			for (let i = 0; i < size; i++) {
-				document.getElementById(elemId[0] + (Number(elemId[1]) + i) + elemId[2]).style.background = "black";
+				document.getElementById(elemId[0] + (Number(elemId[1]) + i) + elemId[2]).classList.add("blackBackground");
 			}
 		} else {
 			e.target.removeEventListener("click", placeShip);
@@ -135,7 +135,7 @@
 		if (Number(elemId[2]) < cols + 1 - size && canPlace) {
 			e.target.addEventListener("click", placeShip);
 			for (let i = 0; i < size; i++) {
-				document.getElementById(elemId[0] + elemId[1] + (Number(elemId[2]) + i)).style.background = "black";
+				document.getElementById(elemId[0] + elemId[1] + (Number(elemId[2]) + i)).classList.add("blackBackground");
 			}
 		} else {
 			e.target.removeEventListener("click", placeShip);
@@ -146,7 +146,8 @@
 		for (let i = 0; i < cols; i++) {
 			for (let j = 0; j < rows; j++) {
 				if (isMiss(i, j)) {
-					document.getElementById(getCId(i, j)).style.background = "#80aaff";
+					document.getElementById(getCId(i, j)).classList.remove("blackBackground");
+					document.getElementById(getCId(i, j)).classList.remove("greyBackground");
 				}
 			}
 		}
@@ -223,7 +224,8 @@
 			for (let i = 0; i < cols; i++) {
 				for (let j = 0; j < rows; j++) {
 					if (isShip(i, j, shipName)) {
-						document.getElementById(getCId(i, j)).style.background = "#4c4c4c";
+						document.getElementById(getCId(i, j)).classList.remove("blackBackground");
+						document.getElementById(getCId(i, j)).classList.add("greyBackground");
 					}
 				}
 			}
@@ -237,7 +239,8 @@
 		for (let i = 0; i < cols; i++) {
 			for (let j = 0; j < rows; j++) {
 				if (isShip(i, j, shipName)) {
-					document.getElementById(getCId(i, j)).style.background = "black";
+					document.getElementById(getCId(i, j)).classList.add("blackBackground");
+					document.getElementById(getCId(i, j)).classList.remove("greyBackground");
 				}
 			}
 		}
@@ -249,7 +252,7 @@
 			for (let i = 0; i < cols; i++) {
 				for (let j = 0; j < rows; j++) {
 					if (
-						document.getElementById(getCId(i, j)).style.background == "black" &&
+						document.getElementById(getCId(i, j)).classList.contains("blackBackground") &&
 						gameBoard[i][j][1] == ""
 					) {
 						if (size === shipLengths.carrier) {
@@ -538,14 +541,16 @@
 	const alreadyFiredAt = (x, y) => isValidXY(x, y) && gameBoard[x][y][0] > 1;
 
 	const hitHelper = (x, y) => {
-		document.getElementById(getCId(x, y)).style.background = "red";
+		document.getElementById(getCId(x, y)).classList.remove("blackBackground");
+		document.getElementById(getCId(x, y)).classList.add("redBackground");
 		gameBoard[x][y][0] = 2;
 		shipFound++;
 		shotsfired++;
 	};
 
 	const missHelper = (x, y) => {
-		document.getElementById(getCId(x, y)).style.background = "#4d88ff";
+		document.getElementById(getCId(x, y)).classList.remove("blackBackground");
+		document.getElementById(getCId(x, y)).classList.add("missBackground");
 		gameBoard[x][y][0] = 3;
 		shotsfired++;
 	};
@@ -607,7 +612,9 @@
 		for (let i = 0; i < cols; i++) {
 			for (let j = 0; j < rows; j++) {
 				if (isShip(i, j, shipName) && isAlreadyHit(i, j)) {
-					document.getElementById(getCId(i, j)).style.background = "darkred";
+					document.getElementById(getCId(i, j)).classList.remove("redBackground");
+					document.getElementById(getCId(i, j)).classList.add("darkRedBackground");
+
 				}
 			}
 		}
@@ -725,7 +732,7 @@
 				const leftPosition = i * cellSize + 5;
 				cell.style.top = topPosition + "px";
 				cell.style.left = leftPosition + "px";
-				cell.style.background = "#80aaff";
+				cell.style.backgroundColor = "#80aaff";
 				cell.addEventListener("mouseover", highlight);
 				cell.addEventListener("mouseleave", resetColor);
 			}
