@@ -192,8 +192,7 @@ input {
 	padding: 5px;
 	border: 3px solid black;
 	border-radius: 7px;
-	width: fit-content;
-	width: 175px;
+	width: 180px;
 	position: absolute;
 	top: 270px;
 	background-color: azure;
