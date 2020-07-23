@@ -36,13 +36,12 @@
 
 	const innerModalControl = () => {
 		document.getElementById("thinking").style.display = "flex";
-		document.getElementById("shader").style.display = "block";
+		window.uiBlocker(2000);
 		window.sleep(1400).then(() => {
 			document.getElementById("message").innerText = firingPhrases[window.randomIntFromInterval(0, firingPhrases.length - 1)];
 		});
 		window.sleep(2000).then(() => {
 			document.getElementById("thinking").style.display = "none";
-			document.getElementById("shader").style.display = "none";
 			window.sleep(300).then(() => {
 				window.compMoveWindow();
 				gameBoardContainer.addEventListener("click", fireTorpedo, false);
