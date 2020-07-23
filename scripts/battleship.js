@@ -55,7 +55,7 @@
 		gameBoardContainer.removeEventListener("click", fireTorpedo, false);
 		if (shipSunkThisShot) {
 			const delay = 1500;
-			window.alertModalControl(compSunkPhrases[window.randomIntFromInterval(0, compSunkPhrases.length - 1)], delay);
+			window.modal(compSunkPhrases[window.randomIntFromInterval(0, compSunkPhrases.length - 1)], delay);
 			window.sleep(delay).then(() => innerModalControl());
 		} else {
 			innerModalControl();
@@ -115,14 +115,14 @@
 					document.getElementById("wintext").style.display = "block";
 					gameBoardContainer.removeEventListener("click", fireTorpedo);
 					window.gameOver = true;
-					window.alertModalControl("YOU WIN!!!", 3000);
+					window.modal("YOU WIN!!!", 3000);
 					const valuetoPass = window.playerWinsOnLoad() + 1;
 					window.setCookie("playerwinsBattleship", valuetoPass, 0.25);
 					document.getElementById("playerWins").textContent = "Player Wins: " + valuetoPass;
 					return;
 				}
 			} else if (gameBoard[row][col][0] > 1) {
-				window.alertModalControl("Can't Fire Here!", 1400);
+				window.modal("Can't Fire Here!", 1400);
 				return;
 			}
 		}

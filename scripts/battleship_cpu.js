@@ -76,9 +76,9 @@
 			}
 		}
 		if (window.randomIntFromInterval(0, 10) === 0) {
-			window.alertModalControl(capitalizeFirst(sunkShipName) + " Sunk!", 1500);
+			window.modal(capitalizeFirst(sunkShipName) + " Sunk!", 1500);
 		} else {
-			window.alertModalControl(sunkPhrases[window.randomIntFromInterval(0, sunkPhrases.length - 1)], 1500);
+			window.modal(sunkPhrases[window.randomIntFromInterval(0, sunkPhrases.length - 1)], 1500);
 		}
 		if (shipFound > 0) {
 			shipHitButNotSunkReassign();
@@ -304,7 +304,7 @@
 				document.getElementById("downArrow").classList.add("notDisplayed");
 				document.getElementById("leftList").classList.remove("notDisplayed");
 				document.getElementById("ships").classList.add("notDisplayed");
-				window.alertModalControl("All ships Placed!", 1400);
+				window.modal("All ships Placed!", 1400);
 				allShipsPlaced = true;
 				window.gameStarted = true;
 				for (let i = 0; i < cols; i++) {
@@ -384,7 +384,7 @@
 			document.getElementById("losstext").style.display = "block";
 			window.gameOver = true;
 			gameOverColorChange();
-			window.sleep(1500).then(() => window.alertModalControl("HA HA! I WIN!", 2000));
+			window.sleep(1500).then(() => window.modal("HA HA! I WIN!", 2000));
 			const valueToPass = window.compWinsOnLoad() + 1;
 			window.setCookie("compwinsBattleship", valueToPass, 0.25);
 			document.getElementById("compWins").textContent = "Computer Wins: " + valueToPass;
@@ -588,7 +588,7 @@
 				searchingShot();
 			}
 		} else {
-			window.alertModalControl("Place all ships!", 1400);
+			window.modal("Place all ships!", 1400);
 			return;
 		}
 		shipHitChecker();
