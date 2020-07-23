@@ -612,9 +612,8 @@
 		for (let i = 0; i < cols; i++) {
 			for (let j = 0; j < rows; j++) {
 				if (isShip(i, j, shipName) && isAlreadyHit(i, j)) {
-					document.getElementById(getCId(i, j)).classList.remove("redBackground");
-					document.getElementById(getCId(i, j)).classList.add("darkRedBackground");
-
+					window.addClassFromElementById(getCId(i, j), "darkRedBackground");
+					window.removeClassFromElementById(getCId(i, j), "redBackground");
 				}
 			}
 		}
@@ -698,22 +697,20 @@
 		for (let i = 0; i < cols; i++) {
 			for (let j = 0; j < rows; j++) {
 				if (window.exportedGameBoard[i][j][0] === 1) {
-					document.getElementById("s" + i + j).classList.add("blackBackground");
+					window.addClassFromElementById("s" + i + j, "blackBackground");
 				}
 			}
 		}
 	};
 
 	const rotateIcon = () => {
-		document.getElementById("rotateArrow").classList.add("rotateAnimation");
-		document.getElementById("rotateArrow").classList.remove("rotateBackAnimation");
-
+		window.addClassFromElementById("rotateArrow", "rotateAnimation");
+		window.removeClassFromElementById("rotateArrow", "rotateBackAnimation");
 	};
 
 	const rotateIconBack = () => {
-		document.getElementById("rotateArrow").classList.remove("rotateAnimation");
-		document.getElementById("rotateArrow").classList.add("rotateBackAnimation");
-
+		window.removeClassFromElementById("rotateArrow", "rotateAnimation");
+		window.addClassFromElementById("rotateArrow", "rotateBackAnimation");
 	};
 
 	(() => {
@@ -739,10 +736,10 @@
 		}
 
 		ships.forEach(s => s.addEventListener("click", placeShipSetup));
+		window.addEventListenerById("rotate", "mouseover", rotateIcon);
+		window.addEventListenerById("rotate", "mouseleave", rotateIconBack);
+		window.addEventListenerById("rotate", "click", rotateShip);
 		document.getElementById("compWins").textContent = "Computer Wins: " + window.compWinsOnLoad();
-		document.getElementById("rotate").addEventListener("mouseover", rotateIcon);
-		document.getElementById("rotate").addEventListener("mouseleave", rotateIconBack);
-		document.getElementById("rotate").addEventListener("click", rotateShip);
 
 		document.addEventListener("keydown", function (event) {
 			if (event.keyCode == 192) {
