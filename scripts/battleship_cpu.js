@@ -18,6 +18,7 @@
 	let direction = "hor";
 	let shotsfired = 0;
 	let scanCounter = 0;
+	let checkOrder = window.randomIntFromInterval(0, 1);
 	const rows = 10;
 	const cols = 10;
 	const cellSize = 50;
@@ -69,6 +70,7 @@
 		sunkColorChange(sunkShipName);
 		shipFound = shipFound - num;
 		shipDirection = "";
+		checkOrder = window.randomIntFromInterval(0, 1);
 		for (let i = 0; i < cols; i++) {
 			for (let j = 0; j < rows; j++) {
 				if (isShip(i, j, sunkShipName)) {
@@ -435,32 +437,62 @@
 				shipDirection = "";
 			}
 		}
-		if (scanCounter === 0 && shipDirection === "") {
-			if (x + 1 > 9) {
-				scanCounter++;
-			} else if (shipFoundAttackScanHelper(x + 1, y, "ver", 1)) {
-				return;
+		if (checkOrder === 0) {
+			if (scanCounter === 0 && shipDirection === "") {
+				if (x + 1 > 9) {
+					scanCounter++;
+				} else if (shipFoundAttackScanHelper(x + 1, y, "ver", 1)) {
+					return;
+				}
+			}
+			if (scanCounter === 1 && shipDirection === "") {
+				if (y + 1 > 9) {
+					scanCounter++;
+				} else if (shipFoundAttackScanHelper(x, y + 1, "hor", 1)) {
+					return;
+				}
+			}
+			if (scanCounter === 2 && shipDirection === "") {
+				if (x - 1 < 0) {
+					scanCounter++;
+				} else if (shipFoundAttackScanHelper(x - 1, y, "ver", -1)) {
+					return;
+				}
+			}
+			if (scanCounter >= 3 && shipDirection === "") {
+				if (shipFoundAttackScanHelper(x, y - 1, "hor", -1)) {
+					return;
+				}
+			}
+		} else {
+			if (scanCounter === 0 && shipDirection === "") {
+				if (y + 1 > 9) {
+					scanCounter++;
+				} else if (shipFoundAttackScanHelper(x, y + 1, "hor", 1)) {
+					return;
+				}
+			}
+			if (scanCounter === 1 && shipDirection === "") {
+				if (x + 1 > 9) {
+					scanCounter++;
+				} else if (shipFoundAttackScanHelper(x + 1, y, "ver", 1)) {
+					return;
+				}
+			}
+			if (scanCounter === 2 && shipDirection === "") {
+				if (x - 1 < 0) {
+					scanCounter++;
+				} else if (shipFoundAttackScanHelper(x - 1, y, "ver", -1)) {
+					return;
+				}
+			}
+			if (scanCounter >= 3 && shipDirection === "") {
+				if (shipFoundAttackScanHelper(x, y - 1, "hor", -1)) {
+					return;
+				}
 			}
 		}
-		if (scanCounter === 1 && shipDirection === "") {
-			if (y + 1 > 9) {
-				scanCounter++;
-			} else if (shipFoundAttackScanHelper(x, y + 1, "hor", 1)) {
-				return;
-			}
-		}
-		if (scanCounter === 2 && shipDirection === "") {
-			if (x - 1 < 0) {
-				scanCounter++;
-			} else if (shipFoundAttackScanHelper(x - 1, y, "ver", -1)) {
-				return;
-			}
-		}
-		if (scanCounter >= 3 && shipDirection === "") {
-			if (shipFoundAttackScanHelper(x, y - 1, "hor", -1)) {
-				return;
-			}
-		}
+
 	};
 
 	const shipFoundAttackHelper = (x, y, isLastShotX) => {
@@ -525,7 +557,7 @@
 
 	const searchingShot = () => {
 		let x, y;
-		if (shotsfired < 6 || window.randomIntFromInterval(0, 8) === 0) {
+		if (shotsfired < 5 || window.randomIntFromInterval(0, 9) === 0) {
 			do {
 				x = window.randomIntFromInterval(0, 8);
 				y = window.randomIntFromInterval(0, 8);
