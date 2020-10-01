@@ -132,12 +132,21 @@
 	let nameIndex = 0;
 	const names = ["Carrier", "Battleship", "Cruiser", "Submarine", "Destroyer"];
 
+	const usedCols = [1, 2, 4, 6, 8];
+	const usedRows = [2, 4, 6, 7, 9];
+
 	function placeShip(len) {
 		const ship = [];
 		const name = names[nameIndex];
 		const dir = window.randomIntFromInterval(1, 2);
-		const row = window.randomIntFromInterval(0, 9);
-		const col = window.randomIntFromInterval(0, 9);
+		let row;
+		let col;
+		do {
+			row = window.randomIntFromInterval(0, 9);
+		} while (usedRows.includes(row));
+		do {
+			col = window.randomIntFromInterval(0, 9);
+		} while (usedCols.includes(col));
 		let shipPlaceCounter = 0;
 		if (dir == 1) {
 			if (col >= len - 1) {
@@ -152,6 +161,8 @@
 						gameBoard[row][col - i][1] = name;
 						ship.push([row, col - i]);
 					}
+					usedRows.push(row);
+					usedCols.push(col);
 				} else {
 					placeShip(len);
 				}
@@ -167,6 +178,8 @@
 						gameBoard[row][col + i][1] = name;
 						ship.push([row, col + i]);
 					}
+					usedRows.push(row);
+					usedCols.push(col);
 				} else {
 					placeShip(len);
 				}
@@ -184,6 +197,8 @@
 						gameBoard[row - i][col][1] = name;
 						ship.push([row - i, col]);
 					}
+					usedRows.push(row);
+					usedCols.push(col);
 				} else {
 					placeShip(len);
 				}
@@ -199,6 +214,8 @@
 						gameBoard[row + i][col][1] = name;
 						ship.push([row + i, col]);
 					}
+					usedRows.push(row);
+					usedCols.push(col);
 				} else {
 					placeShip(len);
 				}
@@ -236,6 +253,8 @@
 		placeShip(3);
 		placeShip(3);
 		placeShip(2);
+		console.log(usedCols);
+		console.log(usedRows);
 		window.exportedGameBoard = gameBoard;
 
 		document.addEventListener("keydown", function (event) {
