@@ -15,9 +15,9 @@
 	let submarineSunk = false;
 	let destroyerSunk = false;
 	let shipDirection = "";
-	let scanCounter = 0;
 	let direction = "hor";
 	let shotsfired = 0;
+	let scanCounter = 0;
 	const rows = 10;
 	const cols = 10;
 	const cellSize = 50;
@@ -54,6 +54,7 @@
 		"I'm gonna win!", "Easy!", "Sink that ship!", "Try Harder!", "Yawn...", "Sunk!", "Oh Yeah!", "You're Gonna Lose!",
 		"Really? Easy..", "Yes!!", "So Easy!", "Child's Play!", ":)"
 	];
+
 
 	const isValidXY = (x, y) => x < rows && y < rows;
 
@@ -395,15 +396,8 @@
 		const x = lastShotX;
 		const y = lastShotY;
 		if (shipDirection == "ver") {
-			if (x + 1 <= 9) {
-				if (isMiss(x + 1, y)) {
-					missHelper(x + 1, y);
-					return;
-				} else if (isHit(x + 1, y)) {
-					hitHelper(x + 1, y);
-					lastShotX++;
-					return;
-				}
+			if (x + 1 <= 9 && shipFoundAttackHelper(x + 1, y, true)) {
+				return;
 			}
 			if (x + 1 > 9 || alreadyFiredAt(x + 1, y)) {
 				for (let i = 1; i < 10; i++) {
@@ -422,15 +416,8 @@
 			}
 		}
 		if (shipDirection == "hor") {
-			if (y + 1 <= 9) {
-				if (isMiss(x, y + 1)) {
-					missHelper(x, y + 1);
-					return;
-				} else if (isHit(x, y + 1)) {
-					hitHelper(x, y + 1);
-					lastShotY++;
-					return;
-				}
+			if (y + 1 <= 9 && shipFoundAttackHelper(x, y + 1, false)) {
+				return;
 			}
 			if (y + 1 > 9 || alreadyFiredAt(x, y + 1)) {
 				for (let i = 1; i < 10; i++) {
@@ -451,85 +438,66 @@
 		if (scanCounter === 0 && shipDirection === "") {
 			if (x + 1 > 9) {
 				scanCounter++;
-			} else {
-				if (isMiss(x + 1, y)) {
-					missHelper(x + 1, y);
-					scanCounter++;
-					return;
-				} else if (isHit(x + 1, y)) {
-					hitHelper(x + 1, y);
-					shipDirection = "ver";
-					scanCounter = 0;
-					lastShotX++;
-					return;
-				} else {
-					scanCounter++;
-				}
+			} else if (shipFoundAttackScanHelper(x + 1, y, "ver", 1)) {
+				return;
 			}
 		}
 		if (scanCounter === 1 && shipDirection === "") {
 			if (y + 1 > 9) {
 				scanCounter++;
-			} else {
-				if (isMiss(x, y + 1)) {
-					missHelper(x, y + 1);
-					scanCounter++;
-					return;
-				} else if (isHit(x, y + 1)) {
-					hitHelper(x, y + 1);
-					shipDirection = "hor";
-					scanCounter = 0;
-					lastShotY++;
-					return;
-				} else {
-					scanCounter++;
-				}
+			} else if (shipFoundAttackScanHelper(x, y + 1, "hor", 1)) {
+				return;
 			}
 		}
 		if (scanCounter === 2 && shipDirection === "") {
 			if (x - 1 < 0) {
 				scanCounter++;
-			} else {
-				if (isMiss(x - 1, y)) {
-					missHelper(x - 1, y);
-					scanCounter++;
-					return;
-				} else if (isHit(x - 1, y)) {
-					hitHelper(x - 1, y);
-					shipDirection = "ver";
-					scanCounter = 0;
-					lastShotX--;
-					return;
-				} else {
-					scanCounter++;
-				}
+			} else if (shipFoundAttackScanHelper(x - 1, y, "ver", -1)) {
+				return;
 			}
 		}
 		if (scanCounter >= 3 && shipDirection === "") {
-			if (isMiss(x, y - 1)) {
-				missHelper(x, y - 1);
-				scanCounter++;
+			if (shipFoundAttackScanHelper(x, y - 1, "hor", -1)) {
 				return;
-			} else if (isHit(x, y - 1)) {
-				hitHelper(x, y - 1);
-				shipDirection = "hor";
-				scanCounter = 0;
-				lastShotY--;
-				return;
-			} else {
-				if (isMiss(x + 1, y)) {
-					missHelper(x + 1, y);
-					scanCounter++;
-					return;
-				} else if (isHit(x + 1, y)) {
-					hitHelper(x + 1, y);
-					shipDirection = "ver";
-					scanCounter = 0;
-					lastShotX++;
-					return;
-				}
 			}
 		}
+	};
+
+	const shipFoundAttackHelper = (x, y, isLastShotX) => {
+		if (isMiss(x, y)) {
+			missHelper(x, y);
+			return true;
+		} else if (isHit(x, y)) {
+			hitHelper(x, y);
+			if (isLastShotX) {
+				lastShotX++;
+			} else {
+				lastShotY++;
+			}
+			return true;
+		}
+		return false;
+	};
+
+	const shipFoundAttackScanHelper = (x, y, direc, add) => {
+		if (isMiss(x, y)) {
+			missHelper(x, y);
+			scanCounter++;
+			return true;
+		} else if (isHit(x, y)) {
+			hitHelper(x, y);
+			shipDirection = direc;
+			scanCounter = 0;
+			if (direc === "ver") {
+				lastShotX = lastShotX + add;
+			} else {
+				lastShotY = lastShotY + add;
+			}
+			return true;
+		} else {
+			scanCounter++;
+		}
+		return false;
 	};
 
 	const isMiss = (x, y) => isValidXY(x, y) && gameBoard[x][y][0] === 0;
