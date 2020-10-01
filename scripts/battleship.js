@@ -253,8 +253,6 @@
 		placeShip(3);
 		placeShip(3);
 		placeShip(2);
-		console.log(usedCols);
-		console.log(usedRows);
 		window.exportedGameBoard = gameBoard;
 
 		document.addEventListener("keydown", function (event) {
