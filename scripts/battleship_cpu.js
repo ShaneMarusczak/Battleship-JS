@@ -57,7 +57,7 @@
 	];
 
 
-	const isValidXY = (x, y) => x < rows && y < cols;
+	const isValidXY = (x, y) => x >= 0 && x < rows && y >= 0 && y < cols;
 
 	const getCId = (x, y) => "c" + x + y;
 
