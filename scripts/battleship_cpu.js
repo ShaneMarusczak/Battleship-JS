@@ -165,6 +165,7 @@
 			shipsPlacedStore[shipName] = false;
 			size = shipLengths[shipName];
 			placed = shipName;
+			document.getElementById(shipName).classList.remove("notDisplayed");
 			shipsPlaced--;
 			for (const ship of placedShips) {
 				for (const coor of ship) {
