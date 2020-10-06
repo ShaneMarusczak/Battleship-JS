@@ -42,14 +42,6 @@
 		"submarine": 3
 	};
 
-	const shipsPlacedStore = {
-		"battleship": placedBattleship,
-		"carrier": placedCarrier,
-		"cruiser": placedCruiser,
-		"destroyer": placedDetroyer,
-		"submarine": placedSubmarine
-	};
-
 	const sunkPhrases = [
 		"Found You!", "You're Sunk!", "Down she goes!", "Gotcha!", "Ha Ha!", "I'm the best!", "Woo Hoo!", "I'm Better!",
 		"I'm gonna win!", "Easy!", "Sink that ship!", "Try Harder!", "Yawn...", "Sunk!", "Oh Yeah!", "You're Gonna Lose!",
@@ -162,10 +154,12 @@
 			const x = Number(e.target.id[1]);
 			const y = Number(e.target.id[2]);
 			const [, shipName] = gameBoard[x][y];
-			shipsPlacedStore[shipName] = false;
+			resetShipPlayed(shipName);
 			size = shipLengths[shipName];
 			placed = shipName;
 			document.getElementById(shipName).classList.remove("notDisplayed");
+			allShips.forEach(s => document.getElementById(s).classList.remove("clicked"));
+			document.getElementById(shipName).classList.add("clicked");
 			shipsPlaced--;
 			for (const ship of placedShips) {
 				for (const coor of ship) {
@@ -187,6 +181,27 @@
 			placedShips.splice(placedShips.indexOf(thisShip), 1);
 		}
 		e.stopImmediatePropagation();
+	};
+
+	const resetShipPlayed = (shipName) => {
+		switch (shipName) {
+			case ("carrier"):
+				placedCarrier = false;
+				break;
+			case ("battleship"):
+				placedBattleship = false;
+				break;
+			case ("cruiser"):
+				placedCruiser = false;
+				break;
+			case ("submarine"):
+				placedSubmarine = false;
+				break;
+			case ("destroyer"):
+				placedDetroyer = false;
+				break;
+			default:
+		}
 	};
 
 	const allShips = ["carrier", "battleship", "cruiser", "submarine", "destroyer"];
