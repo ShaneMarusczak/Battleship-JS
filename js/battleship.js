@@ -8,9 +8,9 @@
 	const winningHitCount = 17;
 	const gameBoard = [];
 	const gameBoardContainer = document.getElementById("gameboard");
-	const hitSound = new Audio("static/Hit Ship Sound.mp3");
-	const missSound = new Audio("static/Miss Fire Sound.mp3");
-	const sunkSound = new Audio("static/Ship Sunk Sound.mp3");
+	const hitSound = new Audio("sounds/Hit Ship Sound.mp3");
+	const missSound = new Audio("sounds/Miss Fire Sound.mp3");
+	const sunkSound = new Audio("sounds/Ship Sunk Sound.mp3");
 	const ships = [];
 	const searchngPhrases = [
 		"Thinking...", "Hmm...", "Finding...", "Tracking...", "Spotting...", "Hunting...", "Looking...",

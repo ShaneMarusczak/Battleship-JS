@@ -29,7 +29,7 @@
 	const cruiser = document.getElementById("cruiser");
 	const submarine = document.getElementById("submarine");
 	const destroyer = document.getElementById("destroyer");
-	const sunkSound = new Audio("static/Ship Sunk Sound.mp3");
+	const sunkSound = new Audio("sounds/Ship Sunk Sound.mp3");
 	const placedShips = [];
 	const ships = [carrier, battleship, cruiser, submarine, destroyer];
 	const probabilityChart = [];

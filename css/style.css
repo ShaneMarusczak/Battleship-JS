@@ -172,7 +172,7 @@ input {
 }
 
 #gameboard div {
-	cursor: url(cross-hair-cursor.png) 16 16, auto;
+	cursor: url(../images/cross-hair-cursor.png) 16 16, auto;
 }
 
 .shadowBox {
