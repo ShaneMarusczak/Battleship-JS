@@ -377,6 +377,10 @@ footer {
 	color: azure !important;
 }
 
+.darkBackgroundHTML {
+	background-color: #282828 !important;
+}
+
 .darkGrayBackground {
 	background-color: dimgray !important;
 }
@@ -414,6 +418,6 @@ footer {
 	cursor: pointer;
 }
 
-.lightText {
+.lightText:not(#modal-message) {
 	color: lightgray;
 }

@@ -323,7 +323,7 @@
 				document.getElementById("downArrow").classList.add("notDisplayed");
 				document.getElementById("leftList").classList.remove("notDisplayed");
 				document.getElementById("ships").classList.add("notDisplayed");
-				window.modal("All ships Placed!", 1400);
+				window.modal("All ships Placed!", 1500);
 				allShipsPlaced = true;
 				window.gameStarted = true;
 				for (let i = 0; i < cols; i++) {

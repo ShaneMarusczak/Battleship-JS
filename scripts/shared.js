@@ -25,7 +25,8 @@ var gameStarted = false;
 
 function setDarkMode() {
 	Array.from(document.getElementsByTagName("p")).forEach(p => p.classList.add("lightText"));
-	document.getElementsByTagName("html")[0].classList.add("darkBackground");
+	document.getElementsByTagName("body")[0].classList.add("darkBackground");
+	document.getElementsByTagName("html")[0].classList.add("darkBackgroundHTML");
 	document.getElementById("thinking").classList.add("darkGrayBackground");
 	document.getElementById("githubicon").classList.add("lightBackground");
 	document.getElementById("homeIcon").classList.add("lightBackground");
@@ -42,7 +43,8 @@ function setDarkMode() {
 
 function removeDarkMode() {
 	Array.from(document.getElementsByTagName("p")).forEach(p => p.classList.remove("lightText"));
-	document.getElementsByTagName("html")[0].classList.remove("darkBackground");
+	document.getElementsByTagName("body")[0].classList.remove("darkBackground");
+	document.getElementsByTagName("html")[0].classList.remove("darkBackgroundHTML");
 	document.getElementById("thinking").classList.remove("darkGrayBackground");
 	document.getElementById("githubicon").classList.remove("lightBackground");
 	document.getElementById("homeIcon").classList.remove("lightBackground");
