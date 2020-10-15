@@ -1,103 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <title>Battleship</title>
+    <link rel="stylesheet" type="text/css" href="css/style.min.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://marusczak.com/BuildingBlocks/css/modal.min.css"
+    />
+    <meta name="viewport" content="width=800" />
+    <meta name="Description" content="Play the classic game Battleship!" />
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+  </head>
 
-<head>
-	<title>Battleship</title>
-	<link rel="stylesheet" type="text/css" href="css/style.min.css" />
-	<link rel="stylesheet" type="text/css" href="https://marusczak.com/BuildingBlocks/css/modal.min.css" />
-	<meta name="viewport" content="width=800" />
-	<meta name="Description" content="Play the classic game Battleship!">
-	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
-</head>
+  <body>
+    <div id="main">
+      <header>
+        <h1>Battleship</h1>
+        <p id="playerWins"></p>
+        <p id="compWins"></p>
+        <a
+          id="homeLink"
+          href="https://marusczak.com/Games-Home-Page"
+          rel="noreferrer"
+          ><img id="homeIcon" src="images/house-icon.png"
+        /></a>
 
-<body>
-	<div id="main">
-		<header>
-			<h1>Battleship</h1>
-			<p id="playerWins"></p>
-			<p id="compWins"></p>
-			<a id="homeLink" href="https://marusczak.com/Games-Home-Page" rel="noreferrer"><img id="homeIcon"
-					src="images/house-icon.png"></a>
-			<a id="gitHubLink" href="https://github.com/ShaneMarusczak/Battleship-JS" target="_blank"
-				rel="noreferrer"><img id="githubicon" src="images/github-icon.png"></a>
-			<p id="wintext">You Win! Click Start over to play again!</p>
-			<p id="losstext">The computer won this time! Click Start over to play again!</p>
-		</header>
-		<div id="boards">
-			<div class="boardContainer">
-				<img id="downArrow" class="gbounce" src="images/down-arrow.png">
-				<div class="shiplist">
-					<div id="leftList" class="notDisplayed shadowBox">
-						<h4>Player's Ships:</h4>
-						<p id="carrierSunk_cpu">Carrier (5)</p>
-						<p id="battleshipSunk_cpu">Battleship (4)</p>
-						<p id="cruiserSunk_cpu">Cruiser (3)</p>
-						<p id="submarineSunk_cpu">Submarine (3)</p>
-						<p id="destroyerSunk_cpu">Destroyer (2)</p>
-					</div>
-					<div id="ships" class="shadowBox">
-						<p id="instructions"><b>Click on each ship to place on the board to the right.</b></p>
-						<div id="rotate">
-							<p>Rotate</p>
-							<img id="rotateArrow" src="images/rotate-right-arrow.png">
-						</div>
-						<div id="carrier">
-							<p>Carrier</p>
-						</div>
-						<div id="battleship">
-							<p>Battleship</p>
-						</div>
-						<div id="cruiser">
-							<p>Cruiser</p>
-						</div>
-						<div id="submarine">
-							<p>Submarine</p>
-						</div>
-						<div id="destroyer">
-							<p>Destroyer</p>
-						</div>
-					</div>
-				</div>
+        <a
+          id="gitHubLink"
+          href="https://github.com/ShaneMarusczak/Battleship-JS"
+          target="_blank"
+          rel="noreferrer"
+          ><img id="githubicon" src="images/github-icon.png"
+        /></a>
+        <p id="wintext">You Win! Click Start over to play again!</p>
+        <p id="losstext">
+          The computer won this time! Click Start over to play again!
+        </p>
+      </header>
+      <div id="boards">
+        <div class="boardContainer">
+          <img id="downArrow" class="gbounce" src="images/down-arrow.png" />
+          <div class="shiplist">
+            <div id="leftList" class="notDisplayed shadowBox">
+              <h4>Player's Ships:</h4>
+              <p id="carrierSunk_cpu">Carrier (5)</p>
+              <p id="battleshipSunk_cpu">Battleship (4)</p>
+              <p id="cruiserSunk_cpu">Cruiser (3)</p>
+              <p id="submarineSunk_cpu">Submarine (3)</p>
+              <p id="destroyerSunk_cpu">Destroyer (2)</p>
+            </div>
+            <div id="ships" class="shadowBox">
+              <p id="instructions">
+                <b>Click on each ship to place on the board to the right.</b>
+              </p>
+              <div id="rotate">
+                <p>Rotate</p>
+                <img id="rotateArrow" src="images/rotate-right-arrow.png" />
+              </div>
+              <div id="carrier">
+                <p>Carrier</p>
+              </div>
+              <div id="battleship">
+                <p>Battleship</p>
+              </div>
+              <div id="cruiser">
+                <p>Cruiser</p>
+              </div>
+              <div id="submarine">
+                <p>Submarine</p>
+              </div>
+              <div id="destroyer">
+                <p>Destroyer</p>
+              </div>
+            </div>
+          </div>
 
-				<div id="gameboard_cpu" class="shadowBox">
-					<div id="thinking">
-						<span id="message">Thinking...</span>
-						<div class="animation">
-							<div></div>
-							<div></div>
-							<div></div>
-							<div></div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="boardContainer">
-				<div id="gameboard" class="shadowBox"></div>
-				<div class="shiplist">
-					<div id="rightList" class="shadowBox">
-						<h4>Computer's Ships:</h4>
-						<p id="CarrierSunk">Carrier (5)</p>
-						<p id="BattleshipSunk">Battleship (4)</p>
-						<p id="CruiserSunk">Cruiser (3)</p>
-						<p id="SubmarineSunk">Submarine (3)</p>
-						<p id="DestroyerSunk">Destroyer (2)</p>
-					</div>
-				</div>
-			</div>
-		</div>
-		<footer>
-			<p id="strtOvrBtn" class="shadowBox">Start Over</p>
-			<p id="resetWinLoss" class="shadowBox">Reset Win/Loss</p>
-			<br />
-			<p id="updateText">Last Updated: October 7, 2020</p>
-			<div id="darkMode">Dark Mode</div>
-		</footer>
-	</div>
-</body>
-<script type="text/javascript" src="https://marusczak.com/BuildingBlocks/js/buildingBlocks.min.js"></script>
-<script type="text/javascript" src="https://marusczak.com/BuildingBlocks/js/modal.min.js"></script>
-<script type="text/javascript" src="js/shared.min.js"></script>
-<script type="text/javascript" src="js/battleship.min.js"></script>
-<script type="text/javascript" src="js/battleship_cpu.min.js"></script>
-
+          <div id="gameboard_cpu" class="shadowBox">
+            <div id="thinking">
+              <span id="message">Thinking...</span>
+              <div class="animation">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="boardContainer">
+          <div id="gameboard" class="shadowBox"></div>
+          <div class="shiplist">
+            <div id="rightList" class="shadowBox">
+              <h4>Computer's Ships:</h4>
+              <p id="CarrierSunk">Carrier (5)</p>
+              <p id="BattleshipSunk">Battleship (4)</p>
+              <p id="CruiserSunk">Cruiser (3)</p>
+              <p id="SubmarineSunk">Submarine (3)</p>
+              <p id="DestroyerSunk">Destroyer (2)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <p id="strtOvrBtn" class="shadowBox">Start Over</p>
+        <p id="resetWinLoss" class="shadowBox">Reset Win/Loss</p>
+        <br />
+        <p id="updateText">Last Updated: October 15, 2020</p>
+        <div id="darkMode">Dark Mode</div>
+      </footer>
+    </div>
+  </body>
+  <script
+    type="text/javascript"
+    src="https://marusczak.com/BuildingBlocks/js/buildingBlocks.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://marusczak.com/BuildingBlocks/js/modal.min.js"
+  ></script>
+  <script type="text/javascript" src="js/shared.min.js"></script>
+  <script type="text/javascript" src="js/battleship.min.js"></script>
+  <script type="text/javascript" src="js/battleship_cpu.min.js"></script>
 </html>
