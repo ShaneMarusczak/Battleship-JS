@@ -4,9 +4,10 @@
     <title>Battleship</title>
     <link rel="stylesheet" type="text/css" href="css/style.min.css" />
     <link
-      rel="stylesheet"
-      type="text/css"
+      rel="preload"
       href="https://marusczak.com/BuildingBlocks/css/modal.min.css"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
     />
     <meta name="viewport" content="width=800" />
     <meta name="Description" content="Play the classic game Battleship!" />
@@ -117,11 +118,12 @@
     type="text/javascript"
     src="https://marusczak.com/BuildingBlocks/js/buildingBlocks.min.js"
   ></script>
-  <script
-    type="text/javascript"
-    src="https://marusczak.com/BuildingBlocks/js/modal.min.js"
-  ></script>
   <script type="text/javascript" src="js/shared.min.js"></script>
   <script type="text/javascript" src="js/battleship.min.js"></script>
   <script type="text/javascript" src="js/battleship_cpu.min.js"></script>
+  <script
+    type="text/javascript"
+    src="https://marusczak.com/BuildingBlocks/js/modal.min.js"
+    defer
+  ></script>
 </html>
