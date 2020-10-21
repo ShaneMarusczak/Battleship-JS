@@ -672,7 +672,12 @@
       do {
         x = window.randomIntFromInterval(0, 8);
         y = window.randomIntFromInterval(0, 8);
-      } while ((x % 2 != 0 && y % 2 == 0) || (x % 2 == 0 && y % 2 != 0));
+      } while (
+        (x % 2 != 0 && y % 2 == 0) ||
+        (x % 2 == 0 && y % 2 != 0) ||
+        [4, 5, 6].includes(x) ||
+        [4, 5, 6].includes(y)
+      );
     } else {
       [x, y] = probabilityCalculator();
       resetProbabilityChart();
