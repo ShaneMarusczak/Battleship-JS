@@ -78,6 +78,9 @@
       window.sleep(300).then(() => {
         window.compMoveWindow();
         gameBoardContainer.addEventListener("click", fireTorpedo, false);
+        document
+          .getElementsByTagName("html")[0]
+          .classList.remove("progressCursor");
       });
     });
     document.getElementById("message").innerText =
@@ -109,6 +112,8 @@
     }
 
     if (e.target !== e.currentTarget) {
+      document.getElementsByTagName("html")[0].classList.add("progressCursor");
+
       const row = e.target.id.substring(1, 2);
       const col = e.target.id.substring(2, 3);
 
