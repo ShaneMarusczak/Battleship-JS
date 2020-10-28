@@ -421,7 +421,3 @@ footer {
 .lightText:not(#modal-message) {
   color: lightgray;
 }
-
-.progressCursor {
-  cursor: progress;
-}
