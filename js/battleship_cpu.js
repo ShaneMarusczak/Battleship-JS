@@ -107,7 +107,7 @@
   const rotateShip = () => {
     for (let i = 0; i < cols; i++) {
       for (let j = 0; j < rows; j++) {
-        if (direction == "hor") {
+        if (direction === "hor") {
           document
             .getElementById(getCId(i, j))
             .removeEventListener("mouseover", highlight);
@@ -124,7 +124,7 @@
         }
       }
     }
-    if (direction == "hor") {
+    if (direction === "hor") {
       direction = "ver";
     } else {
       direction = "hor";
@@ -332,7 +332,7 @@
             document
               .getElementById(getCId(i, j))
               .classList.contains("blackBackground") &&
-            gameBoard[i][j][1] == ""
+            gameBoard[i][j][1] === ""
           ) {
             if (size === shipLengths.carrier) {
               gameBoard[i][j][1] = "carrier";
@@ -416,52 +416,52 @@
     let destroyerCounter = 0;
     for (let i = 0; i < cols; i++) {
       for (let j = 0; j < rows; j++) {
-        if (isShip(i, j, "carrier") && isAlreadyHit(i, j) && !carrierSunk) {
+        if (!carrierSunk && isShip(i, j, "carrier") && isAlreadyHit(i, j)) {
           carrierCounter++;
         } else if (
+          !battleshipSunk &&
           isShip(i, j, "battleship") &&
-          isAlreadyHit(i, j) &&
-          !battleshipSunk
+          isAlreadyHit(i, j)
         ) {
           battleshipCounter++;
         } else if (
+          !cruiserSunk &&
           isShip(i, j, "cruiser") &&
-          isAlreadyHit(i, j) &&
-          !cruiserSunk
+          isAlreadyHit(i, j)
         ) {
           cruiserCounter++;
         } else if (
+          !submarineSunk &&
           isShip(i, j, "submarine") &&
-          isAlreadyHit(i, j) &&
-          !submarineSunk
+          isAlreadyHit(i, j)
         ) {
           submarineCounter++;
         } else if (
+          !destroyerSunk &&
           isShip(i, j, "destroyer") &&
-          isAlreadyHit(i, j) &&
-          !destroyerSunk
+          isAlreadyHit(i, j)
         ) {
           destroyerCounter++;
         }
       }
     }
-    if (carrierCounter == shipLengths.carrier) {
+    if (carrierCounter === shipLengths.carrier) {
       carrierSunk = true;
       shipSunkHelper(5, "carrier");
     }
-    if (battleshipCounter == shipLengths.battleship) {
+    if (battleshipCounter === shipLengths.battleship) {
       battleshipSunk = true;
       shipSunkHelper(4, "battleship");
     }
-    if (cruiserCounter == shipLengths.cruiser) {
+    if (cruiserCounter === shipLengths.cruiser) {
       cruiserSunk = true;
       shipSunkHelper(3, "cruiser");
     }
-    if (submarineCounter == shipLengths.submarine) {
+    if (submarineCounter === shipLengths.submarine) {
       submarineSunk = true;
       shipSunkHelper(3, "submarine");
     }
-    if (destroyerCounter == shipLengths.destroyer) {
+    if (destroyerCounter === shipLengths.destroyer) {
       destroyerSunk = true;
       shipSunkHelper(2, "destroyer");
     }
@@ -501,7 +501,7 @@
   const shipFoundAttack = () => {
     const x = lastShotX;
     const y = lastShotY;
-    if (shipDirection == "ver") {
+    if (shipDirection === "ver") {
       if (x + 1 <= 9 && shipFoundAttackHelper(x + 1, y, true)) {
         return;
       }
@@ -509,8 +509,8 @@
         for (let i = 1; i < 10; i++) {
           if (
             x - i < 0 ||
-            gameBoard[x - i][y][0] == 3 ||
-            gameBoard[x - i][y][0] == 4
+            gameBoard[x - i][y][0] === 3 ||
+            gameBoard[x - i][y][0] === 4
           ) {
             break;
           } else if (isMiss(x - i, y)) {
@@ -525,7 +525,7 @@
         shipDirection = "";
       }
     }
-    if (shipDirection == "hor") {
+    if (shipDirection === "hor") {
       if (y + 1 <= 9 && shipFoundAttackHelper(x, y + 1, false)) {
         return;
       }
@@ -673,8 +673,8 @@
         x = window.randomIntFromInterval(0, 8);
         y = window.randomIntFromInterval(0, 8);
       } while (
-        (x % 2 != 0 && y % 2 == 0) ||
-        (x % 2 == 0 && y % 2 != 0) ||
+        (x % 2 != 0 && y % 2 === 0) ||
+        (x % 2 === 0 && y % 2 != 0) ||
         [4, 5, 6].includes(x) ||
         [4, 5, 6].includes(y)
       );
@@ -861,7 +861,7 @@
       "Computer Wins: " + window.compWinsOnLoad();
 
     document.addEventListener("keydown", function (event) {
-      if (event.keyCode == 192) {
+      if (event.keyCode === 192) {
         console.log(gameBoard);
       }
     });
