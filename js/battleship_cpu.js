@@ -19,6 +19,7 @@
   let shotsfired = 0;
   let scanCounter = 0;
   let checkOrder = window.randomIntFromInterval(0, 1);
+  let missesInARow = 0;
   const rows = 10;
   const cols = 10;
   const cellSize = 50;
@@ -221,6 +222,7 @@
         gameBoard[s[0]][s[1]][1] = "";
       });
       placedShips.splice(placedShips.indexOf(thisShip), 1);
+      fixBackgroundToMove();
     }
     e.stopImmediatePropagation();
   };
@@ -312,6 +314,25 @@
     for (let i = 0; i < cols; i++) {
       for (let j = 0; j < rows; j++) {
         if (isShip(i, j, shipName)) {
+          document
+            .getElementById(getCId(i, j))
+            .classList.add("blackBackground");
+          document
+            .getElementById(getCId(i, j))
+            .classList.remove("greyBackground");
+        }
+      }
+    }
+  };
+
+  const fixBackgroundToMove = () => {
+    for (let i = 0; i < cols; i++) {
+      for (let j = 0; j < rows; j++) {
+        if (
+          document
+            .getElementById(getCId(i, j))
+            .classList.contains("greyBackground")
+        ) {
           document
             .getElementById(getCId(i, j))
             .classList.add("blackBackground");
@@ -657,6 +678,7 @@
     gameBoard[x][y][0] = 2;
     shipFound++;
     shotsfired++;
+    missesInARow = 0;
   };
 
   const missHelper = (x, y) => {
@@ -664,14 +686,15 @@
     document.getElementById(getCId(x, y)).classList.add("missBackground");
     gameBoard[x][y][0] = 3;
     shotsfired++;
+    missesInARow++;
   };
 
   const searchingShot = () => {
     let x, y;
     if (shotsfired < 5 || window.randomIntFromInterval(0, 9) === 0) {
       do {
-        x = window.randomIntFromInterval(0, 8);
-        y = window.randomIntFromInterval(0, 8);
+        x = window.randomIntFromInterval(0, 9);
+        y = window.randomIntFromInterval(0, 9);
       } while (
         (x % 2 != 0 && y % 2 === 0) ||
         (x % 2 === 0 && y % 2 != 0) ||
@@ -789,6 +812,18 @@
     let currentMaxes = [];
     for (let i = 0; i < cols; i++) {
       for (let j = 0; j < rows; j++) {
+        if (missesInARow > 6 && missesInARow < 10) {
+          if (i !== 0 && i !== 9) {
+            if (j !== 0 && j !== 9) {
+              continue;
+            }
+          }
+          if (j !== 0 && j !== 9) {
+            if (i !== 0 && i !== 9) {
+              continue;
+            }
+          }
+        }
         if (probabilityChart[i][j] === currentMax) {
           currentMaxes.push([i, j]);
         } else if (probabilityChart[i][j] > currentMax) {
