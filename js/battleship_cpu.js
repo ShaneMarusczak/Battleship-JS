@@ -691,15 +691,15 @@
 
   const searchingShot = () => {
     let x, y;
-    if (shotsfired < 5 || window.randomIntFromInterval(0, 9) === 0) {
+    if (shotsfired < 5 || window.randomIntFromInterval(0, 8) === 0) {
       do {
         x = window.randomIntFromInterval(0, 9);
         y = window.randomIntFromInterval(0, 9);
       } while (
         (x % 2 != 0 && y % 2 === 0) ||
         (x % 2 === 0 && y % 2 != 0) ||
-        [4, 5, 6].includes(x) ||
-        [4, 5, 6].includes(y)
+        [3, 4, 5].includes(x) ||
+        [3, 4, 5].includes(y)
       );
     } else {
       [x, y] = probabilityCalculator();
@@ -812,7 +812,7 @@
     let currentMaxes = [];
     for (let i = 0; i < cols; i++) {
       for (let j = 0; j < rows; j++) {
-        if (missesInARow > 6 && missesInARow < 10) {
+        if (missesInARow > 6 && missesInARow < 9) {
           if (i !== 0 && i !== 9) {
             if (j !== 0 && j !== 9) {
               continue;
