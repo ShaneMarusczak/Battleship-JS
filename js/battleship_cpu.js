@@ -19,7 +19,6 @@
   let shotsfired = 0;
   let scanCounter = 0;
   let checkOrder = window.randomIntFromInterval(0, 1);
-  let missesInARow = 0;
   const rows = 10;
   const cols = 10;
   const cellSize = 50;
@@ -678,7 +677,6 @@
     gameBoard[x][y][0] = 2;
     shipFound++;
     shotsfired++;
-    missesInARow = 0;
   };
 
   const missHelper = (x, y) => {
@@ -686,20 +684,19 @@
     document.getElementById(getCId(x, y)).classList.add("missBackground");
     gameBoard[x][y][0] = 3;
     shotsfired++;
-    missesInARow++;
   };
 
   const searchingShot = () => {
     let x, y;
-    if (shotsfired < 5 || window.randomIntFromInterval(0, 8) === 0) {
+    if (shotsfired < 6 || window.randomIntFromInterval(0, 11) === 0) {
       do {
         x = window.randomIntFromInterval(0, 9);
         y = window.randomIntFromInterval(0, 9);
       } while (
         (x % 2 != 0 && y % 2 === 0) ||
         (x % 2 === 0 && y % 2 != 0) ||
-        [3, 4, 5].includes(x) ||
-        [3, 4, 5].includes(y)
+        [3, 4, 5, 6].includes(x) ||
+        [3, 4, 5, 6].includes(y)
       );
     } else {
       [x, y] = probabilityCalculator();
@@ -812,18 +809,6 @@
     let currentMaxes = [];
     for (let i = 0; i < cols; i++) {
       for (let j = 0; j < rows; j++) {
-        if (missesInARow > 6 && missesInARow < 9) {
-          if (i !== 0 && i !== 9) {
-            if (j !== 0 && j !== 9) {
-              continue;
-            }
-          }
-          if (j !== 0 && j !== 9) {
-            if (i !== 0 && i !== 9) {
-              continue;
-            }
-          }
-        }
         if (probabilityChart[i][j] === currentMax) {
           currentMaxes.push([i, j]);
         } else if (probabilityChart[i][j] > currentMax) {
