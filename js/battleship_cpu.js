@@ -197,7 +197,7 @@
       resetShipPlayed(shipName);
       size = shipLengths[shipName];
       placed = shipName;
-      document.getElementById(shipName).classList.remove("notDisplayed");
+      document.getElementById(shipName).classList.remove("hidden");
       allShips.forEach((s) =>
         document.getElementById(s).classList.remove("clicked")
       );
@@ -382,25 +382,25 @@
       if (size === shipLengths.carrier) {
         placedCarrier = true;
         shipsPlaced++;
-        document.getElementById("carrier").classList.add("notDisplayed");
+        document.getElementById("carrier").classList.add("hidden");
       } else if (size === shipLengths.battleship) {
         placedBattleship = true;
         shipsPlaced++;
-        document.getElementById("battleship").classList.add("notDisplayed");
+        document.getElementById("battleship").classList.add("hidden");
       } else if (size === shipLengths.cruiser) {
         if (placed === "cruiser") {
           placedCruiser = true;
           shipsPlaced++;
-          document.getElementById("cruiser").classList.add("notDisplayed");
+          document.getElementById("cruiser").classList.add("hidden");
         } else if (placed === "submarine") {
           placedSubmarine = true;
           shipsPlaced++;
-          document.getElementById("submarine").classList.add("notDisplayed");
+          document.getElementById("submarine").classList.add("hidden");
         }
       } else if (size === shipLengths.destroyer) {
         placedDetroyer = true;
         shipsPlaced++;
-        document.getElementById("destroyer").classList.add("notDisplayed");
+        document.getElementById("destroyer").classList.add("hidden");
       }
       if (shipsPlaced === 5) {
         document.getElementById("downArrow").classList.add("notDisplayed");

@@ -1,4 +1,6 @@
-@import url("https://fonts.googleapis.com/css?family=Orbitron&display=swap");
+* {
+  font-family: "Roboto Mono", monospace;
+}
 
 header {
   padding-top: 35px;
@@ -19,7 +21,7 @@ header {
 }
 
 #githubicon:hover {
-  background-color: azure;
+  background-color: Linen;
 }
 
 #homeIcon {
@@ -48,15 +50,15 @@ header {
 
 @keyframes gbounce {
   0% {
-    transform: translateY(0);
+    transform: translateY(-25px);
   }
 
   50% {
-    transform: translateY(-50px);
+    transform: translateY(-60px);
   }
 
   100% {
-    transform: translateY(0);
+    transform: translateY(-25px);
   }
 }
 
@@ -77,12 +79,12 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: cornsilk;
+  background-color: #b0c4de;
 }
 
 #main {
   margin: 0 auto;
-  font-family: "Orbitron", sans-serif;
+  font-family: "Roboto Mono", monospace;
   margin-top: 15px;
   margin-bottom: 0;
   width: 100%;
@@ -109,9 +111,10 @@ input {
   display: none;
   flex-direction: row;
   font-size: xx-large;
-  background-color: azure;
-  height: 203px !important;
-  width: 203px !important;
+  background-color: Linen;
+  height: 210px !important;
+  width: 225px !important;
+  border: 3px solid black !important;
   border-radius: 20px;
   z-index: 2;
   position: fixed;
@@ -120,10 +123,11 @@ input {
 }
 
 #message {
-  width: 201px;
+  width: 210px !important;
   text-align: center;
   line-height: 150px;
   vertical-align: middle;
+  padding: 5px;
 }
 
 #boards {
@@ -151,12 +155,12 @@ input {
 #gameboard_cpu {
   border: 3px solid black;
   padding: 5px;
-  border-radius: 7px;
+  border-radius: 10px;
   position: relative;
   margin: 25px;
   width: 500px !important;
   height: 500px !important;
-  background-color: azure;
+  background-color: Linen;
 }
 
 #gameboard div,
@@ -175,27 +179,28 @@ input {
   cursor: url(../images/cross-hair-cursor.png) 16 16, auto;
 }
 
-.shadowBox {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
+/* .shadowBox {
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+} */
 
 #leftList,
 #rightList {
   margin-top: -175px;
   padding: 5px;
   border: 3px solid black;
-  border-radius: 7px;
-  background-color: azure;
+  border-radius: 10px;
+  background-color: Linen;
+  width: max-content;
 }
 
 #ships {
   padding: 5px;
   border: 3px solid black;
-  border-radius: 7px;
+  border-radius: 10px;
   width: 180px;
-  position: absolute;
+  /* position: absolute; */
   top: 270px;
-  background-color: azure;
+  background-color: Linen;
 }
 
 #ships div {
@@ -204,7 +209,7 @@ input {
   margin: 6px;
   cursor: pointer;
   width: 150px;
-  border-radius: 7px;
+  border-radius: 10px;
 }
 
 #ships div:hover {
@@ -240,7 +245,7 @@ input {
 }
 
 .shiplist {
-  width: 200px;
+  width: max-content;
 }
 
 h4 {
@@ -267,6 +272,10 @@ h4 {
 
 .notDisplayed {
   display: none;
+}
+
+.hidden {
+  visibility: hidden;
 }
 
 .inline {
@@ -301,12 +310,12 @@ a:hover {
 }
 
 .animation div:nth-child(1) {
-  left: 8px;
+  left: 10px;
   animation: animation1 0.6s infinite;
 }
 
 .animation div:nth-child(2) {
-  left: 8px;
+  left: 10px;
   animation: animation2 0.6s infinite;
 }
 
@@ -361,8 +370,8 @@ footer {
   font-size: 1.7em;
   padding: 5px;
   border: solid black;
-  border-radius: 7px;
-  font-family: "Orbitron", sans-serif;
+  border-radius: 10px;
+  font-family: "Roboto Mono", monospace;
   margin-bottom: 10px;
 }
 
