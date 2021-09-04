@@ -76,8 +76,8 @@
     window.sleep(2000).then(() => {
       document.getElementById("thinking").style.display = "none";
       window.sleep(300).then(() => {
+        addClickEvent();
         window.compMoveWindow();
-        gameBoardContainer.addEventListener("click", fireTorpedo, false);
       });
     });
     document.getElementById("message").innerText =
@@ -87,7 +87,6 @@
   };
 
   const modalControl = (shipSunkThisShot) => {
-    gameBoardContainer.removeEventListener("click", fireTorpedo, false);
     if (shipSunkThisShot) {
       const delay = 1500;
       window.modal(
@@ -108,18 +107,19 @@
       return;
     }
 
-    if (e.target !== e.currentTarget) {
+    if (e.target === e.currentTarget) {
+      removeClickEvent();
       const row = e.target.id.substring(1, 2);
       const col = e.target.id.substring(2, 3);
-
       if (gameBoard[row][col][0] == 0) {
-        e.target.style.backgroundColor = "#4d88ff";
+        document.getElementById("s" + row + col).style.backgroundColor =
+          "#4d88ff";
         gameBoard[row][col][0] = 3;
         document.getElementById("s" + row + col).classList.add("miss");
         window.currentColor = "#4d88ff";
         missSound.play();
       } else if (gameBoard[row][col][0] == 1) {
-        e.target.style.backgroundColor = "red";
+        document.getElementById("s" + row + col).style.backgroundColor = "red";
         gameBoard[row][col][0] = 2;
         document.getElementById("s" + row + col).classList.add("hit");
         window.currentColor = "red";
@@ -134,6 +134,7 @@
                   shipSunkCounter++;
                 }
                 if (shipSunkCounter == ship.length) {
+                  window.uiBlocker(200);
                   window.currentColor = "darkred";
                   for (const coor of ship) {
                     document.getElementById(
@@ -153,7 +154,6 @@
 
         if (hitCount == winningHitCount) {
           document.getElementById("wintext").style.display = "block";
-          gameBoardContainer.removeEventListener("click", fireTorpedo);
           window.gameOver = true;
           window.modal("YOU WIN!!!", 3000);
           const valuetoPass = window.playerWinsOnLoad() + 1;
@@ -169,6 +169,26 @@
     }
     window.sleep(200).then(() => modalControl(shipSunkThisShot));
     e.stopPropagation();
+  }
+
+  function addClickEvent() {
+    for (let i = 0; i < cols; i++) {
+      for (let j = 0; j < rows; j++) {
+        document
+          .getElementById("s" + i + j)
+          .addEventListener("click", fireTorpedo);
+      }
+    }
+  }
+
+  function removeClickEvent() {
+    for (let i = 0; i < cols; i++) {
+      for (let j = 0; j < rows; j++) {
+        document
+          .getElementById("s" + i + j)
+          .removeEventListener("click", fireTorpedo);
+      }
+    }
   }
 
   let nameIndex = 0;
@@ -270,7 +290,6 @@
   }
 
   (() => {
-    gameBoardContainer.addEventListener("click", fireTorpedo, false);
     document.getElementById("playerWins").textContent =
       "Player Wins: " + window.playerWinsOnLoad();
 
@@ -288,6 +307,7 @@
         square.style.background = "rgb(128, 170, 255)";
         square.addEventListener("mouseover", hoverColor);
         square.addEventListener("mouseleave", resetHoverColor);
+        square.addEventListener("click", fireTorpedo);
       }
     }
 
