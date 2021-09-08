@@ -134,7 +134,6 @@
                   shipSunkCounter++;
                 }
                 if (shipSunkCounter == ship.length) {
-                  window.uiBlocker(200);
                   window.currentColor = "darkred";
                   for (const coor of ship) {
                     document.getElementById(
