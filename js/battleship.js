@@ -163,6 +163,7 @@
         }
       } else if (gameBoard[row][col][0] > 1) {
         window.modal("Can't Fire Here!", 1400);
+        addClickEvent();
         return;
       }
     }
