@@ -364,7 +364,8 @@ footer {
 }
 
 #strtOvrBtn,
-#resetWinLoss {
+#resetWinLoss,
+#startGame {
   display: inline-block;
   width: fit-content;
   font-size: 1.7em;
@@ -376,7 +377,8 @@ footer {
 }
 
 #strtOvrBtn:hover,
-#resetWinLoss:hover {
+#resetWinLoss:hover,
+#startGame:hover {
   background-color: gray;
   cursor: pointer;
 }
@@ -434,4 +436,24 @@ footer {
 .shadowBox {
   box-shadow: 2px 4px 8px 2px rgba(0, 0, 0, 0.2),
     0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+@keyframes flash {
+  0% {
+    background-color: transparent;
+  }
+
+  50% {
+    background-color: #faf0e6;
+  }
+
+  100% {
+    background-color: transparent;
+  }
+}
+
+.flash {
+  animation-name: flash;
+  animation-duration: 2.5s;
+  animation-iteration-count: infinite;
 }

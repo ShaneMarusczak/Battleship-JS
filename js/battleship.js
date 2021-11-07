@@ -1,5 +1,4 @@
 "use strict";
-/*eslint-disable no-console */
 (() => {
   let hitCount = 0;
   const rows = 10;

@@ -1,24 +1,51 @@
 "use strict";
 (() => {
-  let shipFound = 0;
+  //determines the the second shot on a ship after its inital hit (below or to the right first?)
+  let checkOrder = window.randomIntFromInterval(0, 1);
+
+  // keeps track of which of the four spots around a found ship the comp is firing at
+  // resets after after the second hit on each ship (getting ready for next ship)
+  let scanCounter = 0;
+
+  //coor of last shot
+  let lastShotX;
+  let lastShotY;
+
+  //used to hold data about the ship currently being placed by the player
+  let shipCurrentlyBeingPlaced;
+  //if size of ship is 0, no ship is currently being placed
+  let sizeOfShipCurrentlyBeingPlaced;
+  let directionToPlaceShip = "hor";
+
+  let shotsfired = 0;
+
+  //a count of all cells on the board that are hits but not part of a sunk ship
+  //if you hit two different ships and then sink one, we still have a hit on the board
+  //when a ship is sunk, its length is subracted from this value
+  //if this value is still above 0, there is an additional ship to attack
+  let hitsNotPartOfSunkShip = 0;
+
+  //computer can attack vertically or horizontally, valid values are "hor" or "ver"
+  let directionToAttackFoundShip = "";
+
   let shipsPlaced = 0;
-  let lastShotX, lastShotY, placed, size;
+
+  let canStart = false;
+
+  let carrierPlaced = false;
+  let battleshipPlaced = false;
+  let cruiserPlaced = false;
+  let submarinePlaced = false;
+  let destroyerPlaced = false;
+
   let allShipsPlaced = false;
-  let placedCarrier = false;
-  let placedBattleship = false;
-  let placedCruiser = false;
-  let placedSubmarine = false;
-  let placedDetroyer = false;
+
   let carrierSunk = false;
   let battleshipSunk = false;
   let cruiserSunk = false;
   let submarineSunk = false;
   let destroyerSunk = false;
-  let shipDirection = "";
-  let direction = "hor";
-  let shotsfired = 0;
-  let scanCounter = 0;
-  let checkOrder = window.randomIntFromInterval(0, 1);
+
   const rows = 10;
   const cols = 10;
   const cellSize = 50;
@@ -32,7 +59,6 @@
   const sunkSound = new Audio("sounds/Ship Sunk Sound.mp3");
   const placedShips = [];
   const ships = [carrier, battleship, cruiser, submarine, destroyer];
-  const probabilityChart = [];
 
   const shipLengths = {
     battleship: 4,
@@ -81,8 +107,8 @@
       .getElementById(sunkShipName + "Sunk_cpu")
       .classList.add("sunkText");
     sunkColorChange(sunkShipName);
-    shipFound = shipFound - num;
-    shipDirection = "";
+    hitsNotPartOfSunkShip = hitsNotPartOfSunkShip - num;
+    directionToAttackFoundShip = "";
     checkOrder = window.randomIntFromInterval(0, 1);
     for (let i = 0; i < cols; i++) {
       for (let j = 0; j < rows; j++) {
@@ -99,7 +125,7 @@
         1500
       );
     }
-    if (shipFound > 0) {
+    if (hitsNotPartOfSunkShip > 0) {
       shipHitButNotSunkReassign();
     }
   };
@@ -107,7 +133,7 @@
   const rotateShip = () => {
     for (let i = 0; i < cols; i++) {
       for (let j = 0; j < rows; j++) {
-        if (direction === "hor") {
+        if (directionToPlaceShip === "hor") {
           document
             .getElementById(getCId(i, j))
             .removeEventListener("mouseover", highlight);
@@ -124,25 +150,28 @@
         }
       }
     }
-    if (direction === "hor") {
-      direction = "ver";
+    if (directionToPlaceShip === "hor") {
+      directionToPlaceShip = "ver";
     } else {
-      direction = "hor";
+      directionToPlaceShip = "hor";
     }
   };
 
   const rotatedHighlight = (e) => {
     const elemId = e.target.id;
     let canPlace = true;
-    for (let i = 0; i < size; i++) {
+    for (let i = 0; i < sizeOfShipCurrentlyBeingPlaced; i++) {
       if (!isMiss(Number(elemId[1]) + i, Number(elemId[2]))) {
         canPlace = false;
         break;
       }
     }
-    if (Number(elemId[1]) < rows + 1 - size && canPlace) {
+    if (
+      Number(elemId[1]) < rows + 1 - sizeOfShipCurrentlyBeingPlaced &&
+      canPlace
+    ) {
       e.target.addEventListener("click", placeShip);
-      for (let i = 0; i < size; i++) {
+      for (let i = 0; i < sizeOfShipCurrentlyBeingPlaced; i++) {
         document
           .getElementById(elemId[0] + (Number(elemId[1]) + i) + elemId[2])
           .classList.add("blackBackground");
@@ -155,15 +184,18 @@
   const highlight = (e) => {
     const elemId = e.target.id;
     let canPlace = true;
-    for (let i = 0; i < size; i++) {
+    for (let i = 0; i < sizeOfShipCurrentlyBeingPlaced; i++) {
       if (!isMiss(Number(elemId[1]), Number(elemId[2]) + i)) {
         canPlace = false;
         break;
       }
     }
-    if (Number(elemId[2]) < cols + 1 - size && canPlace) {
+    if (
+      Number(elemId[2]) < cols + 1 - sizeOfShipCurrentlyBeingPlaced &&
+      canPlace
+    ) {
       e.target.addEventListener("click", placeShip);
-      for (let i = 0; i < size; i++) {
+      for (let i = 0; i < sizeOfShipCurrentlyBeingPlaced; i++) {
         document
           .getElementById(elemId[0] + elemId[1] + (Number(elemId[2]) + i))
           .classList.add("blackBackground");
@@ -189,14 +221,14 @@
   };
 
   const moveShip = (e) => {
-    if (size === 0 && !allShipsPlaced) {
+    if (sizeOfShipCurrentlyBeingPlaced === 0 && !window.gameStarted) {
       let thisShip;
       const x = Number(e.target.id[1]);
       const y = Number(e.target.id[2]);
       const [, shipName] = gameBoard[x][y];
       resetShipPlayed(shipName);
-      size = shipLengths[shipName];
-      placed = shipName;
+      sizeOfShipCurrentlyBeingPlaced = shipLengths[shipName];
+      shipCurrentlyBeingPlaced = shipName;
       document.getElementById(shipName).classList.remove("hidden");
       allShips.forEach((s) =>
         document.getElementById(s).classList.remove("clicked")
@@ -222,6 +254,13 @@
       });
       placedShips.splice(placedShips.indexOf(thisShip), 1);
       fixBackgroundToMove();
+      allShipsPlaced = false;
+      canStart = false;
+      if (
+        !document.getElementById("startGame").classList.contains("notDisplayed")
+      ) {
+        document.getElementById("startGame").classList.add("notDisplayed");
+      }
     }
     e.stopImmediatePropagation();
   };
@@ -229,19 +268,19 @@
   const resetShipPlayed = (shipName) => {
     switch (shipName) {
       case "carrier":
-        placedCarrier = false;
+        carrierPlaced = false;
         break;
       case "battleship":
-        placedBattleship = false;
+        battleshipPlaced = false;
         break;
       case "cruiser":
-        placedCruiser = false;
+        cruiserPlaced = false;
         break;
       case "submarine":
-        placedSubmarine = false;
+        submarinePlaced = false;
         break;
       case "destroyer":
-        placedDetroyer = false;
+        destroyerPlaced = false;
         break;
       default:
     }
@@ -259,35 +298,35 @@
       const elemId = e.target.parentElement.id;
       if (document.getElementById(elemId).classList.contains("clicked")) {
         document.getElementById(elemId).classList.remove("clicked");
-        size = 0;
+        sizeOfShipCurrentlyBeingPlaced = 0;
         return;
       }
       allShips.forEach((s) =>
         document.getElementById(s).classList.remove("clicked")
       );
-      if (elemId === "carrier" && !placedCarrier) {
-        size = shipLengths[elemId];
+      if (elemId === "carrier" && !carrierPlaced) {
+        sizeOfShipCurrentlyBeingPlaced = shipLengths[elemId];
         e.target.parentElement.classList.add("clicked");
-      } else if (elemId === "battleship" && !placedBattleship) {
-        size = shipLengths[elemId];
+      } else if (elemId === "battleship" && !battleshipPlaced) {
+        sizeOfShipCurrentlyBeingPlaced = shipLengths[elemId];
         e.target.parentElement.classList.add("clicked");
-      } else if (elemId === "cruiser" && !placedCruiser) {
-        size = shipLengths[elemId];
+      } else if (elemId === "cruiser" && !cruiserPlaced) {
+        sizeOfShipCurrentlyBeingPlaced = shipLengths[elemId];
         e.target.parentElement.classList.add("clicked");
-        placed = "cruiser";
-      } else if (elemId === "submarine" && !placedSubmarine) {
-        size = shipLengths[elemId];
+        shipCurrentlyBeingPlaced = "cruiser";
+      } else if (elemId === "submarine" && !submarinePlaced) {
+        sizeOfShipCurrentlyBeingPlaced = shipLengths[elemId];
         e.target.parentElement.classList.add("clicked");
-        placed = "submarine";
-      } else if (elemId === "destroyer" && !placedDetroyer) {
-        size = shipLengths[elemId];
+        shipCurrentlyBeingPlaced = "submarine";
+      } else if (elemId === "destroyer" && !destroyerPlaced) {
+        sizeOfShipCurrentlyBeingPlaced = shipLengths[elemId];
         e.target.parentElement.classList.add("clicked");
       }
     }
   };
 
   const canMoveShipHighlight = (e) => {
-    if (size === 0) {
+    if (sizeOfShipCurrentlyBeingPlaced === 0) {
       const x = Number(e.target.id[1]);
       const y = Number(e.target.id[2]);
       const [, shipName] = gameBoard[x][y];
@@ -344,7 +383,7 @@
   };
 
   const placeShip = () => {
-    if (!allShipsPlaced) {
+    if (!canStart && !allShipsPlaced) {
       const ship = [];
       for (let i = 0; i < cols; i++) {
         for (let j = 0; j < rows; j++) {
@@ -354,18 +393,25 @@
               .classList.contains("blackBackground") &&
             gameBoard[i][j][1] === ""
           ) {
-            if (size === shipLengths.carrier) {
+            if (sizeOfShipCurrentlyBeingPlaced === shipLengths.carrier) {
               gameBoard[i][j][1] = "carrier";
-            } else if (size === shipLengths.battleship) {
+            } else if (
+              sizeOfShipCurrentlyBeingPlaced === shipLengths.battleship
+            ) {
               gameBoard[i][j][1] = "battleship";
-            } else if (size === shipLengths.cruiser && placed === "cruiser") {
+            } else if (
+              sizeOfShipCurrentlyBeingPlaced === shipLengths.cruiser &&
+              shipCurrentlyBeingPlaced === "cruiser"
+            ) {
               gameBoard[i][j][1] = "cruiser";
             } else if (
-              size === shipLengths.submarine &&
-              placed === "submarine"
+              sizeOfShipCurrentlyBeingPlaced === shipLengths.submarine &&
+              shipCurrentlyBeingPlaced === "submarine"
             ) {
               gameBoard[i][j][1] = "submarine";
-            } else if (size === shipLengths.destroyer) {
+            } else if (
+              sizeOfShipCurrentlyBeingPlaced === shipLengths.destroyer
+            ) {
               gameBoard[i][j][1] = "destroyer";
             }
             const elem = document.getElementById(getCId(i, j));
@@ -379,51 +425,62 @@
           }
         }
       }
-      if (size === shipLengths.carrier) {
-        placedCarrier = true;
+      if (sizeOfShipCurrentlyBeingPlaced === shipLengths.carrier) {
+        carrierPlaced = true;
         shipsPlaced++;
         document.getElementById("carrier").classList.add("hidden");
-      } else if (size === shipLengths.battleship) {
-        placedBattleship = true;
+      } else if (sizeOfShipCurrentlyBeingPlaced === shipLengths.battleship) {
+        battleshipPlaced = true;
         shipsPlaced++;
         document.getElementById("battleship").classList.add("hidden");
-      } else if (size === shipLengths.cruiser) {
-        if (placed === "cruiser") {
-          placedCruiser = true;
+      } else if (sizeOfShipCurrentlyBeingPlaced === shipLengths.cruiser) {
+        if (shipCurrentlyBeingPlaced === "cruiser") {
+          cruiserPlaced = true;
           shipsPlaced++;
           document.getElementById("cruiser").classList.add("hidden");
-        } else if (placed === "submarine") {
-          placedSubmarine = true;
+        } else if (shipCurrentlyBeingPlaced === "submarine") {
+          submarinePlaced = true;
           shipsPlaced++;
           document.getElementById("submarine").classList.add("hidden");
         }
-      } else if (size === shipLengths.destroyer) {
-        placedDetroyer = true;
+      } else if (sizeOfShipCurrentlyBeingPlaced === shipLengths.destroyer) {
+        destroyerPlaced = true;
         shipsPlaced++;
         document.getElementById("destroyer").classList.add("hidden");
       }
       if (shipsPlaced === 5) {
-        document.getElementById("downArrow").classList.add("notDisplayed");
-        document.getElementById("leftList").classList.remove("notDisplayed");
-        document.getElementById("ships").classList.add("notDisplayed");
-        window.modal("All ships Placed!", 1500);
+        canStart = true;
         allShipsPlaced = true;
-        window.gameStarted = true;
-        for (let i = 0; i < cols; i++) {
-          for (let j = 0; j < rows; j++) {
-            const elem = document.getElementById(getCId(i, j));
-            elem.removeEventListener("mouseleave", resetColor);
-            elem.removeEventListener("click", moveShip);
-            elem.removeEventListener("mouseover", canMoveShipHighlight);
-            elem.removeEventListener("mouseleave", canMoveShipHighlightRevert);
-            elem.classList.remove("curserPointer");
-          }
-        }
+        document.getElementById("startGame").classList.remove("notDisplayed");
+        document.getElementById("instructions").innerHTML =
+          "<b>Placed ships can be moved before starting!</b>";
       }
-      size = 0;
+      sizeOfShipCurrentlyBeingPlaced = 0;
       placedShips.push(ship);
     }
   };
+
+  function startGame() {
+    if (canStart && allShipsPlaced) {
+      document.getElementById("downArrow").classList.add("notDisplayed");
+      document.getElementById("leftList").classList.remove("notDisplayed");
+      document.getElementById("ships").classList.add("notDisplayed");
+      document.getElementById("startGame").classList.add("notDisplayed");
+      document.getElementById("strtOvrBtn").classList.remove("notDisplayed");
+      window.modal("Game on!", 1500);
+      window.gameStarted = true;
+      for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+          const elem = document.getElementById(getCId(i, j));
+          elem.removeEventListener("mouseleave", resetColor);
+          elem.removeEventListener("click", moveShip);
+          elem.removeEventListener("mouseover", canMoveShipHighlight);
+          elem.removeEventListener("mouseleave", canMoveShipHighlightRevert);
+          elem.classList.remove("curserPointer");
+        }
+      }
+    }
+  }
 
   const isShip = (x, y, shipName) =>
     isValidXY(x, y) && gameBoard[x][y][1] === shipName;
@@ -521,7 +578,7 @@
   const shipFoundAttack = () => {
     const x = lastShotX;
     const y = lastShotY;
-    if (shipDirection === "ver") {
+    if (directionToAttackFoundShip === "ver") {
       if (x + 1 <= 9 && shipFoundAttackHelper(x + 1, y, true)) {
         return;
       }
@@ -542,10 +599,10 @@
           }
         }
         scanCounter = 0;
-        shipDirection = "";
+        directionToAttackFoundShip = "";
       }
     }
-    if (shipDirection === "hor") {
+    if (directionToAttackFoundShip === "hor") {
       if (y + 1 <= 9 && shipFoundAttackHelper(x, y + 1, false)) {
         return;
       }
@@ -566,59 +623,59 @@
           }
         }
         scanCounter = 0;
-        shipDirection = "";
+        directionToAttackFoundShip = "";
       }
     }
     if (checkOrder === 0) {
-      if (scanCounter === 0 && shipDirection === "") {
+      if (scanCounter === 0 && directionToAttackFoundShip === "") {
         if (x + 1 > 9) {
           scanCounter++;
         } else if (shipFoundAttackScanHelper(x + 1, y, "ver", 1)) {
           return;
         }
       }
-      if (scanCounter === 1 && shipDirection === "") {
+      if (scanCounter === 1 && directionToAttackFoundShip === "") {
         if (y + 1 > 9) {
           scanCounter++;
         } else if (shipFoundAttackScanHelper(x, y + 1, "hor", 1)) {
           return;
         }
       }
-      if (scanCounter === 2 && shipDirection === "") {
+      if (scanCounter === 2 && directionToAttackFoundShip === "") {
         if (x - 1 < 0) {
           scanCounter++;
         } else if (shipFoundAttackScanHelper(x - 1, y, "ver", -1)) {
           return;
         }
       }
-      if (scanCounter >= 3 && shipDirection === "") {
+      if (scanCounter >= 3 && directionToAttackFoundShip === "") {
         if (shipFoundAttackScanHelper(x, y - 1, "hor", -1)) {
           return;
         }
       }
     } else {
-      if (scanCounter === 0 && shipDirection === "") {
+      if (scanCounter === 0 && directionToAttackFoundShip === "") {
         if (y + 1 > 9) {
           scanCounter++;
         } else if (shipFoundAttackScanHelper(x, y + 1, "hor", 1)) {
           return;
         }
       }
-      if (scanCounter === 1 && shipDirection === "") {
+      if (scanCounter === 1 && directionToAttackFoundShip === "") {
         if (x + 1 > 9) {
           scanCounter++;
         } else if (shipFoundAttackScanHelper(x + 1, y, "ver", 1)) {
           return;
         }
       }
-      if (scanCounter === 2 && shipDirection === "") {
+      if (scanCounter === 2 && directionToAttackFoundShip === "") {
         if (x - 1 < 0) {
           scanCounter++;
         } else if (shipFoundAttackScanHelper(x - 1, y, "ver", -1)) {
           return;
         }
       }
-      if (scanCounter >= 3 && shipDirection === "") {
+      if (scanCounter >= 3 && directionToAttackFoundShip === "") {
         if (shipFoundAttackScanHelper(x, y - 1, "hor", -1)) {
           return;
         }
@@ -649,7 +706,7 @@
       return true;
     } else if (isHit(x, y)) {
       hitHelper(x, y);
-      shipDirection = direc;
+      directionToAttackFoundShip = direc;
       scanCounter = 0;
       if (direc === "ver") {
         lastShotX = lastShotX + add;
@@ -675,7 +732,7 @@
     document.getElementById(getCId(x, y)).classList.remove("blackBackground");
     document.getElementById(getCId(x, y)).classList.add("redBackground");
     gameBoard[x][y][0] = 2;
-    shipFound++;
+    hitsNotPartOfSunkShip++;
     shotsfired++;
   };
 
@@ -688,7 +745,7 @@
 
   const searchingShot = () => {
     let x, y;
-    if (shotsfired < 5 || window.randomIntFromInterval(0, 13) === 0) {
+    if (shotsfired < 4 || window.randomIntFromInterval(0, 12) === 0) {
       do {
         x = window.randomIntFromInterval(0, 9);
         y = window.randomIntFromInterval(0, 9);
@@ -700,7 +757,6 @@
       );
     } else {
       [x, y] = probabilityCalculator();
-      resetProbabilityChart();
     }
     lastShotX = x;
     lastShotY = y;
@@ -718,7 +774,7 @@
       return;
     }
     if (allShipsPlaced) {
-      if (shipFound > 0) {
+      if (hitsNotPartOfSunkShip > 0) {
         shipFoundAttack();
       } else {
         searchingShot();
@@ -757,6 +813,7 @@
 
   const probabilityCalculator = () => {
     const lengthsLeft = [];
+    const probabilityChart = build2dArray(10, 10);
     let counter = 0;
     if (!carrierSunk) {
       lengthsLeft.push(shipLengths.carrier);
@@ -823,14 +880,6 @@
     ];
   };
 
-  const resetProbabilityChart = () => {
-    for (let i = 0; i < cols; i++) {
-      for (let j = 0; j < rows; j++) {
-        probabilityChart[i][j] = 0;
-      }
-    }
-  };
-
   const gameOverColorChange = () => {
     for (let i = 0; i < cols; i++) {
       for (let j = 0; j < rows; j++) {
@@ -851,14 +900,23 @@
     window.addClassFromElementById("rotateArrow", "rotateBackAnimation");
   };
 
+  const build2dArray = (rowLength, numberOfRows) => {
+    const arr = [];
+    for (let i = 0; i < numberOfRows; i++) {
+      arr.push([]);
+      for (let j = 0; j < rowLength; j++) {
+        arr[i].push(0);
+      }
+    }
+    return arr;
+  };
+
   (() => {
     window.compMoveWindow = compMove;
 
     for (let i = 0; i < cols; i++) {
       gameBoard.push([]);
-      probabilityChart.push([]);
       for (let j = 0; j < rows; j++) {
-        probabilityChart[i].push(0);
         gameBoard[i].push([0, ""]);
         const cell = document.createElement("div");
         gameBoardContainer.appendChild(cell);
@@ -877,6 +935,7 @@
     window.addEventListenerById("rotate", "mouseover", rotateIcon);
     window.addEventListenerById("rotate", "mouseleave", rotateIconBack);
     window.addEventListenerById("rotate", "click", rotateShip);
+    window.addEventListenerById("startGame", "click", startGame);
     document.getElementById("compWins").textContent =
       "Computer Wins: " + window.compWinsOnLoad();
 
