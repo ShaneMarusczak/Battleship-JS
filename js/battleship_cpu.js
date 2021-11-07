@@ -745,7 +745,7 @@
 
   const searchingShot = () => {
     let x, y;
-    if (shotsfired < 4 || window.randomIntFromInterval(0, 12) === 0) {
+    if (shotsfired < 5 || window.randomIntFromInterval(0, 12) === 0) {
       do {
         x = window.randomIntFromInterval(0, 9);
         y = window.randomIntFromInterval(0, 9);
