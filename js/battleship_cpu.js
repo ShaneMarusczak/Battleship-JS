@@ -1,31 +1,31 @@
 "use strict";
 (() => {
-  //determines the the second shot on a ship after its inital hit (below or to the right first?)
+  // determines the the second shot on a ship after its inital hit (below or to the right first?)
   let checkOrder = window.randomIntFromInterval(0, 1);
 
   // keeps track of which of the four spots around a found ship the comp is firing at
   // resets after after the second hit on each ship (getting ready for next ship)
   let scanCounter = 0;
 
-  //coor of last shot
+  // coor of last shot
   let lastShotX;
   let lastShotY;
 
-  //used to hold data about the ship currently being placed by the player
+  // used to hold data about the ship currently being placed by the player
   let shipCurrentlyBeingPlaced;
-  //if size of ship is 0, no ship is currently being placed
+  // if size of ship is 0, no ship is currently being placed
   let sizeOfShipCurrentlyBeingPlaced;
   let directionToPlaceShip = "hor";
 
   let shotsfired = 0;
 
-  //a count of all cells on the board that are hits but not part of a sunk ship
-  //if you hit two different ships and then sink one, we still have a hit on the board
-  //when a ship is sunk, its length is subracted from this value
-  //if this value is still above 0, there is an additional ship to attack
+  // a count of all cells on the board that are hits but not part of a sunk ship
+  // if you hit two different ships and then sink one, we still have a hit on the board
+  // when a ship is sunk, its length is subracted from this value
+  // if this value is still above 0, there is an additional ship to attack
   let hitsNotPartOfSunkShip = 0;
 
-  //computer can attack vertically or horizontally, valid values are "hor" or "ver"
+  // computer can attack vertically or horizontally, valid values are "hor" or "ver"
   let directionToAttackFoundShip = "";
 
   let shipsPlaced = 0;
@@ -238,6 +238,9 @@
       for (const ship of placedShips) {
         for (const coor of ship) {
           if (coor[0] === x && coor[1] === y) {
+            // set to opposite direction, then call roateShip() below to sync
+            directionToPlaceShip =
+              gameBoard[coor[0]][coor[1]][2] === "hor" ? "ver" : "hor";
             thisShip = ship;
             break;
           }
@@ -261,6 +264,8 @@
       ) {
         document.getElementById("startGame").classList.add("notDisplayed");
       }
+      // call here
+      rotateShip();
     }
     e.stopImmediatePropagation();
   };
@@ -382,6 +387,11 @@
     }
   };
 
+  const placeShipHelper = (i, j, name) => {
+    gameBoard[i][j][1] = name;
+    gameBoard[i][j][2] = directionToPlaceShip;
+  };
+
   const placeShip = () => {
     if (!canStart && !allShipsPlaced) {
       const ship = [];
@@ -394,25 +404,25 @@
             gameBoard[i][j][1] === ""
           ) {
             if (sizeOfShipCurrentlyBeingPlaced === shipLengths.carrier) {
-              gameBoard[i][j][1] = "carrier";
+              placeShipHelper(i, j, "carrier");
             } else if (
               sizeOfShipCurrentlyBeingPlaced === shipLengths.battleship
             ) {
-              gameBoard[i][j][1] = "battleship";
+              placeShipHelper(i, j, "battleship");
             } else if (
               sizeOfShipCurrentlyBeingPlaced === shipLengths.cruiser &&
               shipCurrentlyBeingPlaced === "cruiser"
             ) {
-              gameBoard[i][j][1] = "cruiser";
+              placeShipHelper(i, j, "cruiser");
             } else if (
               sizeOfShipCurrentlyBeingPlaced === shipLengths.submarine &&
               shipCurrentlyBeingPlaced === "submarine"
             ) {
-              gameBoard[i][j][1] = "submarine";
+              placeShipHelper(i, j, "submarine");
             } else if (
               sizeOfShipCurrentlyBeingPlaced === shipLengths.destroyer
             ) {
-              gameBoard[i][j][1] = "destroyer";
+              placeShipHelper(i, j, "destroyer");
             }
             const elem = document.getElementById(getCId(i, j));
             elem.addEventListener("click", moveShip);
