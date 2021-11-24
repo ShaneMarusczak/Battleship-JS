@@ -660,7 +660,6 @@
       }
       if (scanCounter >= 3 && directionToAttackFoundShip === "") {
         if (shipFoundAttackScanHelper(x, y - 1, "hor", -1)) {
-          return;
         }
       }
     } else {
@@ -687,7 +686,6 @@
       }
       if (scanCounter >= 3 && directionToAttackFoundShip === "") {
         if (shipFoundAttackScanHelper(x, y - 1, "hor", -1)) {
-          return;
         }
       }
     }
@@ -760,8 +758,8 @@
         x = window.randomIntFromInterval(0, 9);
         y = window.randomIntFromInterval(0, 9);
       } while (
-        (x % 2 != 0 && y % 2 === 0) ||
-        (x % 2 === 0 && y % 2 != 0) ||
+        (x % 2 !== 0 && y % 2 === 0) ||
+        (x % 2 === 0 && y % 2 !== 0) ||
         [3, 4, 5, 6].includes(x) ||
         [3, 4, 5, 6].includes(y)
       );
