@@ -417,7 +417,17 @@ footer {
 }
 
 .missBackground {
-  background-color: #4d88ff !important;
+  background-color: rgba(128, 170, 255, 0.5) !important;
+  text-align: center;
+  line-height: 45px;
+}
+
+.missBackground:after {
+  display: inline-block;
+  content: "\00d7";
+  /* border: 1px solid transparent !important; */
+  font-size: 46px;
+  color: rgb(128, 170, 255);
 }
 
 #darkMode {

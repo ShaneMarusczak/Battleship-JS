@@ -1,13 +1,6 @@
 "use strict";
 (() => {
-  // determines the the second shot on a ship after its inital hit (below or to the right first?)
-  let checkOrder = window.randomIntFromInterval(0, 1);
-
-  // keeps track of which of the four spots around a found ship the comp is firing at
-  // resets after after the second hit on each ship (getting ready for next ship)
-  let scanCounter = 0;
-
-  // coor of last shot
+  // coor of last hit
   let lastShotX;
   let lastShotY;
 
@@ -25,8 +18,10 @@
   // if this value is still above 0, there is an additional ship to attack
   let hitsNotPartOfSunkShip = 0;
 
-  // computer can attack vertically or horizontally, valid values are "hor" or "ver"
+  // computer can attack vertically or horizontally, valid values are "u", "d", "l", "r"
   let directionToAttackFoundShip = "";
+
+  let missesInARow = 0;
 
   let shipsPlaced = 0;
 
@@ -109,7 +104,6 @@
     sunkColorChange(sunkShipName);
     hitsNotPartOfSunkShip = hitsNotPartOfSunkShip - num;
     directionToAttackFoundShip = "";
-    checkOrder = window.randomIntFromInterval(0, 1);
     for (let i = 0; i < cols; i++) {
       for (let j = 0; j < rows; j++) {
         if (isShip(i, j, sunkShipName)) {
@@ -373,8 +367,8 @@
       for (let j = 0; j < rows; j++) {
         if (
           document
-            .getElementById(getCId(i, j))
-            .classList.contains("greyBackground")
+          .getElementById(getCId(i, j))
+          .classList.contains("greyBackground")
         ) {
           document
             .getElementById(getCId(i, j))
@@ -399,8 +393,8 @@
         for (let j = 0; j < rows; j++) {
           if (
             document
-              .getElementById(getCId(i, j))
-              .classList.contains("blackBackground") &&
+            .getElementById(getCId(i, j))
+            .classList.contains("blackBackground") &&
             gameBoard[i][j][1] === ""
           ) {
             if (sizeOfShipCurrentlyBeingPlaced === shipLengths.carrier) {
@@ -585,11 +579,81 @@
     }
   };
 
+  const max = (arr) => {
+    let max = 0;
+    arr.forEach(l => {
+      if (l > max) {
+        max = l
+      }
+    });
+    return max;
+  }
+
+  const getDir = (x, y) => {
+    const maxLengthLeft = max(lengthsLeft());
+
+    let upScore = {
+      score: 0,
+      dir: "u"
+    };
+    let downScore = {
+      score: 0,
+      dir: "d"
+    };
+    let rightScore = {
+      score: 0,
+      dir: "r"
+    };
+    let leftScore = {
+      score: 0,
+      dir: "l"
+    };
+
+    for (let up = 1; up < maxLengthLeft; up++) {
+      if (!isValidXY(x - up, y)) break;
+      if (alreadyFiredAt(x - up, y)) break;
+      upScore.score++;
+    }
+    for (let down = 1; down < maxLengthLeft; down++) {
+      if (!isValidXY(x + down, y)) break;
+      if (alreadyFiredAt(x + down, y)) break;
+      downScore.score++;
+    }
+    for (let right = 1; right < maxLengthLeft; right++) {
+      if (!isValidXY(x, y + right)) break;
+      if (alreadyFiredAt(x, y + right)) break;
+      rightScore.score++;
+    }
+    for (let left = 1; left < maxLengthLeft; left++) {
+      if (!isValidXY(x, y - left)) break;
+      if (alreadyFiredAt(x, y - left)) break;
+      leftScore.score++;
+    }
+
+    const scores = [upScore, downScore, leftScore, rightScore];
+
+    let currentMax = 0;
+    let currentMaxes = [];
+    scores.forEach(s => {
+      if (currentMax === s.score) {
+        currentMaxes.push(s);
+      } else if (s.score > currentMax) {
+        currentMax = s.score;
+        currentMaxes = [];
+        currentMaxes.push(s);
+      }
+    });
+    return currentMaxes[
+      window.randomIntFromInterval(0, currentMaxes.length - 1)
+    ].dir;
+
+  }
+
   const shipFoundAttack = () => {
     const x = lastShotX;
     const y = lastShotY;
-    if (directionToAttackFoundShip === "ver") {
-      if (x + 1 <= 9 && shipFoundAttackHelper(x + 1, y, true)) {
+    if (directionToAttackFoundShip === "d") {
+      if (x + 1 <= 9 && shipFoundAttackHelper(x + 1, y, true, 1)) {
         return;
       }
       if (x + 1 > 9 || alreadyFiredAt(x + 1, y)) {
@@ -608,12 +672,36 @@
             return;
           }
         }
-        scanCounter = 0;
         directionToAttackFoundShip = "";
       }
     }
-    if (directionToAttackFoundShip === "hor") {
-      if (y + 1 <= 9 && shipFoundAttackHelper(x, y + 1, false)) {
+
+    if (directionToAttackFoundShip === "u") {
+      if (x - 1 >= 0 && shipFoundAttackHelper(x - 1, y, true, -1)) {
+        return;
+      }
+      if (x - 1 < 0 || alreadyFiredAt(x - 1, y)) {
+        for (let i = 1; i < 10; i++) {
+          if (
+            x + i > 9 ||
+            gameBoard[x + i][y][0] === 3 ||
+            gameBoard[x + i][y][0] === 4
+          ) {
+            break;
+          } else if (isMiss(x + i, y)) {
+            missHelper(x + i, y);
+            return;
+          } else if (isHit(x + i, y)) {
+            hitHelper(x + i, y);
+            return;
+          }
+        }
+        directionToAttackFoundShip = "";
+      }
+    }
+
+    if (directionToAttackFoundShip === "r") {
+      if (y + 1 <= 9 && shipFoundAttackHelper(x, y + 1, false, 1)) {
         return;
       }
       if (y + 1 > 9 || alreadyFiredAt(x, y + 1)) {
@@ -632,75 +720,57 @@
             return;
           }
         }
-        scanCounter = 0;
         directionToAttackFoundShip = "";
       }
     }
-    if (checkOrder === 0) {
-      if (scanCounter === 0 && directionToAttackFoundShip === "") {
-        if (x + 1 > 9) {
-          scanCounter++;
-        } else if (shipFoundAttackScanHelper(x + 1, y, "ver", 1)) {
-          return;
-        }
+
+    if (directionToAttackFoundShip === "l") {
+      if (y - 1 >= 0 && shipFoundAttackHelper(x, y - 1, false, -1)) {
+        return;
       }
-      if (scanCounter === 1 && directionToAttackFoundShip === "") {
-        if (y + 1 > 9) {
-          scanCounter++;
-        } else if (shipFoundAttackScanHelper(x, y + 1, "hor", 1)) {
-          return;
+      if (y - 1 < 0 || alreadyFiredAt(x, y - 1)) {
+        for (let i = 1; i < 10; i++) {
+          if (
+            y + i > 9 ||
+            gameBoard[x][y + i][0] === 3 ||
+            gameBoard[x][y + i][0] === 4
+          ) {
+            break;
+          } else if (isMiss(x, y + i)) {
+            missHelper(x, y + i);
+            return;
+          } else if (isHit(x, y + i)) {
+            hitHelper(x, y + i);
+            return;
+          }
         }
+        directionToAttackFoundShip = "";
       }
-      if (scanCounter === 2 && directionToAttackFoundShip === "") {
-        if (x - 1 < 0) {
-          scanCounter++;
-        } else if (shipFoundAttackScanHelper(x - 1, y, "ver", -1)) {
-          return;
-        }
-      }
-      if (scanCounter >= 3 && directionToAttackFoundShip === "") {
-        if (shipFoundAttackScanHelper(x, y - 1, "hor", -1)) {
-        }
-      }
+    }
+    //calc which of the 4 directions to go, up, down, left, right
+    const dir = getDir(x, y);
+
+    if (dir === "u") {
+      shipFoundAttackScanHelper(x - 1, y, "u", -1);
+    } else if (dir === "d") {
+      shipFoundAttackScanHelper(x + 1, y, "d", 1);
+    } else if (dir === "r") {
+      shipFoundAttackScanHelper(x, y + 1, "r", 1);
     } else {
-      if (scanCounter === 0 && directionToAttackFoundShip === "") {
-        if (y + 1 > 9) {
-          scanCounter++;
-        } else if (shipFoundAttackScanHelper(x, y + 1, "hor", 1)) {
-          return;
-        }
-      }
-      if (scanCounter === 1 && directionToAttackFoundShip === "") {
-        if (x + 1 > 9) {
-          scanCounter++;
-        } else if (shipFoundAttackScanHelper(x + 1, y, "ver", 1)) {
-          return;
-        }
-      }
-      if (scanCounter === 2 && directionToAttackFoundShip === "") {
-        if (x - 1 < 0) {
-          scanCounter++;
-        } else if (shipFoundAttackScanHelper(x - 1, y, "ver", -1)) {
-          return;
-        }
-      }
-      if (scanCounter >= 3 && directionToAttackFoundShip === "") {
-        if (shipFoundAttackScanHelper(x, y - 1, "hor", -1)) {
-        }
-      }
+      shipFoundAttackScanHelper(x, y - 1, "l", -1);
     }
   };
 
-  const shipFoundAttackHelper = (x, y, isLastShotX) => {
+  const shipFoundAttackHelper = (x, y, isLastShotX, add) => {
     if (isMiss(x, y)) {
       missHelper(x, y);
       return true;
     } else if (isHit(x, y)) {
       hitHelper(x, y);
       if (isLastShotX) {
-        lastShotX++;
+        lastShotX += add;
       } else {
-        lastShotY++;
+        lastShotY += add;
       }
       return true;
     }
@@ -710,20 +780,16 @@
   const shipFoundAttackScanHelper = (x, y, direc, add) => {
     if (isMiss(x, y)) {
       missHelper(x, y);
-      scanCounter++;
       return true;
     } else if (isHit(x, y)) {
       hitHelper(x, y);
       directionToAttackFoundShip = direc;
-      scanCounter = 0;
-      if (direc === "ver") {
-        lastShotX = lastShotX + add;
+      if (direc === "u" || direc === "d") {
+        lastShotX += add;
       } else {
-        lastShotY = lastShotY + add;
+        lastShotY += add;
       }
       return true;
-    } else {
-      scanCounter++;
     }
     return false;
   };
@@ -740,6 +806,7 @@
     document.getElementById(getCId(x, y)).classList.remove("blackBackground");
     document.getElementById(getCId(x, y)).classList.add("redBackground");
     gameBoard[x][y][0] = 2;
+    missesInARow = 0;
     hitsNotPartOfSunkShip++;
     shotsfired++;
   };
@@ -748,21 +815,21 @@
     document.getElementById(getCId(x, y)).classList.remove("blackBackground");
     document.getElementById(getCId(x, y)).classList.add("missBackground");
     gameBoard[x][y][0] = 3;
+    missesInARow++;
     shotsfired++;
   };
 
   const searchingShot = () => {
     let x, y;
-    if (shotsfired < 5 || window.randomIntFromInterval(0, 12) === 0) {
+    if (shotsfired < 4 || missesInARow > 4) {
       do {
         x = window.randomIntFromInterval(0, 9);
         y = window.randomIntFromInterval(0, 9);
       } while (
         (x % 2 !== 0 && y % 2 === 0) ||
-        (x % 2 === 0 && y % 2 !== 0) ||
-        [3, 4, 5, 6].includes(x) ||
-        [3, 4, 5, 6].includes(y)
+        (x % 2 === 0 && y % 2 !== 0) || [2, 3, 4, 5, 7].includes(x) || [2, 4, 5, 6, 7].includes(y)
       );
+      missesInARow = 3;
     } else {
       [x, y] = probabilityCalculator();
     }
@@ -787,6 +854,7 @@
       } else {
         searchingShot();
       }
+      probabilityCalculator();
     } else {
       window.modal("Place all ships!", 1400);
       return;
@@ -819,10 +887,9 @@
     }
   };
 
-  const probabilityCalculator = () => {
+  const lengthsLeft = () => {
     const lengthsLeft = [];
-    const probabilityChart = build2dArray(10, 10);
-    let counter = 0;
+
     if (!carrierSunk) {
       lengthsLeft.push(shipLengths.carrier);
     }
@@ -838,16 +905,23 @@
     if (!destroyerSunk) {
       lengthsLeft.push(shipLengths.destroyer);
     }
-    for (let n = 0; n < lengthsLeft.length; n++) {
+    return lengthsLeft;
+  }
+
+  const probabilityCalculator = () => {
+    const ll = lengthsLeft();
+    const probabilityChart = build2dArray(10, 10);
+    let counter = 0;
+    for (let n = 0; n < ll.length; n++) {
       for (let i = 0; i < rows; i++) {
-        for (let j = 0; j < rows - lengthsLeft[n] + 1; j++) {
-          for (let k = 0; k < lengthsLeft[n]; k++) {
+        for (let j = 0; j < rows - ll[n] + 1; j++) {
+          for (let k = 0; k < ll[n]; k++) {
             if (!alreadyFiredAt(i, j + k)) {
               counter++;
             }
           }
-          if (counter === lengthsLeft[n]) {
-            for (let k = 0; k < lengthsLeft[n]; k++) {
+          if (counter === ll[n]) {
+            for (let k = 0; k < ll[n]; k++) {
               probabilityChart[i][j + k]++;
             }
           }
@@ -855,14 +929,14 @@
         }
       }
       for (let i = 0; i < cols; i++) {
-        for (let j = 0; j < cols - lengthsLeft[n] + 1; j++) {
-          for (let k = 0; k < lengthsLeft[n]; k++) {
+        for (let j = 0; j < cols - ll[n] + 1; j++) {
+          for (let k = 0; k < ll[n]; k++) {
             if (!alreadyFiredAt(j + k, i)) {
               counter++;
             }
           }
-          if (counter === lengthsLeft[n]) {
-            for (let k = 0; k < lengthsLeft[n]; k++) {
+          if (counter === ll[n]) {
+            for (let k = 0; k < ll[n]; k++) {
               probabilityChart[j + k][i]++;
             }
           }
@@ -883,10 +957,23 @@
         }
       }
     }
+    applyToScreen(probabilityChart, currentMax);
     return currentMaxes[
       window.randomIntFromInterval(0, currentMaxes.length - 1)
     ];
   };
+
+  const applyToScreen = (probabilityChart, currentMax) => {
+    for (let i = 0; i < cols; i++) {
+      for (let j = 0; j < rows; j++) {
+        if (alreadyFiredAt(i, j)) continue;
+        const prob = probabilityChart[i][j];
+        const cell = document.getElementById(getCId(i, j));
+        const colorString = "rgba(128, 170, 255," + Math.min(1, (prob / currentMax) + .25) + ")";
+        cell.style.backgroundColor = colorString;
+      }
+    }
+  }
 
   const gameOverColorChange = () => {
     for (let i = 0; i < cols; i++) {
@@ -947,7 +1034,7 @@
     document.getElementById("compWins").textContent =
       "Computer Wins: " + window.compWinsOnLoad();
 
-    document.addEventListener("keydown", function (event) {
+    document.addEventListener("keydown", function(event) {
       if (event.keyCode === 192) {
         console.log(gameBoard);
       }
