@@ -1,6 +1,7 @@
 /*eslint-disable prefer-const */
 /*eslint-disable no-unused-vars */
 "use strict";
+
 function resetWinLoss() {
   window.setCookie("compwinsBattleship", 0, 0.25);
   document.getElementById("compWins").textContent = "Computer Wins: " + 0;

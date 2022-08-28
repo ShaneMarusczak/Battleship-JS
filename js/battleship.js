@@ -111,8 +111,6 @@
       const row = e.target.id.substring(1, 2);
       const col = e.target.id.substring(2, 3);
       if (gameBoard[row][col][0] == 0) {
-        // document.getElementById("s" + row + col).style.backgroundColor =
-        //   "#4d88ff";
         gameBoard[row][col][0] = 3;
         document.getElementById("s" + row + col).classList.add("miss");
         document.getElementById("s" + row + col).classList.add("missBackground");
@@ -326,7 +324,7 @@
     window.exportedGameBoard = gameBoard;
 
     document.addEventListener("keydown", function(event) {
-      if (event.keyCode == 192) {
+      if (event.key == "`") {
         console.log(gameBoard);
         for (let i = 0; i < cols; i++) {
           for (let j = 0; j < rows; j++) {

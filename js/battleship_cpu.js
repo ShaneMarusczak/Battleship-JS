@@ -13,7 +13,7 @@
   let shotsfired = 0;
 
   // a count of all cells on the board that are hits but not part of a sunk ship
-  // if you hit two different ships and then sink one, we still have a hit on the board
+  // if comp hits two different ships and then sinks one, these is an unsunk hit ship on the board
   // when a ship is sunk, its length is subracted from this value
   // if this value is still above 0, there is an additional ship to attack
   let hitsNotPartOfSunkShip = 0;
@@ -229,14 +229,14 @@
       );
       document.getElementById(shipName).classList.add("clicked");
       shipsPlaced--;
-      for (const ship of placedShips) {
+      outer: for (const ship of placedShips) {
         for (const coor of ship) {
           if (coor[0] === x && coor[1] === y) {
             // set to opposite direction, then call roateShip() below to sync
             directionToPlaceShip =
               gameBoard[coor[0]][coor[1]][2] === "hor" ? "ver" : "hor";
             thisShip = ship;
-            break;
+            break outer;
           }
         }
       }
@@ -831,7 +831,7 @@
       );
       missesInARow = 3;
     } else {
-      [x, y] = probabilityCalculator();
+      [x, y] = probabilityCalculator(false);
     }
     lastShotX = x;
     lastShotY = y;
@@ -854,7 +854,7 @@
       } else {
         searchingShot();
       }
-      probabilityCalculator();
+      probabilityCalculator(true);
     } else {
       window.modal("Place all ships!", 1400);
       return;
@@ -908,9 +908,9 @@
     return lengthsLeft;
   }
 
-  const probabilityCalculator = () => {
+  const probabilityCalculator = (updateUi) => {
     const ll = lengthsLeft();
-    const probabilityChart = build2dArray(10, 10);
+    const probabilityChart = build2dArray(10, 10, !updateUi);
     let counter = 0;
     for (let n = 0; n < ll.length; n++) {
       for (let i = 0; i < rows; i++) {
@@ -957,7 +957,9 @@
         }
       }
     }
-    applyToScreen(probabilityChart, currentMax);
+    if (updateUi && document.getElementById("visualize").checked) {
+      applyToScreen(probabilityChart, currentMax);
+    }
     return currentMaxes[
       window.randomIntFromInterval(0, currentMaxes.length - 1)
     ];
@@ -995,12 +997,16 @@
     window.addClassFromElementById("rotateArrow", "rotateBackAnimation");
   };
 
-  const build2dArray = (rowLength, numberOfRows) => {
+  const build2dArray = (rowLength, numberOfRows, randomize) => {
     const arr = [];
     for (let i = 0; i < numberOfRows; i++) {
       arr.push([]);
       for (let j = 0; j < rowLength; j++) {
-        arr[i].push(0);
+        if (randomize) {
+          arr[i].push(window.randomIntFromInterval(0, 2) === 0 ? 0 : window.randomIntFromInterval(0, 9));
+        } else {
+          arr[i].push(0);
+        }
       }
     }
     return arr;
@@ -1035,8 +1041,9 @@
       "Computer Wins: " + window.compWinsOnLoad();
 
     document.addEventListener("keydown", function(event) {
-      if (event.keyCode === 192) {
+      if (event.key === "`") {
         console.log(gameBoard);
+        probabilityCalculator(true);
       }
     });
     if (window.getCookie("darkMode") === "Y") {
