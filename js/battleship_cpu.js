@@ -653,7 +653,7 @@
     const x = lastShotX;
     const y = lastShotY;
     if (directionToAttackFoundShip === "d") {
-      if (x + 1 <= 9 && shipFoundAttackHelper(x + 1, y, true, 1)) {
+      if (x + 1 <= 9 && shipFoundAttackHelper(x + 1, y, directionToAttackFoundShip, 1)) {
         return;
       }
       if (x + 1 > 9 || alreadyFiredAt(x + 1, y)) {
@@ -677,7 +677,7 @@
     }
 
     if (directionToAttackFoundShip === "u") {
-      if (x - 1 >= 0 && shipFoundAttackHelper(x - 1, y, true, -1)) {
+      if (x - 1 >= 0 && shipFoundAttackHelper(x - 1, y, directionToAttackFoundShip, -1)) {
         return;
       }
       if (x - 1 < 0 || alreadyFiredAt(x - 1, y)) {
@@ -701,7 +701,7 @@
     }
 
     if (directionToAttackFoundShip === "r") {
-      if (y + 1 <= 9 && shipFoundAttackHelper(x, y + 1, false, 1)) {
+      if (y + 1 <= 9 && shipFoundAttackHelper(x, y + 1, directionToAttackFoundShip, 1)) {
         return;
       }
       if (y + 1 > 9 || alreadyFiredAt(x, y + 1)) {
@@ -725,7 +725,7 @@
     }
 
     if (directionToAttackFoundShip === "l") {
-      if (y - 1 >= 0 && shipFoundAttackHelper(x, y - 1, false, -1)) {
+      if (y - 1 >= 0 && shipFoundAttackHelper(x, y - 1, directionToAttackFoundShip, -1)) {
         return;
       }
       if (y - 1 < 0 || alreadyFiredAt(x, y - 1)) {
@@ -751,33 +751,17 @@
     const dir = getDir(x, y);
 
     if (dir === "u") {
-      shipFoundAttackScanHelper(x - 1, y, "u", -1);
+      shipFoundAttackHelper(x - 1, y, "u", -1);
     } else if (dir === "d") {
-      shipFoundAttackScanHelper(x + 1, y, "d", 1);
+      shipFoundAttackHelper(x + 1, y, "d", 1);
     } else if (dir === "r") {
-      shipFoundAttackScanHelper(x, y + 1, "r", 1);
+      shipFoundAttackHelper(x, y + 1, "r", 1);
     } else {
-      shipFoundAttackScanHelper(x, y - 1, "l", -1);
+      shipFoundAttackHelper(x, y - 1, "l", -1);
     }
   };
 
-  const shipFoundAttackHelper = (x, y, isLastShotX, add) => {
-    if (isMiss(x, y)) {
-      missHelper(x, y);
-      return true;
-    } else if (isHit(x, y)) {
-      hitHelper(x, y);
-      if (isLastShotX) {
-        lastShotX += add;
-      } else {
-        lastShotY += add;
-      }
-      return true;
-    }
-    return false;
-  };
-
-  const shipFoundAttackScanHelper = (x, y, direc, add) => {
+  const shipFoundAttackHelper = (x, y, direc, add) => {
     if (isMiss(x, y)) {
       missHelper(x, y);
       return true;
@@ -821,15 +805,21 @@
 
   const searchingShot = () => {
     let x, y;
-    if (shotsfired < 4 || missesInARow > 4) {
+    let tries = 0;
+    if (shotsfired < 4 || missesInARow > 3) {
       do {
         x = window.randomIntFromInterval(0, 9);
         y = window.randomIntFromInterval(0, 9);
+        if (tries > 10) {
+          [x, y] = probabilityCalculator(false);
+          break;
+        }
+        tries++;
       } while (
         (x % 2 !== 0 && y % 2 === 0) ||
         (x % 2 === 0 && y % 2 !== 0) || [2, 3, 4, 5, 7].includes(x) || [2, 4, 5, 6, 7].includes(y)
       );
-      missesInARow = 3;
+      missesInARow > 0 ? 1 : 0;
     } else {
       [x, y] = probabilityCalculator(false);
     }
