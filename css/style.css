@@ -467,3 +467,407 @@ footer {
   animation-duration: 2.5s;
   animation-iteration-count: infinite;
 }
+
+/* ==========================================================================
+   ACCESSIBILITY STYLES
+   ========================================================================== */
+
+/**
+ * Screen reader only - visually hidden but accessible to screen readers.
+ * This content is announced by screen readers but not visible on screen.
+ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/**
+ * Skip link - allows keyboard users to skip to main content.
+ * Visible only when focused.
+ */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #000;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 1.2em;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 0 0 8px 8px;
+  z-index: 10001;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 3px solid #ffcc00;
+  outline-offset: 2px;
+}
+
+/**
+ * Focus indicators - high visibility focus rings for keyboard navigation.
+ * These provide clear visual feedback for keyboard users.
+ */
+#gameboard:focus,
+#gameboard_cpu:focus {
+  outline: 4px solid #ffcc00;
+  outline-offset: 4px;
+}
+
+/* Individual cell focus indicator */
+.cell-focused {
+  outline: 4px solid #ffcc00 !important;
+  outline-offset: -4px;
+  z-index: 10 !important;
+}
+
+/* Focus styles for interactive elements */
+#ships div:focus,
+#rotate:focus,
+#startGame:focus,
+#strtOvrBtn:focus,
+#resetWinLoss:focus,
+#darkMode:focus,
+a:focus,
+button:focus {
+  outline: 3px solid #ffcc00;
+  outline-offset: 2px;
+}
+
+/* Make ship selection items focusable */
+#ships div {
+  cursor: pointer;
+}
+
+#ships div:focus {
+  background-color: #555;
+}
+
+/* ==========================================================================
+   COLORBLIND SUPPORT - Patterns and symbols in addition to colors
+   ========================================================================== */
+
+/**
+ * Hit cells - red background + "X" pattern for colorblind users
+ */
+.redBackground::after {
+  content: "●";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  color: rgba(0, 0, 0, 0.4);
+  height: 100%;
+}
+
+/**
+ * Sunk ship cells - dark red + filled pattern
+ */
+.darkRedBackground::after {
+  content: "✕";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: rgba(0, 0, 0, 0.5);
+  height: 100%;
+}
+
+/**
+ * Miss background - already has X symbol, enhance visibility
+ */
+.missBackground::after {
+  font-weight: bold;
+  color: rgba(0, 50, 150, 0.7);
+}
+
+/**
+ * Ship cells (player's board) - add subtle pattern
+ */
+.blackBackground::after {
+  content: "▪";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.4);
+  height: 100%;
+}
+
+/* ==========================================================================
+   HIGH CONTRAST MODE SUPPORT
+   ========================================================================== */
+
+@media (prefers-contrast: high) {
+  #gameboard div,
+  #gameboard_cpu div {
+    border: 2px solid #000;
+  }
+
+  .cell-focused {
+    outline: 5px solid #000 !important;
+    outline-offset: -5px;
+  }
+
+  .redBackground {
+    background-color: #ff0000 !important;
+    border: 3px solid #000 !important;
+  }
+
+  .missBackground {
+    background-color: #0066ff !important;
+    border: 3px solid #000 !important;
+  }
+
+  .darkRedBackground {
+    background-color: #990000 !important;
+    border: 3px solid #000 !important;
+  }
+
+  .blackBackground {
+    background-color: #000 !important;
+    border: 3px solid #fff !important;
+  }
+}
+
+/* ==========================================================================
+   REDUCED MOTION SUPPORT
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .gbounce {
+    animation: none;
+  }
+
+  .upBounce,
+  .downBounce {
+    transition: none;
+  }
+
+  .rotateAnimation,
+  .rotateBackAnimation {
+    transition: none;
+  }
+}
+
+/* ==========================================================================
+   ADDITIONAL ACCESSIBILITY ENHANCEMENTS
+   ========================================================================== */
+
+/**
+ * Ensure sufficient color contrast for text
+ */
+#leftList p,
+#rightList p {
+  color: #1a1a1a;
+}
+
+.darkBackground #leftList p,
+.darkBackground #rightList p {
+  color: #e0e0e0;
+}
+
+/**
+ * Larger touch targets for mobile accessibility
+ */
+@media (pointer: coarse) {
+  #ships div {
+    min-height: 48px;
+    padding: 10px;
+  }
+
+  #strtOvrBtn,
+  #resetWinLoss,
+  #startGame,
+  #darkMode {
+    min-height: 48px;
+    padding: 12px 16px;
+  }
+}
+
+/**
+ * Focus visible - only show focus ring on keyboard navigation
+ */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: 3px solid #ffcc00;
+  outline-offset: 2px;
+}
+
+/**
+ * Status messages area
+ */
+#game-announcer,
+#game-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/**
+ * Ensure links have visible underlines
+ */
+a {
+  text-decoration: underline;
+}
+
+a:hover,
+a:focus {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+
+/**
+ * Improve button appearance for accessibility
+ */
+#strtOvrBtn,
+#resetWinLoss,
+#startGame {
+  background-color: linen;
+  transition: background-color 0.15s ease;
+}
+
+#strtOvrBtn:focus,
+#resetWinLoss:focus,
+#startGame:focus {
+  background-color: #d4c4b0;
+}
+
+/**
+ * Win/Loss text accessibility
+ */
+#wintext {
+  color: #006600;
+  background-color: rgba(200, 255, 200, 0.9);
+  padding: 10px;
+  border-radius: 8px;
+}
+
+#losstext {
+  color: #660000;
+  background-color: rgba(255, 200, 200, 0.9);
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.darkBackground #wintext {
+  color: #00cc00;
+  background-color: rgba(0, 50, 0, 0.9);
+}
+
+.darkBackground #losstext {
+  color: #ff6666;
+  background-color: rgba(50, 0, 0, 0.9);
+}
+
+/**
+ * Keyboard shortcuts help panel
+ */
+.keyboard-help {
+  margin-top: 15px;
+  text-align: left;
+  display: inline-block;
+  background-color: linen;
+  border: 2px solid #333;
+  border-radius: 8px;
+  padding: 5px 15px;
+  max-width: 350px;
+}
+
+.keyboard-help summary {
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+  padding: 5px;
+}
+
+.keyboard-help summary:focus {
+  outline: 3px solid #ffcc00;
+  outline-offset: 2px;
+}
+
+.keyboard-help dl {
+  margin: 10px 0;
+  font-size: 0.9em;
+}
+
+.keyboard-help dt {
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.keyboard-help dd {
+  margin-left: 20px;
+  color: #555;
+}
+
+.darkBackground .keyboard-help {
+  background-color: #3a3a3a;
+  border-color: #666;
+}
+
+.darkBackground .keyboard-help dd {
+  color: #ccc;
+}
+
+/**
+ * Button base styles (converted from p to button)
+ */
+button#startGame,
+button#strtOvrBtn,
+button#resetWinLoss,
+button#darkMode {
+  font-family: "Roboto Mono", monospace;
+  cursor: pointer;
+}
+
+/**
+ * List styling for ship status
+ */
+#leftList ul,
+#rightList ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#leftList li,
+#rightList li {
+  margin: 2px 0;
+}
+
+/**
+ * Ensure proper heading hierarchy visuals
+ */
+h3#player-ships-heading,
+h3#enemy-ships-heading {
+  font-size: 1em;
+  margin: 5px 0;
+}

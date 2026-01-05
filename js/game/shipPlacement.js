@@ -38,6 +38,13 @@ import {
 import { getPlayerCellId, isValidCoordinate } from "../utils/helpers.js";
 import { getById, addClassById, removeClassById, hasClassById } from "../utils/dom.js";
 import { showModal } from "../ui/modal.js";
+import {
+    announce,
+    announceShipPlacement,
+    announceGameStart,
+    getCellCoordinate,
+    updateCellLabel
+} from "../utils/accessibility.js";
 
 /**
  * Currently selected ship for placement.
@@ -159,6 +166,9 @@ function handleShipSelect(event) {
     selectedShip = shipName;
     selectedShipSize = SHIP_LENGTHS[shipName];
     shipElement.classList.add(CssClasses.CLICKED);
+
+    // Announce ship selection for accessibility
+    announceShipPlacement(shipName, selectedShipSize);
 }
 
 /**
@@ -346,6 +356,10 @@ function handlePlaceShip(event) {
             cell.addEventListener("mouseover", handlePlacedShipHover);
             cell.addEventListener("mouseleave", handlePlacedShipLeave);
             cell.classList.add(CssClasses.CURSOR_POINTER);
+
+            // Update accessibility label
+            const coordinate = getCellCoordinate(row, col);
+            updateCellLabel(getPlayerCellId(row, col), `${coordinate}, your ${selectedShip}`);
         }
     }
 
@@ -362,6 +376,11 @@ function handlePlaceShip(event) {
     // Hide ship from list
     addClassById(selectedShip, CssClasses.HIDDEN);
 
+    // Announce ship placement
+    const startCoord = getCellCoordinate(startRow, startCol);
+    const direction = placementDirection === Direction.HORIZONTAL ? "horizontally" : "vertically";
+    announce(`${selectedShip} placed at ${startCoord}, ${direction}. ${5 - shipsPlacedCount} ships remaining.`);
+
     // Check if all ships placed
     if (shipsPlacedCount === 5) {
         removeClassById("startGame", CssClasses.NOT_DISPLAYED);
@@ -369,6 +388,7 @@ function handlePlaceShip(event) {
         if (instructionsEl) {
             instructionsEl.innerHTML = "<b>Placed ships can be moved before starting!</b>";
         }
+        announce("All ships placed! Press Enter on the Start Game button to begin.");
     }
 
     // Deselect ship
@@ -546,6 +566,10 @@ async function handleStartGame() {
 
     // Start the game
     setGameStarted(true);
+
+    // Announce game start for accessibility
+    announceGameStart();
+
     await showModal("Game on!", 1500);
 }
 

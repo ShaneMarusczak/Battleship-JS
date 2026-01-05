@@ -2,14 +2,14 @@
 <html lang="en">
 
 <head>
-  <title>Battleship</title>
+  <title>Battleship - Naval Strategy Game</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@500&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" type="text/css" href="css/style.css" />
   <meta name="viewport" content="width=800" />
-  <meta name="Description" content="Play the classic game Battleship!" />
+  <meta name="Description" content="Play the classic naval strategy game Battleship! Place your ships and sink the enemy fleet." />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
@@ -17,63 +17,107 @@
 </head>
 
 <body>
-  <div id="main">
-    <header>
-      <h1>Battleship</h1>
-      <p id="playerWins"></p>
-      <p id="compWins"></p>
-      <a id="homeLink" href="https://marusczak.com/Games-Home-Page" rel="noreferrer"><img id="homeIcon"
-          src="images/house-icon.png" alt="Home" /></a>
+  <!-- Skip Links for Keyboard Navigation -->
+  <a href="#gameboard_cpu" class="skip-link">Skip to your fleet (place ships here)</a>
+  <a href="#gameboard" class="skip-link">Skip to enemy waters (fire here)</a>
+  <a href="#game-controls" class="skip-link">Skip to game controls</a>
 
-      <a id="gitHubLink" href="https://github.com/ShaneMarusczak/Battleship-JS" target="_blank" rel="noreferrer"><img
-          id="githubicon" src="images/github-icon.png" alt="GitHub" /></a>
-      <p id="wintext">You Win! Click Start over to play again!</p>
-      <p id="losstext">
+  <div id="main" role="main">
+    <header role="banner">
+      <h1>Battleship</h1>
+
+      <!-- Score Display -->
+      <div role="status" aria-live="polite" aria-atomic="true">
+        <p id="playerWins" aria-label="Player wins count"></p>
+        <p id="compWins" aria-label="Computer wins count"></p>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav aria-label="External links">
+        <a id="homeLink" href="https://marusczak.com/Games-Home-Page" rel="noreferrer"
+           aria-label="Return to games home page">
+          <img id="homeIcon" src="images/house-icon.png" alt="" aria-hidden="true" />
+          <span class="sr-only">Home</span>
+        </a>
+
+        <a id="gitHubLink" href="https://github.com/ShaneMarusczak/Battleship-JS" target="_blank" rel="noreferrer"
+           aria-label="View source code on GitHub (opens in new window)">
+          <img id="githubicon" src="images/github-icon.png" alt="" aria-hidden="true" />
+          <span class="sr-only">GitHub</span>
+        </a>
+      </nav>
+
+      <!-- Game Result Messages -->
+      <p id="wintext" role="alert" aria-live="assertive">You Win! Click Start over to play again!</p>
+      <p id="losstext" role="alert" aria-live="assertive">
         The computer won this time! Click Start over to play again!
       </p>
     </header>
-    <div id="boards">
-      <div class="boardContainer">
-        <img id="downArrow" class="gbounce" src="images/down-arrow.png" alt="Arrow pointing down" />
+
+    <!-- Keyboard Instructions (screen reader only) -->
+    <div class="sr-only" id="keyboard-instructions">
+      <h2>Keyboard Controls</h2>
+      <p>Use Tab to move between game sections. On game boards, use arrow keys to navigate cells, Enter or Space to fire or place ships, and R to rotate ships during placement. Press ? for help.</p>
+    </div>
+
+    <div id="boards" role="region" aria-label="Game boards">
+      <!-- Player's Board Section -->
+      <section class="boardContainer" aria-labelledby="player-board-heading">
+        <h2 id="player-board-heading" class="sr-only">Your Fleet</h2>
+
+        <img id="downArrow" class="gbounce" src="images/down-arrow.png" alt="" aria-hidden="true"
+             role="presentation" />
+
         <div class="shiplist">
-          <div id="leftList" class="notDisplayed shadowBox">
-            <h4>Player's Ships:</h4>
-            <p id="carrierSunk_cpu">Carrier (5)</p>
-            <p id="battleshipSunk_cpu">Battleship (4)</p>
-            <p id="cruiserSunk_cpu">Cruiser (3)</p>
-            <p id="submarineSunk_cpu">Submarine (3)</p>
-            <p id="destroyerSunk_cpu">Destroyer (2)</p>
+          <!-- Player Ships Status -->
+          <div id="leftList" class="notDisplayed shadowBox" role="region" aria-labelledby="player-ships-heading">
+            <h3 id="player-ships-heading">Player's Ships:</h3>
+            <ul role="list" aria-label="Status of your ships">
+              <li><p id="carrierSunk_cpu" role="status">Carrier (5)</p></li>
+              <li><p id="battleshipSunk_cpu" role="status">Battleship (4)</p></li>
+              <li><p id="cruiserSunk_cpu" role="status">Cruiser (3)</p></li>
+              <li><p id="submarineSunk_cpu" role="status">Submarine (3)</p></li>
+              <li><p id="destroyerSunk_cpu" role="status">Destroyer (2)</p></li>
+            </ul>
           </div>
-          <div id="ships" class="shadowBox">
-            <p id="instructions">
+
+          <!-- Ship Placement Panel -->
+          <div id="ships" class="shadowBox" role="region" aria-labelledby="ship-placement-heading">
+            <h3 id="ship-placement-heading" class="sr-only">Ship Placement</h3>
+            <p id="instructions" aria-live="polite">
               <b>Click on each ship to place on the board to the right.</b>
             </p>
-            <div id="rotate">
+
+            <div id="rotate" role="button" tabindex="0" aria-label="Rotate ship orientation (keyboard: R)">
               <p>Rotate</p>
-              <img id="rotateArrow" src="images/rotate-right-arrow.png" alt="Rotate" />
+              <img id="rotateArrow" src="images/rotate-right-arrow.png" alt="" aria-hidden="true" />
             </div>
-            <div id="carrier">
+
+            <div id="carrier" role="button" tabindex="0" aria-label="Carrier, 5 cells long. Click to select for placement.">
               <p>Carrier</p>
             </div>
-            <div id="battleship">
+            <div id="battleship" role="button" tabindex="0" aria-label="Battleship, 4 cells long. Click to select for placement.">
               <p>Battleship</p>
             </div>
-            <div id="cruiser">
+            <div id="cruiser" role="button" tabindex="0" aria-label="Cruiser, 3 cells long. Click to select for placement.">
               <p>Cruiser</p>
             </div>
-            <div id="submarine">
+            <div id="submarine" role="button" tabindex="0" aria-label="Submarine, 3 cells long. Click to select for placement.">
               <p>Submarine</p>
             </div>
-            <div id="destroyer">
+            <div id="destroyer" role="button" tabindex="0" aria-label="Destroyer, 2 cells long. Click to select for placement.">
               <p>Destroyer</p>
             </div>
           </div>
         </div>
 
-        <div id="gameboard_cpu" class="shadowBox">
-          <div id="thinking">
+        <!-- Player's Game Board -->
+        <div id="gameboard_cpu" class="shadowBox" role="application"
+             aria-label="Your fleet - 10 by 10 grid. Place your ships here. Use arrow keys to navigate, Enter to place."
+             tabindex="0">
+          <div id="thinking" role="status" aria-live="assertive" aria-atomic="true">
             <span id="message">Thinking...</span>
-            <div class="animation">
+            <div class="animation" aria-hidden="true">
               <div></div>
               <div></div>
               <div></div>
@@ -81,37 +125,86 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="boardContainer">
-        <div id="gameboard" class="shadowBox"></div>
+      </section>
+
+      <!-- CPU's Board Section (Enemy Waters) -->
+      <section class="boardContainer" aria-labelledby="enemy-board-heading">
+        <h2 id="enemy-board-heading" class="sr-only">Enemy Waters</h2>
+
+        <!-- Enemy Game Board -->
+        <div id="gameboard" class="shadowBox" role="application"
+             aria-label="Enemy waters - 10 by 10 grid. Fire torpedoes here to find enemy ships. Use arrow keys to navigate, Enter to fire."
+             tabindex="0">
+        </div>
+
         <div class="shiplist">
-          <div id="rightList" class="shadowBox">
-            <h4>Computer's Ships:</h4>
-            <p id="CarrierSunk">Carrier (5)</p>
-            <p id="BattleshipSunk">Battleship (4)</p>
-            <p id="CruiserSunk">Cruiser (3)</p>
-            <p id="SubmarineSunk">Submarine (3)</p>
-            <p id="DestroyerSunk">Destroyer (2)</p>
+          <!-- Computer Ships Status -->
+          <div id="rightList" class="shadowBox" role="region" aria-labelledby="enemy-ships-heading">
+            <h3 id="enemy-ships-heading">Computer's Ships:</h3>
+            <ul role="list" aria-label="Status of enemy ships">
+              <li><p id="CarrierSunk" role="status">Carrier (5)</p></li>
+              <li><p id="BattleshipSunk" role="status">Battleship (4)</p></li>
+              <li><p id="CruiserSunk" role="status">Cruiser (3)</p></li>
+              <li><p id="SubmarineSunk" role="status">Submarine (3)</p></li>
+              <li><p id="DestroyerSunk" role="status">Destroyer (2)</p></li>
+            </ul>
           </div>
         </div>
-      </div>
+      </section>
     </div>
-    <footer>
-      <p id="startGame" class="shadowBox notDisplayed">Start Game</p>
-      <p id="strtOvrBtn" class="shadowBox notDisplayed" onclick="location.reload()">
-        Start Over
-      </p>
-      <p id="resetWinLoss" class="shadowBox">Reset Win/Loss</p>
+
+    <!-- Game Controls -->
+    <footer role="contentinfo" id="game-controls">
+      <div role="group" aria-label="Game controls">
+        <button type="button" id="startGame" class="shadowBox notDisplayed" aria-label="Start the game">
+          Start Game
+        </button>
+        <button type="button" id="strtOvrBtn" class="shadowBox notDisplayed" onclick="location.reload()"
+                aria-label="Start a new game">
+          Start Over
+        </button>
+        <button type="button" id="resetWinLoss" class="shadowBox" aria-label="Reset win and loss statistics">
+          Reset Win/Loss
+        </button>
+      </div>
+
       <br />
       <p id="updateText" title="Refactored with ES6 Modules">Last Updated: January 2026</p>
-      <label for="visualize" id="visualize_label">Visuals</label>
-      <input type="checkbox" id="visualize" />
-      <div id="darkMode">Dark Mode</div>
+
+      <!-- Accessibility Options -->
+      <div role="group" aria-label="Display options">
+        <label for="visualize" id="visualize_label">
+          <input type="checkbox" id="visualize" aria-describedby="visualize-desc" />
+          Visuals
+        </label>
+        <span id="visualize-desc" class="sr-only">Show probability visualization for AI targeting</span>
+
+        <button type="button" id="darkMode" aria-pressed="false" aria-label="Toggle dark mode">
+          Dark Mode
+        </button>
+      </div>
+
+      <!-- Keyboard Help -->
+      <details class="keyboard-help">
+        <summary>Keyboard Shortcuts</summary>
+        <dl>
+          <dt>Arrow Keys</dt>
+          <dd>Navigate between cells on game boards</dd>
+          <dt>Enter / Space</dt>
+          <dd>Fire torpedo or place ship</dd>
+          <dt>R</dt>
+          <dd>Rotate ship during placement</dd>
+          <dt>Tab</dt>
+          <dd>Move between sections</dd>
+          <dt>?</dt>
+          <dd>Hear keyboard help (screen readers)</dd>
+        </dl>
+      </details>
     </footer>
   </div>
 </body>
 
-<!-- ES6 Module Entry Point - No external dependencies! -->
+<!-- ES6 Module Entry Point - Fully accessible! -->
 <script type="module" src="js/main.js"></script>
 
 </html>

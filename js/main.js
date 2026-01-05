@@ -38,6 +38,9 @@ import { preloadAudio } from "./utils/audio.js";
 import { initializeDarkModeToggle, applySavedDarkModePreference } from "./ui/darkMode.js";
 import { initializeAnimations } from "./ui/animations.js";
 
+// Accessibility
+import { initializeAccessibility, announce } from "./utils/accessibility.js";
+
 // Game Components
 import { initializeCpuBoard } from "./game/cpuBoard.js";
 import { initializePlayerBoard, executeComputerTurn } from "./game/playerBoard.js";
@@ -70,6 +73,9 @@ async function initializeGame() {
         // Initialize UI components
         initializeDarkModeToggle();
         initializeAnimations();
+
+        // Initialize accessibility features
+        initializeAccessibility();
 
         // Load and display win/loss records
         displayWinLossRecords();

@@ -56,6 +56,15 @@ import { getById } from "../utils/dom.js";
 import { playHitSound, playMissSound, playSunkSound } from "../utils/audio.js";
 import { showModal } from "../ui/modal.js";
 import { incrementPlayerWins } from "../utils/cookies.js";
+import {
+    setupAccessibleCell,
+    updateCellLabel,
+    getCellCoordinate,
+    announceHit,
+    announceMiss,
+    announceShipSunk,
+    announceGameOver
+} from "../utils/accessibility.js";
 
 /**
  * Reference to the board container element.
@@ -108,6 +117,9 @@ export function initializeCpuBoard(turnCompleteCallback) {
             cell.style.top = topPosition + "px";
             cell.style.left = leftPosition + "px";
             cell.style.background = DEFAULT_CELL_COLOR;
+
+            // Add accessibility attributes
+            setupAccessibleCell(cell, row, col, false);
 
             // Add hover effects
             cell.addEventListener("mouseover", handleCellHover);
@@ -182,6 +194,8 @@ async function fireTorpedo(event) {
     // Disable further clicks during processing
     removeAllClickHandlers();
 
+    const coordinate = getCellCoordinate(row, col);
+
     if (cellState === CellState.EMPTY) {
         // Miss
         board[row][col][0] = CellState.MISS;
@@ -191,9 +205,14 @@ async function fireTorpedo(event) {
         setCurrentHoverColor("#4d88ff");
         playMissSound();
 
+        // Update accessibility label and announce
+        updateCellLabel(getCpuCellId(row, col), `${coordinate}, miss`);
+        announceMiss(coordinate);
+
     } else if (cellState === CellState.SHIP) {
         // Hit
         const cell = getById(getCpuCellId(row, col));
+        const shipName = board[row][col][1];
         cell.style.backgroundColor = "red";
         board[row][col][0] = CellState.HIT;
         cell.classList.add(CssClasses.HIT);
@@ -201,6 +220,9 @@ async function fireTorpedo(event) {
         playHitSound();
 
         incrementPlayerHitCount();
+
+        // Update accessibility label
+        updateCellLabel(getCpuCellId(row, col), `${coordinate}, hit`);
 
         // Check if ship is sunk
         const result = checkShipSunk(row, col);
@@ -219,6 +241,12 @@ async function fireTorpedo(event) {
             }
 
             playSunkSound();
+
+            // Announce ship sunk
+            announceShipSunk(result.shipName, false);
+        } else {
+            // Announce hit
+            announceHit(coordinate);
         }
 
         // Check win condition
@@ -348,6 +376,10 @@ async function handlePlayerWin() {
     }
 
     setGameOver(true, "player");
+
+    // Announce victory to screen readers
+    announceGameOver(true);
+
     await showModal("YOU WIN!!!", 3000);
 
     const wins = incrementPlayerWins();

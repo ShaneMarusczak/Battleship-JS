@@ -52,6 +52,16 @@ import { playSunkSound } from "../utils/audio.js";
 import { showModal } from "../ui/modal.js";
 import { incrementComputerWins } from "../utils/cookies.js";
 import { executeAIMove, updateProbabilityVisualization } from "../ai/aiController.js";
+import {
+    setupAccessibleCell,
+    updateCellLabel,
+    getCellCoordinate,
+    announceHit,
+    announceMiss,
+    announceShipSunk,
+    announceGameOver,
+    announceTurn
+} from "../utils/accessibility.js";
 
 /**
  * Reference to the board container element.
@@ -87,6 +97,9 @@ export function initializePlayerBoard() {
             cell.style.top = topPosition + "px";
             cell.style.left = leftPosition + "px";
             cell.style.backgroundColor = WATER_COLOR;
+
+            // Add accessibility attributes
+            setupAccessibleCell(cell, row, col, true);
         }
     }
 
@@ -113,8 +126,23 @@ export async function executeComputerTurn() {
     // Execute the AI move
     const move = executeAIMove();
 
+    // Get coordinate for accessibility announcement
+    const coordinate = getCellCoordinate(move.row, move.col);
+
     // Update the visual display
     updateCellDisplay(move.row, move.col, move.isHit);
+
+    // Update accessibility labels and announce
+    if (move.isHit) {
+        updateCellLabel(getPlayerCellId(move.row, move.col), `${coordinate}, hit`);
+        // Don't announce hit if ship sunk - that will be announced separately
+        if (!move.shipSunk) {
+            announceHit(coordinate, move.shipName);
+        }
+    } else {
+        updateCellLabel(getPlayerCellId(move.row, move.col), `${coordinate}, miss`);
+        announceMiss(coordinate);
+    }
 
     // Update hit indicators on ship list
     updateShipHitIndicators();
@@ -211,6 +239,9 @@ async function handleShipSunk(shipName) {
     // Update ship state
     updatePlayerShipState(shipName, { sunk: true });
 
+    // Announce to screen readers
+    announceShipSunk(shipName, true);
+
     // Show taunt message
     const phrase = randomInt(0, 10) === 0
         ? capitalizeFirst(shipName) + " Sunk!"
@@ -264,6 +295,9 @@ async function handleComputerWin() {
     }
 
     setGameOver(true, "cpu");
+
+    // Announce defeat to screen readers
+    announceGameOver(false);
 
     // Reveal remaining CPU ships
     revealCpuShips();
