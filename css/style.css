@@ -387,23 +387,6 @@ footer {
   cursor: pointer;
 }
 
-.darkBackground {
-  background-color: #282828 !important;
-  color: azure !important;
-}
-
-.darkBackgroundHTML {
-  background-color: #282828 !important;
-}
-
-.darkGrayBackground {
-  background-color: dimgray !important;
-}
-
-.lightBackground {
-  filter: invert(0.9);
-}
-
 .blackBackground {
   background-color: black !important;
 }
@@ -432,19 +415,6 @@ footer {
   /* border: 1px solid transparent !important; */
   font-size: 46px;
   color: rgb(128, 170, 255);
-}
-
-#darkMode {
-  margin: 0 auto;
-  width: fit-content;
-}
-
-#darkMode:hover {
-  cursor: pointer;
-}
-
-.lightText:not(#modal-message) {
-  color: lightgray;
 }
 
 .shadowBox {
