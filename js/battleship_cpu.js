@@ -1030,16 +1030,5 @@
     document.getElementById("compWins").textContent =
       "Computer Wins: " + window.compWinsOnLoad();
 
-    document.addEventListener("keydown", function(event) {
-      if (event.key === "`") {
-        console.log(gameBoard);
-        probabilityCalculator(true);
-      }
-    });
-    if (window.getCookie("darkMode") === "Y") {
-      window.setDarkMode();
-    } else {
-      window.removeDarkMode();
-    }
   })();
 })();

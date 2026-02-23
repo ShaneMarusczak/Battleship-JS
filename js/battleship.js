@@ -323,17 +323,5 @@
     placeShip(2);
     window.exportedGameBoard = gameBoard;
 
-    document.addEventListener("keydown", function(event) {
-      if (event.key == "`") {
-        console.log(gameBoard);
-        for (let i = 0; i < cols; i++) {
-          for (let j = 0; j < rows; j++) {
-            if (gameBoard[i][j][0] == 1) {
-              document.getElementById("s" + i + j).style.background = "white";
-            }
-          }
-        }
-      }
-    });
   })();
 })();
